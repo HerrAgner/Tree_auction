@@ -3,7 +3,7 @@
     <v-content class="content">
       <router-view />
     </v-content>
-<!--    <BottomNav id="nav"></BottomNav>-->
+    <BottomNav />
   </v-app>
 </template>
 
@@ -14,8 +14,7 @@ import BottomNav from "./components/BottomNav";
 export default {
   name: "App",
   components: {
-    BottomNav,
-    HelloWorld
+    BottomNav
   },
   data() {
     return {

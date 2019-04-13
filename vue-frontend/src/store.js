@@ -5,7 +5,7 @@ Vue.use(Vuex);
 const API_URL = "http://localhost:7999/api/";
 export default new Vuex.Store({
   state: {
-    profilename: "Hej",
+    profilename: "",
     header: "",
     profilePicture: "",
     text: "",

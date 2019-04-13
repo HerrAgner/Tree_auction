@@ -1,7 +1,5 @@
 <template>
   <div>
-   
-    <h1>apa</h1>
     <FileUpload />
     <ProfilePicture />
     <ul>

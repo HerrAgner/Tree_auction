@@ -10,8 +10,10 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private final String name = null;
-    private final Integer populationInMillions = null;
+    private final String title = null;
+    private final String image = null;
+    private final String author = null;
+    private final String text = null;
 
     public Post() {
 
@@ -21,12 +23,19 @@ public class Post {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public int getPopulationInMillions() {
-        return populationInMillions;
+    public String getImage() {
+        return image;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getText() {
+        return text;
+    }
 }

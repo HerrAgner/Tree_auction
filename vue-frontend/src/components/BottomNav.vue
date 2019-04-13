@@ -2,7 +2,6 @@
     <v-card flat id="nav">
         <!--      <div class="headline text-xs-center pa-5">Active: {{ bottomNav }}</div>-->
         <v-bottom-nav
-                :active.sync="bottomNav"
                 :value="true"
                 absolute
                 color="white"
