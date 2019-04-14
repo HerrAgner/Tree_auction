@@ -6,6 +6,7 @@
           <h2 class="title font-weight-regular">{{ title }}</h2>
           <div class="layout grey--text text--lighten-1 pa-3">
             <div>
+              <p>{{ description }}</p>
               <i
                 aria-hidden="true"
                 class="v-icon mdi mdi-pencil theme--dark grey--text text--lighten-1"
@@ -21,7 +22,8 @@
           style="padding-bottom: 56.2667%;"
         ></div>
         <div class="v-image__image v-image__image--cover">
-          <v-img :src="image" />
+<!--          <v-img :src="image" />-->
+       
         </div>
         <div class="v-responsive__content"></div>
       </div>
@@ -41,7 +43,7 @@ export default {
   props: {
     title: String,
     image: String,
-    text: String,
+    description: String,
     author: String
   },
   computed: {},

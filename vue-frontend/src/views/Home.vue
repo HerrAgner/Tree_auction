@@ -4,7 +4,7 @@
         <div class="container grid-list-xl">
             <h1>test</h1>
             <div class="layout wrap" v-for="post in getPosts">
-                <BlogCard :title="post.title" :image="post.image"></BlogCard>
+                <BlogCard :title="post.title" :description="post.description"></BlogCard>
             </div>
         </div>
     </div>
@@ -17,8 +17,7 @@
 
     export default {
         components: {
-            Profile,
-            HelloWorld,
+            // Profile,
             BlogCard
         },
         computed: {
