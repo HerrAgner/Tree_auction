@@ -1,11 +1,10 @@
-package web;
+package web.Repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
+import web.Entity.User;
 
 @Repository
-public interface PostRepository extends CrudRepository<Post, Long> {
+public interface UserRepository extends CrudRepository<User, Long> {
 
 }
