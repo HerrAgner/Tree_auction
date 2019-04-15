@@ -1,19 +1,22 @@
 <template>
   <v-app id="app">
+    <BottomNav />
     <v-content class="content">
       <router-view />
     </v-content>
-    <BottomNav />
+    <BottomFooter />
   </v-app>
 </template>
 
 <script>
 import BottomNav from "./components/BottomNav";
+import BottomFooter from "./components/BottomFooter";
 
 export default {
   name: "App",
   components: {
-    BottomNav
+    BottomNav,
+    BottomFooter
   },
   data() {
     return {
