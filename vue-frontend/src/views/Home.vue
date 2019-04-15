@@ -5,6 +5,7 @@
             <h1>test</h1>
             <div class="layout wrap" v-for="post in getPosts">
                 <BlogCard :title="post.title" :description="post.description"></BlogCard>
+
             </div>
         </div>
     </div>
