@@ -20,6 +20,14 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    async getUsersFromDb() {
+      let users = await (await fetch(API_URL + "users")).json();
+      return users;
+    },
+    async getBidsFromDb() {
+      let bids = await (await fetch(API_URL + "bids")).json();
+      return bids;
+    },
     async getAuctionsFromDb() {
       let auctions = await (await fetch(API_URL + "auctions")).json();
       this.commit("setAuctions", auctions);

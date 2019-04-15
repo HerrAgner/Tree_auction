@@ -1,4 +1,4 @@
-package web;
+package web.Controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

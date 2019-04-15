@@ -1,4 +1,4 @@
-package web;
+package web.Entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

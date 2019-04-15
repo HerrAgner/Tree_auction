@@ -1,5 +1,5 @@
 <template>
-    
+   
     <div class="v-content__wrap">
         <div class="container grid-list-xl">
             <h1>test</h1>
@@ -17,6 +17,9 @@
         components: {
             // Profile,
             BlogCard
+        },
+        methods: {
+        
         },
         computed: {
            getAuctions() {

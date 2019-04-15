@@ -1,7 +1,9 @@
-package web;
+package web.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import web.Entity.User;
+import web.Repository.UserRepository;
 
 @RestController
 @RequestMapping("/api/users")
