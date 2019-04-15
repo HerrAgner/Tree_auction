@@ -13,13 +13,14 @@
             
             <v-btn to="/about" color="teal" flat value="add">
                 <router-link to="/about"></router-link>
-                <span>Add</span>
+                <span>Add Auction</span>
                 <v-icon>add</v-icon>
             </v-btn>
             
             <v-btn color="teal" flat value="settings">
-                <span>Settings</span>
-                <v-icon>settings</v-icon>
+                <span>Login</span>
+                <v-icon>account_circle
+</v-icon>
             </v-btn>
         </v-bottom-nav>
     </v-card>
@@ -33,6 +34,6 @@
 
 <style scoped>
     #nav{
-        height: 5vh;
+        height: 56px;
     }
 </style>

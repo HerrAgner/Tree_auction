@@ -11,9 +11,7 @@
 </template>
 
 <script>
-    import HelloWorld from '../components/HelloWorld'
     import BlogCard from "@/components/BlogCard.vue"
-    import Profile from "@/components/Profile.vue"
 
     export default {
         components: {

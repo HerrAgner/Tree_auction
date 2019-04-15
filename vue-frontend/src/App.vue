@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
 import BottomNav from "./components/BottomNav";
 
 export default {
@@ -36,13 +35,13 @@ export default {
 }
 
 .content {
-  max-height: calc(100vh - 5vh);
+  margin-top: 50px;
 }
 
 #nav {
   width: 100vw;
-  justify-content: space-between;
-  bottom: 0;
+  justify-content: left;
+  top: 0;
   position: fixed;
 }
 </style>
