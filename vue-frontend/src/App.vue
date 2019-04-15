@@ -25,7 +25,7 @@ export default {
   },
   created() {
     // this.$store.dispatch("addPostToDB", { name: "sup", populationInMillions: 2 });
-    this.$store.dispatch("getPostsFromDb");
+    this.$store.dispatch("getAuctionsFromDb");
   }
 };
 </script>

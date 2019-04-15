@@ -4,19 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/posts")
-public class PostController {
+@RequestMapping("/api/auctions")
+public class AuctionController {
 
     @Autowired
-    PostRepository repo;
+    AuctionRepository repo;
 
     @GetMapping
-    Iterable<Post> getPosts(){
+    Iterable<Auction> getAuctions(){
         return repo.findAll();
     }
 
     @PostMapping
-    void addPost(@RequestBody Post body) {
+    void addAuction(@RequestBody Auction body) {
         repo.save(body);
     }
 }
