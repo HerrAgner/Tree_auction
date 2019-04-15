@@ -1,73 +1,85 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <div class="about">
-    <v-dialog v-model="dialog" width="500">
-      <template v-slot:activator="{ on }">
-        <v-btn color="red lighten-2" dark v-on="on">
-          Add image
-        </v-btn>
-      </template>
+<template>
+  <v-container grid-list-md text-xs-center>
+    <v-layout row wrap>
+      <v-flex mb-5 xs12>
+        <h1>NEW AUCTION</h1>
+      </v-flex>
+      <v-flex xs7>
+        <v-text-field label="Title of the auction" solo required id="title"></v-text-field>
+      </v-flex>
+      <v-flex xs5>
+        <v-date-picker id="datePicker" v-model="picker" :landscape="landscape" :reactive="reactive"></v-date-picker>
+      </v-flex>
+      <v-flex xs7 id="description">
+        <v-textarea solo name="input-7-4" id="productDescription" label="Add description" value required></v-textarea>
+      </v-flex>
+      <v-flex xs4></v-flex>
 
-      <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>
-          Add image
-        </v-card-title>
-        <v-card-text>
-          <profile id="upload"></profile>
-          <!--                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et-->
-          <!--                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip-->
-          <!--                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu-->
-          <!--                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia-->
-          <!--                deserunt mollit anim id est laborum.-->
-        </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" flat @click="addImage">
-            I accept
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <div>
-      <img :src="currentImage" alt="" id="imageSrc" />
-    </div>
-  </div>
+      <v-flex xs2 id="price">
+        <v-text-field label="Asking Price" id="price" required solo></v-text-field>
+      </v-flex>
+      <v-flex xs10></v-flex>
+      <v-flex class="mb-5" xs2>
+        <v-btn raised @click="onPickFile">Add Image</v-btn>
+        <input
+          type="file"
+          style="display:none"
+          ref="fileInput"
+          accept="image/*"
+          @change="onFilePicked"
+        >
+      </v-flex>
+      <v-flex sm2>
+        <img :src="imageUrl" height="150">
+      </v-flex>
+    </v-layout>
+    <v-btn>Add Auction</v-btn>
+  </v-container>
 </template>
 
-<script>
-import Profile from "@/components/Profile.vue";
 
+<script>
 export default {
-  components: {
-    Profile
-  },
+  components: {},
   data() {
     return {
-      dialog: false,
-      profilePic: ""
+      imageUrl: "",
+      image: null
     };
   },
   methods: {
     addImage() {
       this.dialog = false;
       this.profilePic = this.$store.state.profilePicture;
+    },
+    onPickFile() {
+      this.$refs.fileInput.click();
+    },
+    onFilePicked(event) {
+      let files = event.target.files;
+      let fileName = files[0].name;
+      if (fileName.lastIndexOf(".") <= 0) {
+        return alert("Please add a valid file!");
+      }
+      const fileReader = new FileReader();
+      fileReader.addEventListener("load", () => {
+        this.imageUrl = fileReader.result;
+      });
+      fileReader.readAsDataURL(files[0]);
+      this.image = files[0];
     }
   },
-    computed: {
-      currentImage() {
-          return this.profilePic;
-      }
-    }
+  computed: {
+    
+  }
 };
 </script>
 
-<style scoped>
-.about {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+<style>
+#description{
+  margin-top: -220px;
+}
+#price{
+
 }
 </style>
