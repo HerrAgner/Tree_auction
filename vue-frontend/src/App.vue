@@ -38,7 +38,7 @@ export default {
 }
 
 .content {
-  margin-top: 50px;
+  margin-top: 100px;
 }
 
 #nav {

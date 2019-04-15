@@ -35,5 +35,6 @@
 <style scoped>
     #nav{
         height: 56px;
+        z-index: 999;
     }
 </style>
