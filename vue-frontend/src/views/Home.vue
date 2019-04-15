@@ -24,15 +24,20 @@
 <script>
 import BlogCard from "@/components/BlogCard.vue";
 
-export default {
-  components: {
-    // Profile,
-    BlogCard
-  },
-  computed: {
-    getPosts() {
-      // console.log(this.$store.state.posts.length);
-      return this.$store.state.posts;
+    export default {
+        components: {
+            // Profile,
+            BlogCard
+        },
+        methods: {
+        
+        },
+        computed: {
+           getAuctions() {
+               // console.log(this.$store.state.posts.length);
+                return this.$store.state.auctions;
+            }
+        }
     }
   },
   data () {

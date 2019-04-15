@@ -1,22 +1,24 @@
-package web;
+package web.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import web.Repository.BidRepository;
+import web.Entity.Bid;
 
 @RestController
-@RequestMapping("/api/posts")
-public class PostController {
+@RequestMapping("/api/bids")
+public class BidController {
 
     @Autowired
-    PostRepository repo;
+    BidRepository repo;
 
     @GetMapping
-    Iterable<Post> getPosts(){
+    Iterable<Bid> getBids(){
         return repo.findAll();
     }
 
     @PostMapping
-    void addPost(@RequestBody Post body) {
+    void addBid(@RequestBody Bid body) {
         repo.save(body);
     }
 }
