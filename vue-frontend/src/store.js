@@ -9,7 +9,8 @@ export default new Vuex.Store({
     header: "",
     profilePicture: "",
     text: "",
-    auctions: []
+    auctions: [],
+    currentAuction: {}
   },
   mutations: {
     setProfilePicture(state, image) {
@@ -17,6 +18,9 @@ export default new Vuex.Store({
     },
     setAuctions(state, auctions) {
       state.auctions = auctions;
+    },
+    setCurrentAuction(state, auction) {
+      state.currentAuction = auction;
     }
   },
   actions: {
@@ -31,6 +35,8 @@ export default new Vuex.Store({
     async getAuctionsFromDb() {
       let auctions = await (await fetch(API_URL + "auctions")).json();
       this.commit("setAuctions", auctions);
+      this.commit("setCurrentAuction", auctions[0]);
+
 
     },
     async addAuctionToDB(state, reqBody) {
