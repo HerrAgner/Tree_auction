@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 @Table(name = "bids")
 public class Bid {
     @Id
-    private final Integer auction_id = null;
+    private Integer auctionId = null;
     private final String bidder_id = null;
     private final Float amount = null;
     private final Timestamp time = null;
@@ -19,7 +19,7 @@ public class Bid {
     }
 
     public int getAuction_id() {
-        return auction_id;
+        return auctionId;
     }
 
     public String getBidder_id() {
