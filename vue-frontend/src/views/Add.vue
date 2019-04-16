@@ -5,13 +5,24 @@
         <h1>NEW AUCTION</h1>
       </v-flex>
       <v-flex xs7>
-        <v-text-field label="Title of the auction" solo required id="title" v-model="title"></v-text-field>
+        <v-text-field
+          label="Title of the auction"
+          :rules="rules"
+          counter="40"
+          solo
+          required
+          id="title"
+          v-model="title"
+        ></v-text-field>
       </v-flex>
       <v-flex xs5>
-        <v-date-picker id="datePicker" v-model="date" :min="minDate"></v-date-picker>
+        <v-date-picker id="datePicker" v-model="date" :min="minDate" :max="maxDate"></v-date-picker>
       </v-flex>
+
       <v-flex xs7 id="productDescription">
         <v-textarea
+          :rules="textRules"
+          counter="300"
           solo
           name="input-7-4"
           v-model="description"
@@ -24,7 +35,15 @@
       <v-flex xs4></v-flex>
 
       <v-flex xs2 id="price">
-        <v-text-field v-model="price" label="Asking Price" id="price" required solo></v-text-field>
+        <v-text-field
+          v-model="price"
+          label="Asking Price"
+          id="price"
+          prefix="£"
+          mask="###########"
+          required
+          solo
+        ></v-text-field>
       </v-flex>
       <v-flex xs10></v-flex>
       <v-flex class="mb-5" xs2>
@@ -56,12 +75,13 @@ export default {
       price: "",
       imageUrl: "",
       image: null,
-      date: ""
+      date: "",
+      rules: [v => v.length <= 40 || "Max 40 characters"],
+      textRules: [v => v.length <= 300 || "Max 300 characters"]
     };
   },
   methods: {
     addAuction() {
-      console.log("Clicked");
       var dateToday = new Date();
       var dateEnd = new Date(
         this.date +
@@ -110,11 +130,16 @@ export default {
       return this.title !== "" && this.description !== "" && this.price !== "";
     },
     minDate() {
-      const today = new Date().toISOString().slice(0,10);
+      const today = new Date().toISOString().slice(0, 10);
       return today;
+    },
+    maxDate() {
+      let maxDate = new Date()
+      maxDate.setMonth(maxDate.getMonth()+1)
+      maxDate = maxDate.toISOString().slice(0,10)
+      return maxDate
     }
-  },
-  created() {}
+  }
 };
 </script>
 
