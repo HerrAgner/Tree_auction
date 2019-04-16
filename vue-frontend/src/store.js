@@ -9,7 +9,7 @@ export default new Vuex.Store({
     header: "",
     profilePicture: "",
     text: "",
-    auctions: []
+    auctions: [],
   },
   mutations: {
     setProfilePicture(state, image) {
@@ -42,6 +42,18 @@ export default new Vuex.Store({
 
       // Update the state.blogPosts since we just added a new one
       this.dispatch("getAuctionsFromDb");
+    },
+
+
+    async addUserToDB(state, reqBody) {
+      await fetch(API_URL + "users", {
+        method: "POST",
+        body: JSON.stringify(reqBody),
+        headers: { "Content-Type": "application/json" }
+      });
+
+      // Update the state.blogPosts since we just added a new one
+      this.dispatch("getUsersFromDb");
     }
   }
 });

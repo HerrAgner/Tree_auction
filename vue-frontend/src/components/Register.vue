@@ -8,7 +8,7 @@
                 lazy-validation
                 >
                 <v-text-field
-                v-model="name"
+                v-model="firstName"
                 :counter="10"
                 :rules="firstNameRules"
                 label="First name"
@@ -16,7 +16,7 @@
                 ></v-text-field>
 
                 <v-text-field
-                v-model="name"
+                v-model="lastName"
                 :counter="10"
                 :rules="lastNameRules"
                 label="Last name"
@@ -31,7 +31,7 @@
                 ></v-text-field>
 
                 <v-text-field
-                v-model="name"
+                v-model="phoneNumber"
                 :counter="10"
                 :rules="phoneRules"
                 label="Phone number"
@@ -88,9 +88,17 @@ export default {
         validate() {
             if (this.$refs.registerForm.validate()) {
                 this.snackbar = true
+                
+                //this.$store.dispatch('addUserToDB',{email: this.email, firstname:this.firstName,lastname: this.lastName,password: this.password,phone: this.phoneNumber})
             }
         }
-    }
+    },
+    created: function(){
+        
+        this.$store.dispatch(getUsersFromDb)
+        console.log(this.$store.state.users);
+        
+}
 
 }
 </script>
