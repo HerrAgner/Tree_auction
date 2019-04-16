@@ -23,9 +23,9 @@ export default {
       bottomNav: "recent"
     };
   },
-  created() {
+  async created() {
     // this.$store.dispatch("addPostToDB", { name: "sup", populationInMillions: 2 });
-    this.$store.dispatch("getPostsFromDb");
+    this.$store.dispatch("getAuctionsFromDb");
   }
 };
 </script>
@@ -38,7 +38,7 @@ export default {
 }
 
 .content {
-  margin-top: 50px;
+  margin-top: 100px;
 }
 
 #nav {

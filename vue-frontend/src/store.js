@@ -9,31 +9,39 @@ export default new Vuex.Store({
     header: "",
     profilePicture: "",
     text: "",
-    posts: []
+    auctions: []
   },
   mutations: {
     setProfilePicture(state, image) {
       state.profilePicture = image;
     },
-    setPosts(state, posts) {
-      state.posts = posts;
+    setAuctions(state, auctions) {
+      state.auctions = auctions;
     }
   },
   actions: {
-    async getPostsFromDb() {
-      let posts = await (await fetch(API_URL + "posts")).json();
-      this.commit("setPosts", posts);
+    async getUsersFromDb() {
+      let users = await (await fetch(API_URL + "users")).json();
+      return users;
+    },
+    async getBidsFromDb() {
+      let bids = await (await fetch(API_URL + "bids")).json();
+      return bids;
+    },
+    async getAuctionsFromDb() {
+      let auctions = await (await fetch(API_URL + "auctions")).json();
+      this.commit("setAuctions", auctions);
 
     },
-    async addPostToDB(state, reqBody) {
-      await fetch(API_URL + "posts", {
+    async addAuctionToDB(state, reqBody) {
+      await fetch(API_URL + "auctions", {
         method: "POST",
         body: JSON.stringify(reqBody),
         headers: { "Content-Type": "application/json" }
       });
 
       // Update the state.blogPosts since we just added a new one
-      this.dispatch("getPostsFromDb");
+      this.dispatch("getAuctionsFromDb");
     }
   }
 });
