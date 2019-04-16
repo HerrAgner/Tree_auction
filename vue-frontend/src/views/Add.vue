@@ -56,8 +56,8 @@
           @change="onFilePicked"
         >
       </v-flex>
-      <v-flex sm2>
-        <img :src="imageUrl" height="150">
+      <v-flex sm2 class="imageOne">
+        <img :src="imageUrl" height="200">
       </v-flex>
     </v-layout>
     <v-btn :disabled="!formIsValid" @click="addAuction">Add Auction</v-btn>
@@ -146,5 +146,9 @@ export default {
 <style>
 #productDescription {
   margin-top: -220px;
+}
+.imageOne{
+  margin-top: -84px;
+  margin-left: 20px;
 }
 </style>
