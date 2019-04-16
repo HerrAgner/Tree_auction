@@ -1,5 +1,4 @@
 <template>
-<<<<<<<<< Temporary merge branch 1
   <div class="v-content__wrap">
     <v-flex lg4 offset-lg4 class="searchField">
       <v-layout row wrap>
@@ -8,24 +7,13 @@
       </v-layout>
     </v-flex>
     <div class="container grid-list-xl">
-
       <div class="layout wrap" v-for="post in getPosts">
         <BlogCard :title="post.title" :description="post.description"></BlogCard>
       </div>
     </div>
     <div class="text-xs-center">
       <v-pagination v-model="page" :length="6"></v-pagination>
-=========
-    
-    <div class="v-content__wrap">
-        <div class="container grid-list-xl">
-            <h1>test</h1>
-            <div class="layout wrap" v-for="post in getPosts">
-                <BlogCard :title="post.title" :description="post.description"></BlogCard>
 
-            </div>
-        </div>
->>>>>>>>> Temporary merge branch 2
     </div>
   </div>
 </template>

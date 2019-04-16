@@ -86,6 +86,9 @@ export default {
     }),
     methods: {
         validate() {
+            let users = this.$store.dispatch('getUsersEmailFromDb');
+            console.log(users);
+            
             if (this.$refs.registerForm.validate()) {
                 this.snackbar = true
                 
@@ -93,12 +96,7 @@ export default {
             }
         }
     },
-    created: function(){
-        
-        this.$store.dispatch(getUsersFromDb)
-        console.log(this.$store.state.users);
-        
-}
+    props:['users']
 
 }
 </script>

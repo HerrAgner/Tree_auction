@@ -17,11 +17,19 @@ export default new Vuex.Store({
     },
     setAuctions(state, auctions) {
       state.auctions = auctions;
+    },
+    setUsers(state, users) {
+        state.users = users;
     }
   },
   actions: {
     async getUsersFromDb() {
       let users = await (await fetch(API_URL + "users")).json();
+      return users;
+    },
+    async getUsersEmailFromDb() {
+      let users = await (await fetch(API_URL + "users/email")).json();
+      this.commit("setUsers", users);
       return users;
     },
     async getBidsFromDb() {
