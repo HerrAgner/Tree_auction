@@ -1,7 +1,10 @@
 package web.Entity;
 
+import org.apache.tomcat.jni.Local;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "auctions")
@@ -46,5 +49,10 @@ public class Auction {
 
     public float getStart_price() {
         return start_price;
+    }
+
+    public Timestamp calcTime() {
+        Timestamp newEndTime = null;
+        return newEndTime;
     }
 }
