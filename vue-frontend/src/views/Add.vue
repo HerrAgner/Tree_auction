@@ -1,73 +1,159 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <div class="about">
-    <v-dialog v-model="dialog" width="500">
-      <template v-slot:activator="{ on }">
-        <v-btn color="red lighten-2" dark v-on="on">
-          Add image
-        </v-btn>
-      </template>
+<template>
+  <v-container grid-list-md text-xs-center>
+    <v-layout row wrap>
+      <v-flex mb-5 xs12>
+        <h1>NEW AUCTION</h1>
+      </v-flex>
+      <v-flex xs7>
+        <v-text-field
+          label="Title of the auction"
+          :rules="rules"
+          counter="40"
+          solo
+          required
+          id="title"
+          v-model="title"
+        ></v-text-field>
+      </v-flex>
+      <v-flex xs5>
+        <v-date-picker id="datePicker" v-model="date" :min="minDate" :max="maxDate"></v-date-picker>
+      </v-flex>
 
-      <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>
-          Add image
-        </v-card-title>
-        <v-card-text>
-          <profile id="upload"></profile>
-          <!--                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et-->
-          <!--                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip-->
-          <!--                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu-->
-          <!--                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia-->
-          <!--                deserunt mollit anim id est laborum.-->
-        </v-card-text>
+      <v-flex xs7 id="productDescription">
+        <v-textarea
+          :rules="textRules"
+          counter="300"
+          solo
+          name="input-7-4"
+          v-model="description"
+          id="description"
+          label="Add description"
+          value
+          required
+        ></v-textarea>
+      </v-flex>
+      <v-flex xs4></v-flex>
 
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" flat @click="addImage">
-            I accept
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <div>
-      <img :src="currentImage" alt="" id="imageSrc" />
-    </div>
-  </div>
+      <v-flex xs2 id="price">
+        <v-text-field
+          v-model="price"
+          label="Asking Price"
+          id="price"
+          prefix="£"
+          mask="###########"
+          required
+          solo
+        ></v-text-field>
+      </v-flex>
+      <v-flex xs10></v-flex>
+      <v-flex class="mb-5" xs2>
+        <v-btn raised @click="onPickFile">Add Image</v-btn>
+        <input
+          type="file"
+          style="display:none"
+          ref="fileInput"
+          accept="image/*"
+          @change="onFilePicked"
+        >
+      </v-flex>
+      <v-flex sm2 class="imageOne">
+        <img :src="imageUrl" height="200">
+      </v-flex>
+    </v-layout>
+    <v-btn :disabled="!formIsValid" @click="addAuction">Add Auction</v-btn>
+  </v-container>
 </template>
 
-<script>
-import Profile from "@/components/Profile.vue";
 
+<script>
 export default {
-  components: {
-    Profile
-  },
+  components: {},
   data() {
     return {
-      dialog: false,
-      profilePic: ""
+      title: "",
+      description: "",
+      price: "",
+      imageUrl: "",
+      image: null,
+      date: "",
+      rules: [v => v.length <= 40 || "Max 40 characters"],
+      textRules: [v => v.length <= 300 || "Max 300 characters"]
     };
   },
   methods: {
-    addImage() {
-      this.dialog = false;
-      this.profilePic = this.$store.state.profilePicture;
+    addAuction() {
+      var dateToday = new Date();
+      var dateEnd = new Date(
+        this.date +
+          " " +
+          dateToday.getHours() +
+          ":" +
+          dateToday.getMinutes() +
+          ":" +
+          dateToday.getSeconds()
+      );
+      dateEnd = dateEnd.toISOString().replace("Z", "+0000");
+
+      const productData = {
+        title: this.title,
+        description: this.description,
+        start_price: this.price,
+        seller_id: "eric.rl@me.com",
+        end_time: dateEnd,
+        added_time: dateToday
+      };
+      const pictureData = {
+        picture: "enbild",
+        auctionID: '1'
+      };
+      // this.$store.dispatch("addPictureToDB", pictureData);
+      this.$store.dispatch("addAuctionToDB", productData);
+    },
+    onPickFile() {
+      this.$refs.fileInput.click();
+    },
+    onFilePicked(event) {
+      let files = event.target.files;
+      let fileName = files[0].name;
+
+      if (fileName.lastIndexOf(".") <= 0) {
+        return alert("Please add a valid file!");
+      }
+      const fileReader = new FileReader();
+      fileReader.addEventListener("load", () => {
+        this.imageUrl = fileReader.result;
+        console.log("this.imageUrl: " +  this.imageUrl);
+      });
+      fileReader.readAsDataURL(files[0]);
+      this.image = files[0];
+      console.log("fileName: " + fileName);
+      console.log("this.image: "+ this.image);
     }
   },
-    computed: {
-      currentImage() {
-          return this.profilePic;
-      }
+  computed: {
+    formIsValid() {
+      return this.title !== "" && this.description !== "" && this.price !== "";
+    },
+    minDate() {
+      const today = new Date().toISOString().slice(0, 10);
+      return today;
+    },
+    maxDate() {
+      let maxDate = new Date()
+      maxDate.setMonth(maxDate.getMonth()+1)
+      maxDate = maxDate.toISOString().slice(0,10)
+      return maxDate
     }
+  }
 };
 </script>
 
-<style scoped>
-.about {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+<style>
+#productDescription {
+  margin-top: -220px;
+}
+.imageOne{
+  margin-top: -84px;
+  margin-left: 20px;
 }
 </style>

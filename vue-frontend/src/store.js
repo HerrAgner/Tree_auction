@@ -9,7 +9,10 @@ export default new Vuex.Store({
     header: "",
     profilePicture: "",
     text: "",
-    auctions: []
+    auctions: [],
+    userEmail: '',
+    currentAuction: "",
+    currentSeller: ""
   },
   mutations: {
     setProfilePicture(state, image) {
@@ -17,12 +20,28 @@ export default new Vuex.Store({
     },
     setAuctions(state, auctions) {
       state.auctions = auctions;
+    },
+    setUserEmail(state, userEmail) {
+      state.userEmail = userEmail;
+    },
+    setCurrentAuction(state, auction) {
+      state.currentAuction = auction;
+    },
+    setCurrentSeller(state, seller) {
+      state.currentSeller = seller;
     }
   },
   actions: {
     async getUsersFromDb() {
       let users = await (await fetch(API_URL + "users")).json();
       return users;
+    },
+    async getUserEmailFromDb(context, email) {
+      let user = await (await fetch(API_URL + "users/" + email)).json().catch(e => {});
+      if (user) {
+        this.commit("setUserEmail", user.email);
+      }
+      return user;
     },
     async getBidsFromDb() {
       let bids = await (await fetch(API_URL + "bids")).json();
@@ -42,6 +61,13 @@ export default new Vuex.Store({
 
       // Update the state.blogPosts since we just added a new one
       this.dispatch("getAuctionsFromDb");
-    }
+    },
+    // async addPictureToDB(state, reqBody) {
+    //   await fetch(API_URL + "pictures", {
+    //     method: "POST",
+    //     body: JSON.stringify(reqBody),
+    //     headers: { "Content-Type": "application/json" }
+    //   });
+    // }
   }
 });
