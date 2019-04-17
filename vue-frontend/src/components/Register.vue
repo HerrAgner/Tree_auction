@@ -8,7 +8,7 @@
                 lazy-validation
                 >
                 <v-text-field
-                v-model="name"
+                v-model="firstName"
                 :counter="10"
                 :rules="firstNameRules"
                 label="First name"
@@ -16,7 +16,7 @@
                 ></v-text-field>
 
                 <v-text-field
-                v-model="name"
+                v-model="lastName"
                 :counter="10"
                 :rules="lastNameRules"
                 label="Last name"
@@ -31,7 +31,7 @@
                 ></v-text-field>
 
                 <v-text-field
-                v-model="name"
+                v-model="phoneNumber"
                 :counter="10"
                 :rules="phoneRules"
                 label="Phone number"
@@ -52,6 +52,7 @@
                 >
                 sign up
                 </v-btn> 
+                {{messageToClient}}
             </v-form>
       </v-app>
     </div>    
@@ -63,6 +64,8 @@
 export default {
     data: () => ({
     valid: true,
+    props:['users'],
+    messageToClient: '',
     password: '',
     passwordRules: [
         v => !!v || 'Password is required'
@@ -85,13 +88,26 @@ export default {
     ]
     }),
     methods: {
-        validate() {
+        async validate() {
             if (this.$refs.registerForm.validate()) {
-                this.snackbar = true
+                this.$store.state.userEmail = ''
+                let u = await this.$store.dispatch('getUserEmailFromDb', this.email);
+                if (this.$store.state.userEmail === ''){
+                    this.messageToClient = '';
+                    this.snackbar = true
+                    this.$store.dispatch('addUserToDB',{email: this.email,
+                                                        firstname:this.firstName,
+                                                        lastname: this.lastName,
+                                                        password: this.password,
+                                                        phone: this.phoneNumber})
+                    this.messageToClient = 'Successfully!'
+                }else{
+                    this.messageToClient = 'This email is already used!';
+                    this.$store.state.userEmail = ''
+                }
             }
         }
-    }
-
+    },
 }
 </script>
 
