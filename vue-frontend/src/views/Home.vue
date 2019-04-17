@@ -8,7 +8,8 @@
     </v-flex>
     <div class="container grid-list-xl">
 
-      <div class="layout wrap" v-for="post in getPosts">
+      <div class="layout wrap" v-bind:key="post" v-for="post in getPosts"> 
+
         <BlogCard :title="post.title" :description="post.description"></BlogCard>
       </div>
     </div>
