@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 @Table(name = "bids")
 public class Bid {
     @Id
+    private long id;
     private Integer auctionId = null;
     private final String bidder_id = null;
     private final Float amount = null;
