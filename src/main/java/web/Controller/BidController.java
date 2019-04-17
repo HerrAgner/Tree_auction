@@ -17,6 +17,11 @@ public class BidController {
         return repo.findAll();
     }
 
+    @GetMapping("/{auctionId}")
+    Iterable<Bid> getBids(@PathVariable int auctionId){
+        return repo.findByAuctionId(auctionId);
+    }
+
     @PostMapping
     void addBid(@RequestBody Bid body) {
         repo.save(body);

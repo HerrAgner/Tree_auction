@@ -72,71 +72,14 @@ export default {
   components: {},
   data() {
     return {
-      title: "",
-      description: "",
-      price: "",
-      imageUrl: "",
-      image: null,
-      date: "",
-      rules: [v => v.length <= 40 || "Max 40 characters"],
-      textRules: [v => v.length <= 300 || "Max 300 characters"]
-
+      dialog: false,
+      profilePic: ""
     };
   },
   methods: {
-    addAuction() {
-      var dateToday = new Date();
-      var dateEnd = new Date(
-        this.date +
-          " " +
-          dateToday.getHours() +
-          ":" +
-          dateToday.getMinutes() +
-          ":" +
-          dateToday.getSeconds()
-      );
-      dateEnd = dateEnd.toISOString().replace("Z", "+0000");
-
-      
-
-      const productData = {
-        title: this.title,
-        description: this.description,
-        start_price: this.price,
-        seller_id: "eric.rl@me.com",
-        end_time: dateEnd,
-        added_time: dateToday
-      };
-      const pictureData = {
-        picture: {title: 'hej'},
-        auctionID: '1'
-      };
-
-      this.$store.dispatch("addAuctionToDB", productData);
-    },
-    onPickFile() {
-      this.$refs.fileInput.click();
-    },
-    onFilePicked(event) {
-      let formData = new FormData();
-
-      let files = event.target.files;
-      let fileName = files[0].name;
-
-      if (fileName.lastIndexOf(".") <= 0) {
-        return alert("Please add a valid file!");
-      }
-      const fileReader = new FileReader();
-      fileReader.addEventListener("load", () => {
-        this.imageUrl = fileReader.result;
-        console.log("this.imageUrl: " +  this.imageUrl);
-      });
-      fileReader.readAsDataURL(files[0]);
-      this.image = files[0];
-
-      formData.append('image', files[0])
-      console.log("fileName: " + fileName);
-      console.log("this.image: "+ this.image);
+    addImage() {
+      this.dialog = false;
+      this.profilePic = this.$store.state.profilePicture;
     }
   },
   computed: {
