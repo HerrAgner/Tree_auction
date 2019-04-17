@@ -142,7 +142,7 @@ export default {
   },
   computed: {
     formIsValid() {
-      return this.title !== "" && this.description !== "" && this.price !== "";
+      return this.title !== "" && this.description !== "" && this.price !== "" && this.title.length < 40 && this.description.length < 300;
     },
     minDate() {
       const today = new Date().toISOString().slice(0, 10);
