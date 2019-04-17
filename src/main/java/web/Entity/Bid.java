@@ -6,13 +6,12 @@ import javax.persistence.Table;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "bids")
 public class Bid {
     @Id
     private Integer auctionId = null;
-    private final String bidder_id = null;
-    private final Float amount = null;
-    private final Timestamp time = null;
+    private String bidder_id = null;
+    private Float amount = null;
+    private Timestamp time = null;
 
     public Bid() {
 
@@ -32,5 +31,25 @@ public class Bid {
 
     public Timestamp getTime() {
         return time;
+    }
+
+    public Integer getAuctionId() {
+        return auctionId;
+    }
+
+    public void setAuctionId(Integer auctionId) {
+        this.auctionId = auctionId;
+    }
+
+    public void setBidder_id(String bidder_id) {
+        this.bidder_id = bidder_id;
+    }
+
+    public void setAmount(Float amount) {
+        this.amount = amount;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
     }
 }

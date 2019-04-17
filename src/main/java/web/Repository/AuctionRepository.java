@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
-    Auction findById(int id);
-//    List<Auction> findAllByTitle(String title);
-    List<Auction> findByTitleContaining(String title);
+//    Auction findById(int id);
+////    List<Auction> findAllByTitle(String title);
+//    List<Auction> findByTitleContaining(String title);
 }
