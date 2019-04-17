@@ -69,7 +69,7 @@ export default {
       auction: "",
       sellerName: "",
       bids: [],
-      highestBid: "",
+      highestBid: null,
       items: [
         {
           src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg"
@@ -97,7 +97,11 @@ export default {
     this.bids.sort(function(a, b) {
       return b.amount - a.amount;
     });
-    this.highestBid = this.bids[0].amount;
+    if(this.bids.length === 0) {
+        this.highestBid = this.auction.start_price
+    } else {
+        this.highestBid = this.bids[0].amount;
+    }
   },
   mounted() {},
   methods: {},
