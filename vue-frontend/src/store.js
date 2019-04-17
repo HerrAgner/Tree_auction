@@ -10,7 +10,7 @@ export default new Vuex.Store({
     profilePicture: "",
     text: "",
     auctions: [],
-    auctions: [],
+    userEmail: '',
     currentAuction: "",
     currentSeller: ""
   },
@@ -21,8 +21,8 @@ export default new Vuex.Store({
     setAuctions(state, auctions) {
       state.auctions = auctions;
     },
-    setUsers(state, users) {
-        state.users = users;
+    setUserEmail(state, userEmail) {
+      state.userEmail = userEmail;
     },
     setCurrentAuction(state, auction) {
       state.currentAuction = auction;
@@ -36,10 +36,12 @@ export default new Vuex.Store({
       let users = await (await fetch(API_URL + "users")).json();
       return users;
     },
-    async getUsersEmailFromDb() {
-      let users = await (await fetch(API_URL + "users/email")).json();
-      this.commit("setUsers", users);
-      return users;
+    async getUserEmailFromDb(context, email) {
+      let user = await (await fetch(API_URL + "users/" + email)).json().catch(e => {});
+      if (user) {
+        this.commit("setUserEmail", user.email);
+      }
+      return user;
     },
     async getBidsFromDb() {
       let bids = await (await fetch(API_URL + "bids")).json();

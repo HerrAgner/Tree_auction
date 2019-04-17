@@ -52,6 +52,7 @@
                 >
                 sign up
                 </v-btn> 
+                {{messageToClient}}
             </v-form>
       </v-app>
     </div>    
@@ -63,6 +64,8 @@
 export default {
     data: () => ({
     valid: true,
+    props:['users'],
+    messageToClient: '',
     password: '',
     passwordRules: [
         v => !!v || 'Password is required'
@@ -85,19 +88,26 @@ export default {
     ]
     }),
     methods: {
-        validate() {
-            let users = this.$store.dispatch('getUsersEmailFromDb');
-            console.log(users);
-            
+        async validate() {
             if (this.$refs.registerForm.validate()) {
-                this.snackbar = true
-                
-                //this.$store.dispatch('addUserToDB',{email: this.email, firstname:this.firstName,lastname: this.lastName,password: this.password,phone: this.phoneNumber})
+                this.$store.state.userEmail = ''
+                let u = await this.$store.dispatch('getUserEmailFromDb', this.email);
+                if (this.$store.state.userEmail === ''){
+                    this.messageToClient = '';
+                    this.snackbar = true
+                    this.$store.dispatch('addUserToDB',{email: this.email,
+                                                        firstname:this.firstName,
+                                                        lastname: this.lastName,
+                                                        password: this.password,
+                                                        phone: this.phoneNumber})
+                    this.messageToClient = 'Successfully!'
+                }else{
+                    this.messageToClient = 'This email is already used!';
+                    this.$store.state.userEmail = ''
+                }
             }
         }
     },
-    props:['users']
-
 }
 </script>
 
