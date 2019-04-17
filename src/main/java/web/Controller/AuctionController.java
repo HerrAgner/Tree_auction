@@ -2,6 +2,7 @@ package web.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import web.Entity.FullAuction;
 import web.Repository.AuctionRepository;
 import web.Entity.Auction;
 
@@ -16,24 +17,24 @@ public class AuctionController {
     AuctionRepository repo;
 
     @GetMapping
-    Iterable<Auction> getAuctions(){
+    Iterable<FullAuction> getAuctions(){
         return repo.findAll();
     }
 
     @GetMapping("/{id}")
-    Optional<Auction> getAuction(@PathVariable long id){
+    Optional<FullAuction> getAuction(@PathVariable long id){
         return repo.findById(id);
     }
 
-    @GetMapping("/search/{title}")
+ /*   @GetMapping("/search/{title}")
     List<Auction> searchAuction(@PathVariable String title){
         return repo.findByTitleContaining(title);
     }
-
+*/
 
 
     @PostMapping
-    void addAuction(@RequestBody Auction body) {
+    void addAuction(@RequestBody FullAuction body) {
         repo.save(body);
     }
 }

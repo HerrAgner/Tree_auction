@@ -1,8 +1,9 @@
 package web.Entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
@@ -13,6 +14,16 @@ public class Bid {
     private final String bidder_id = null;
     private final Float amount = null;
     private final Timestamp time = null;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "auction_id",
+            insertable = false,
+            updatable = false
+
+    )
+    @Fetch(FetchMode.JOIN)
+    private FullAuction fullAuction;
 
     public Bid() {
 
