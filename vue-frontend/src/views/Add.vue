@@ -47,6 +47,7 @@
       </v-flex>
       <v-flex xs10></v-flex>
       <v-flex class="mb-5" xs2>
+        <form method="POST" enctype="multipart/form-data" action="/upload-files">
         <v-btn raised @click="onPickFile">Add Image</v-btn>
         <input
           type="file"
@@ -55,6 +56,7 @@
           accept="image/*"
           @change="onFilePicked"
         >
+        </form>
       </v-flex>
       <v-flex sm2 class="imageOne">
         <img :src="imageUrl" height="200">
@@ -78,6 +80,7 @@ export default {
       date: "",
       rules: [v => v.length <= 40 || "Max 40 characters"],
       textRules: [v => v.length <= 300 || "Max 300 characters"]
+
     };
   },
   methods: {
@@ -94,6 +97,8 @@ export default {
       );
       dateEnd = dateEnd.toISOString().replace("Z", "+0000");
 
+      
+
       const productData = {
         title: this.title,
         description: this.description,
@@ -103,16 +108,18 @@ export default {
         added_time: dateToday
       };
       const pictureData = {
-        picture: "enbild",
+        picture: {title: 'hej'},
         auctionID: '1'
       };
-      // this.$store.dispatch("addPictureToDB", pictureData);
+
       this.$store.dispatch("addAuctionToDB", productData);
     },
     onPickFile() {
       this.$refs.fileInput.click();
     },
     onFilePicked(event) {
+      let formData = new FormData();
+
       let files = event.target.files;
       let fileName = files[0].name;
 
@@ -126,6 +133,8 @@ export default {
       });
       fileReader.readAsDataURL(files[0]);
       this.image = files[0];
+
+      formData.append('image', files[0])
       console.log("fileName: " + fileName);
       console.log("this.image: "+ this.image);
     }
