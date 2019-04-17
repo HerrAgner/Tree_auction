@@ -20,6 +20,12 @@ export default new Router({
         import(/* webpackChunkName: "about" */ "./views/LoginRegister.vue")
     },
     {
+      path: "/auction/:id",
+      name: "AuctionDetailsView",
+      component: () =>
+          import("./views/AuctionDetailsView.vue")
+    },
+    {
       path: "/about",
       name: "about",
       // route level code-splitting

@@ -10,6 +10,9 @@ export default new Vuex.Store({
     profilePicture: "",
     text: "",
     auctions: [],
+    auctions: [],
+    currentAuction: "",
+    currentSeller: ""
   },
   mutations: {
     setProfilePicture(state, image) {
@@ -20,6 +23,12 @@ export default new Vuex.Store({
     },
     setUsers(state, users) {
         state.users = users;
+    },
+    setCurrentAuction(state, auction) {
+      state.currentAuction = auction;
+    },
+    setCurrentSeller(state, seller) {
+      state.currentSeller = seller;
     }
   },
   actions: {
@@ -39,7 +48,7 @@ export default new Vuex.Store({
     async getAuctionsFromDb() {
       let auctions = await (await fetch(API_URL + "auctions")).json();
       this.commit("setAuctions", auctions);
-
+      // this.commit("setCurrentAuction", auctions[0]);
     },
     async addAuctionToDB(state, reqBody) {
       await fetch(API_URL + "auctions", {
@@ -62,6 +71,17 @@ export default new Vuex.Store({
 
       // Update the state.blogPosts since we just added a new one
       this.dispatch("getUsersFromDb");
+    },
+    async getOneAuction(context, auction) {
+      let currAuction = await fetch(API_URL + "auctions/" + auction).then(res =>
+        res.json()
+      );
+      this.commit("setCurrentAuction", currAuction);
+    },
+    async getSellerName(context, user) {
+      let currSeller = await (await fetch(API_URL + "users/" + user)).json();
+      console.log(currSeller)
+      this.commit("setCurrentSeller", currSeller);
     }
   }
 });
