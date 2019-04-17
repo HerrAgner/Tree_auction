@@ -17,6 +17,11 @@ public class UserController {
         return repo.findAll();
     }
 
+    @GetMapping("/{email}")
+    User getUser(@PathVariable String email){
+        return repo.findOneByEmail(email);
+    }
+
     @PostMapping
     void addUser(@RequestBody User body) {
         repo.save(body);

@@ -9,7 +9,10 @@ export default new Vuex.Store({
     header: "",
     profilePicture: "",
     text: "",
-    auctions: []
+    auctions: [],
+    userEmail: '',
+    currentAuction: "",
+    currentSeller: ""
   },
   mutations: {
     setProfilePicture(state, image) {
@@ -17,12 +20,28 @@ export default new Vuex.Store({
     },
     setAuctions(state, auctions) {
       state.auctions = auctions;
+    },
+    setUserEmail(state, userEmail) {
+      state.userEmail = userEmail;
+    },
+    setCurrentAuction(state, auction) {
+      state.currentAuction = auction;
+    },
+    setCurrentSeller(state, seller) {
+      state.currentSeller = seller;
     }
   },
   actions: {
     async getUsersFromDb() {
       let users = await (await fetch(API_URL + "users")).json();
       return users;
+    },
+    async getUserEmailFromDb(context, email) {
+      let user = await (await fetch(API_URL + "users/" + email)).json().catch(e => {});
+      if (user) {
+        this.commit("setUserEmail", user.email);
+      }
+      return user;
     },
     async getBidsFromDb() {
       let bids = await (await fetch(API_URL + "bids")).json();
@@ -43,12 +62,28 @@ export default new Vuex.Store({
       // Update the state.blogPosts since we just added a new one
       this.dispatch("getAuctionsFromDb");
     },
-    // async addPictureToDB(state, reqBody) {
-    //   await fetch(API_URL + "uploads", {
-    //     method: "POST",
-    //     body: JSON.stringify(reqBody),
-    //     headers: { "Content-Type": "multipart/form-data" }
-    //   });
-    // }
+
+
+    async addUserToDB(state, reqBody) {
+      await fetch(API_URL + "users", {
+        method: "POST",
+        body: JSON.stringify(reqBody),
+        headers: { "Content-Type": "application/json" }
+      });
+
+      // Update the state.blogPosts since we just added a new one
+      this.dispatch("getUsersFromDb");
+    },
+    async getOneAuction(context, auction) {
+      let currAuction = await fetch(API_URL + "auctions/" + auction).then(res =>
+        res.json()
+      );
+      this.commit("setCurrentAuction", currAuction);
+    },
+    async getSellerName(context, user) {
+      let currSeller = await (await fetch(API_URL + "users/" + user)).json();
+      console.log(currSeller)
+      this.commit("setCurrentSeller", currSeller);
+    }
   }
 });

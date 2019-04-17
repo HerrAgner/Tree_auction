@@ -53,4 +53,3 @@ export default {
   margin-left: 150px;
 }
 </style>
-
