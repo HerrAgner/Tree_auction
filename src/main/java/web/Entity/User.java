@@ -7,14 +7,20 @@ import java.sql.Timestamp;
 @Table(name = "users")
 public class User {
     @Id
-    private final String email = null;
-    private final String firstname = null;
-    private final String lastname = null;
-    private final String password = null;
-    private final String phone = null;
+    private String email = null;
+    private String firstname = null;
+    private String lastname = null;
+    private String password = null;
+    private String phone = null;
 
-    public User() {
 
+    public User(){
+
+    }
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 
     public String getEmail() {
@@ -35,5 +41,9 @@ public class User {
 
     public String getPhone() {
         return phone;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

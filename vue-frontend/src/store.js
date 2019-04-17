@@ -3,6 +3,12 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 const API_URL = "http://localhost:7999/api/";
+
+function transformRequest(jsonData = {}){
+  return Object.entries(jsonData)
+    .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
+    .join('&');
+}
 export default new Vuex.Store({
   state: {
     profilename: "",
@@ -29,7 +35,7 @@ export default new Vuex.Store({
     },
     setCurrentSeller(state, seller) {
       state.currentSeller = seller;
-    }
+    },
   },
   actions: {
     async getUsersFromDb() {
@@ -43,6 +49,29 @@ export default new Vuex.Store({
       }
       return user;
     },
+
+
+    async checkUserInDb(context, email, password) {
+      console.log(this.password);
+      
+      let user = await (await fetch('/login', {
+        method: "POST",
+        body: transformRequest({email: "rami.almhana@yahoo.com", password: "12"}),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      })
+      .then(function(response) {
+        let successfulLogin = !response.url.includes("error");
+        console.log("the login result is:", successfulLogin);
+      })
+      )
+      return user
+      
+    },
+
+    
+
+
+
     async getBidsFromDb() {
       let bids = await (await fetch(API_URL + "bids")).json();
       return bids;
