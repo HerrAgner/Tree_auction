@@ -13,9 +13,10 @@
           <v-card-title primary-title>
              <div>
               <div class="headline">{{title}}</div>  
-              <div>{{endTime}}</div>
-              <div>{{seller}}</div>
               <div>{{currBid}} kr</div>
+               <div>{{bids}} bud</div>
+               <div>{{seller}}</div>
+              <div>Avslutas: {{convertDate}}</div>
             </div>         
           </v-card-title>
         </v-flex>
@@ -38,10 +39,20 @@ export default {
     endTime: Date,
     currBid: Number, 
     seller: String,
+    bids: Number,
   },
-  computed: {},
-  methods: {}
+  computed: {
+    convertDate: function () {
+      let newDate = new Date(this.endTime);
+      return newDate.toLocaleDateString()+" "+newDate.getHours() + ":" + newDate.getMinutes();
+    }
+  },
+  methods: {},
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.AuctionListItem{
+  margin: 5px;
+}
+</style>
