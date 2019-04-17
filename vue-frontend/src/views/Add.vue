@@ -102,6 +102,11 @@ export default {
         end_time: dateEnd,
         added_time: dateToday
       };
+      const pictureData = {
+        picture: "enbild",
+        auctionID: '1'
+      };
+      // this.$store.dispatch("addPictureToDB", pictureData);
       this.$store.dispatch("addAuctionToDB", productData);
     },
     onPickFile() {
@@ -117,12 +122,12 @@ export default {
       const fileReader = new FileReader();
       fileReader.addEventListener("load", () => {
         this.imageUrl = fileReader.result;
-        console.log(this.imageUrl);
+        console.log("this.imageUrl: " +  this.imageUrl);
       });
       fileReader.readAsDataURL(files[0]);
       this.image = files[0];
-      console.log(fileName);
-      console.log(this.image);
+      console.log("fileName: " + fileName);
+      console.log("this.image: "+ this.image);
     }
   },
   computed: {

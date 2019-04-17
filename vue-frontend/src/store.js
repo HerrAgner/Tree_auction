@@ -42,6 +42,13 @@ export default new Vuex.Store({
 
       // Update the state.blogPosts since we just added a new one
       this.dispatch("getAuctionsFromDb");
-    }
+    },
+    // async addPictureToDB(state, reqBody) {
+    //   await fetch(API_URL + "pictures", {
+    //     method: "POST",
+    //     body: JSON.stringify(reqBody),
+    //     headers: { "Content-Type": "application/json" }
+    //   });
+    // }
   }
 });

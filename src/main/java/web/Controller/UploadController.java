@@ -15,8 +15,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/uploads")
 public class UploadController {
-    private static String currentWokringDir = System.getProperty("user.dir");
-    private static String uploadDir = currentWokringDir + "/src/main/resources/static/";
+    private static String currentWorkingDir = System.getProperty("user.dir");
+    private static String uploadDir = currentWorkingDir + "/src/main/resources/static/";
 
     @PostConstruct
     void createDefaultFolderIfMissing() {
