@@ -15,6 +15,16 @@ public class Bid {
     private Timestamp time = null;
     
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "auction_id",
+            insertable = false,
+            updatable = false
+
+    )
+    @Fetch(FetchMode.JOIN)
+    private FullAuction fullAuction;
+
     public Bid() {
 
     }
