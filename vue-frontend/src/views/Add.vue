@@ -151,7 +151,7 @@ export default {
       const fileReader = new FileReader();
       fileReader.addEventListener("load", () => {
         this.imageUrl = fileReader.result;
-        // console.log("this.imageUrl: " +  this.imageUrl);
+        console.log("this.imageUrl: " +  this.imageUrl);
       });
       fileReader.readAsDataURL(files[0]);
       this.image = files[0];
