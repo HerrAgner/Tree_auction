@@ -36,8 +36,8 @@ export default {
   props: {
     title: String,
     image: String,
-    endTime: Date,
-    currBid: Number, 
+    endTime: String,
+    currBid: String, 
     seller: String,
     bids: Number,
   },
