@@ -7,7 +7,7 @@ import web.MyUserDetailsService;
 import web.Repository.UserRepository;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
@@ -16,7 +16,7 @@ public class UserController {
     @Autowired
     MyUserDetailsService myUserDetailsService;
 
-    @GetMapping("/users")
+    @GetMapping
     Iterable<User> getUsers(){
         return repo.findAll();
     }
