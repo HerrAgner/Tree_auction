@@ -12,7 +12,9 @@ export default new Vuex.Store({
     auctions: [],
     userEmail: '',
     currentAuction: "",
-    currentSeller: ""
+    currentSeller: "",
+    images: [],
+    
   },
   mutations: {
     setProfilePicture(state, image) {
@@ -29,6 +31,13 @@ export default new Vuex.Store({
     },
     setCurrentSeller(state, seller) {
       state.currentSeller = seller;
+    },
+    setUploadedImage(state, image) {
+      state.images = image
+    }
+  }, getters: {
+    getUplodedImage: state => {
+      return state.uploadedImage
     }
   },
   actions: {
@@ -61,6 +70,16 @@ export default new Vuex.Store({
 
       // Update the state.blogPosts since we just added a new one
       this.dispatch("getAuctionsFromDb");
+    },
+
+    async addPictureToDB(state, reqBody) {
+      console.log("I addPictureToDB")
+      await fetch(API_URL + "pictures", {
+        method: "POST",
+        body: JSON.stringify(reqBody),
+        headers: {'Content-Type': 'multipart/form-data'}
+      });
+      console.log("Efter addPictureToDB")
     },
 
 

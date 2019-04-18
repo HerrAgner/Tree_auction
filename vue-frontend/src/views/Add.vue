@@ -58,10 +58,12 @@
         <v-btn raised @click="onPickFile">Add Image</v-btn>
         <input
           type="file"
+          id="file"
           style="display:none"
-          ref="fileInput"
+          ref="file"
           accept="image/*"
           @change="onFilePicked"
+          v-on:change="handleFileUpload"
         >
         </form>
       </v-flex>
@@ -84,6 +86,7 @@ export default {
       price: "",
       imageUrl: "",
       image: null,
+      file: '',
       date: "",
       rules: [v => v.length <= 40 || "Max 40 characters"],
       textRules: [v => v.length <= 300 || "Max 300 characters"]
@@ -95,9 +98,6 @@ export default {
       if (this.date== '') {
         return alert ("Please pick an end date")
       } else {
-        console.log("Datum")
-
-      
       var dateToday = new Date();
       var dateEnd = new Date(
         this.date +
@@ -109,9 +109,6 @@ export default {
           dateToday.getSeconds()
       );
       dateEnd = dateEnd.toISOString().replace("Z", "+0000");
-
-      
-
       const productData = {
         title: this.title,
         description: this.description,
@@ -120,17 +117,27 @@ export default {
         end_time: dateEnd,
         added_time: dateToday
       };
-      // const pictureData = {
-      //   picture: {title: 'hej'},
-      //   auctionID: '1'
-      // };
 
+      const imageData = {
+        auction_id: 1,
+        picture: this.image 
+      }
+
+      // let formData = new FormData();
+      // formData = formData.append('file', this.file);
+      // console.log("loggar this.file" + this.file)
+      // this.$store.dispatch("addPictureToDB", formData)
+
+      this.$store.dispatch("addPictureToDB", imageData);
       this.$store.dispatch("addAuctionToDB", productData);
-      this.$router.push('/') //Går till startsidan
+      // this.$router.push('/') //Går till startsidan
       }
     },
+    handleFileUpload() {
+      this.file = this.$refs.file.files[0];
+    },
     onPickFile() {
-      this.$refs.fileInput.click();
+      this.$refs.file.click();
     },
     onFilePicked(event) {
       let formData = new FormData();
@@ -150,8 +157,6 @@ export default {
       this.image = files[0];
 
       formData.append('image', files[0])
-      // console.log("fileName: " + fileName);
-      // console.log("this.image: "+ this.image);
     }
   },
   computed: {
