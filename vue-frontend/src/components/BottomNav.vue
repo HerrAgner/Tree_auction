@@ -11,13 +11,12 @@
                 <v-icon>home</v-icon>
             </v-btn>
             
-            <v-btn to="/about" color="teal" flat value="add">
-                <router-link to="/about"></router-link>
+            <v-btn to="/add-auction" color="teal" flat value="add">
                 <span>Add Auction</span>
                 <v-icon>add</v-icon>
             </v-btn>
             
-            <v-btn color="teal" flat value="settings">
+            <v-btn to="/login" color="teal" flat value="LoginRegister">
                 <span>Login</span>
                 <v-icon>account_circle
 </v-icon>
