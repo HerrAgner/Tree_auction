@@ -7,7 +7,7 @@ import web.MyUserDetailsService;
 import web.Repository.UserRepository;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/login")
 public class UserController {
 
     @Autowired
@@ -16,7 +16,7 @@ public class UserController {
     @Autowired
     MyUserDetailsService myUserDetailsService;
 
-    @GetMapping
+    @GetMapping("/users")
     Iterable<User> getUsers(){
         return repo.findAll();
     }
@@ -26,9 +26,7 @@ public class UserController {
         return repo.findOneByEmail(email);
     }
 
-
-
-    @PostMapping
+    @PostMapping()
     void addUser(@RequestBody User body) {
         body.setPassword(myUserDetailsService.getEncoder().encode(body.getPassword()));
         repo.save(body);

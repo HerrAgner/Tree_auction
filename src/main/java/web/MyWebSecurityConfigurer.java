@@ -3,11 +3,13 @@ package web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
@@ -23,6 +25,7 @@ public class MyWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         http
                 .cors().and()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.POST,"/api/users").permitAll()
                 .antMatchers("/api/**").hasRole("USER")
                 .and().formLogin().permitAll().defaultSuccessUrl("/", true)
                 .and().logout().permitAll().logoutSuccessUrl("/")
@@ -54,13 +57,7 @@ public class MyWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     }
 
 
-    @Bean
-    UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8081"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+
+
+
 }

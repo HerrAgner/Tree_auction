@@ -3,12 +3,14 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 const API_URL = "http://localhost:7999/api/";
+const API_URL2 = "http://localhost:7999/login/";
 
 function transformRequest(jsonData = {}){
   return Object.entries(jsonData)
     .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
     .join('&');
 }
+
 export default new Vuex.Store({
   state: {
     profilename: "",
@@ -39,16 +41,20 @@ export default new Vuex.Store({
   },
   actions: {
     async getUsersFromDb() {
-      let users = await (await fetch(API_URL + "users")).json();
+      let users = await (await fetch(API_URL + "users")).json().catch(e => {});
+      console.log(users);
+      
       return users;
     },
-    async getUserEmailFromDb(context, email) {
-      let user = await (await fetch(API_URL + "users/" + email)).json().catch(e => {});
+    async getUserEmailFromDb(context, email) {      
+      let user = await (await fetch(API_URL2 + email)).json().catch(e => {});
+      
       if (user) {
         this.commit("setUserEmail", user.email);
       }
       return user;
     },
+    
 
 
     async checkUserInDb(context, email, password) {
@@ -56,7 +62,7 @@ export default new Vuex.Store({
       
       let user = await (await fetch('/login', {
         method: "POST",
-        body: transformRequest({email: "rami.almhana@yahoo.com", password: "12"}),
+        body: transformRequest({username: "rami.albadri77@gmail.com", password: "22"}),
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       })
       .then(function(response) {
@@ -66,6 +72,19 @@ export default new Vuex.Store({
       )
       return user
       
+    },
+
+    async addUserToDB(state, reqBody) {
+      console.log("---------------a--------");
+      
+      await fetch(API_URL2, {
+        method: "POST",
+        body: JSON.stringify(reqBody),
+        headers: { "Content-Type": "application/json" }
+      }).catch(e => {});
+
+      // Update the state.blogPosts since we just added a new one
+      // this.dispatch("getUsersFromDb");
     },
 
     
@@ -93,16 +112,7 @@ export default new Vuex.Store({
     },
 
 
-    async addUserToDB(state, reqBody) {
-      await fetch(API_URL + "users", {
-        method: "POST",
-        body: JSON.stringify(reqBody),
-        headers: { "Content-Type": "application/json" }
-      });
 
-      // Update the state.blogPosts since we just added a new one
-      this.dispatch("getUsersFromDb");
-    },
     async getOneAuction(context, auction) {
       let currAuction = await fetch(API_URL + "auctions/" + auction).then(res =>
         res.json()

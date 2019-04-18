@@ -23,8 +23,8 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @PostConstruct
     private void createDefaultUsers(){
-        if (repository.findDistinctFirstByEmail("user") == null) {
-            addUser("user", "password");
+        if (repository.findDistinctFirstByEmail("rami") == null) {
+            addUser("rami", "password", "rami.almhana@yahoo.com", "albadri", "0700566745");
         }
     }
 
@@ -37,8 +37,8 @@ public class MyUserDetailsService implements UserDetailsService {
         return toUserDetails(user);
     }
 
-    public void addUser(String name, String password){
-        User u = new User(name, encoder.encode(password));
+    public void addUser(String firstname, String password, String email, String lastname, String phone){
+        User u = new User(firstname, encoder.encode(password), email, lastname, phone);
         try {
             repository.save(u);
         } catch (Exception ex) {
