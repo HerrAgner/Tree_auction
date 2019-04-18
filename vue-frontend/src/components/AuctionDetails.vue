@@ -31,12 +31,27 @@
         </v-layout>
         <v-card id="bidCard">
           <v-flex xs8>
-            <v-text-field solo placeholder="Enter bid"></v-text-field>
+            <v-form ref="form" v-model="valid" lazy-validation>
+              <v-text-field
+                solo
+                placeholder="Enter bid"
+                :rules="bidRules"
+                required
+                v-model="bidField"
+                >{{ bidField }}
+              </v-text-field>
+            </v-form>
           </v-flex>
+
           <v-flex xs8>
-            <v-btn round color="success" dark>Place bid</v-btn>
+            <v-btn round color="success" dark @click="validate"
+              >Place bid</v-btn
+            >
           </v-flex>
         </v-card>
+        <v-alert id="bidAlert" :color="type" value="true" v-if="type">
+          {{bidAlertText}}
+        </v-alert>
       </v-content>
     </v-layout>
 
@@ -70,6 +85,12 @@ export default {
       sellerName: "",
       bids: [],
       highestBid: null,
+      bidRules: [v => !!v || "Bid is required"],
+      valid: true,
+      bidField: "",
+      type: null,
+      bidAlertText: "asd",
+      elapse: null,
       items: [
         {
           src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg"
@@ -93,18 +114,78 @@ export default {
     this.sellerName = await fetch(
       API_URL + "users/" + this.auction.seller_id
     ).then(res => res.json());
-    this.bids = await (await fetch(API_URL + "bids/" + this.auction.id)).json();
-    this.bids.sort(function(a, b) {
-      return b.amount - a.amount;
-    });
-    if(this.bids.length === 0) {
-        this.highestBid = this.auction.start_price
-    } else {
+    this.getBids();
+  },
+  methods: {
+    async getBids() {
+      this.bids = await (await fetch(
+        API_URL + "bids/" + this.auction.id
+      )).json();
+      this.bids.sort((a, b) => b.amount - a.amount);
+      if (this.bids.length === 0) {
+        this.highestBid = this.auction.start_price;
+      } else {
         this.highestBid = this.bids[0].amount;
+      }
+    },
+    async compareBid(bid) {
+      await this.getBids();
+      if (bid > this.highestBid) {
+        let bidObject = {
+          amount: bid,
+          auctionId: this.auction.id,
+          bidder_id: this.$store.state.userEmail,
+          time: new Date().toJSON()
+        };
+        await this.$store.dispatch("addBidToDb", bidObject);
+        await this.getBids();
+        this.showAlert('success', 'Bid placed.')
+      } else {
+        this.showAlert('error', 'Bid not high enough.')
+      }
+    },
+    validate() {
+      if (this.$refs.form.validate()) {
+        this.snackbar = true;
+        this.compareBid(this.bidField);
+      } else {
+      
+      }
+    },
+    reset() {
+      this.$refs.form.reset();
+    },
+    resetValidation() {
+      this.$refs.form.resetValidation();
+    },
+    showAlert(type, text) {
+      this.type = type;
+      this.bidAlertText = text;
+
+      let timer = this.showAlert.timer;
+      if (timer) {
+        clearTimeout(timer);
+      }
+      this.showAlert.timer = setTimeout(() => {
+        this.type = null;
+      }, 3000);
+
+      this.elapse = 1;
+      let t = this.showAlert.t;
+      if (t) {
+        clearInterval(t);
+      }
+
+      this.showAlert.t = setInterval(() => {
+        if (this.elapse === 3) {
+          this.elapse = 0;
+          clearInterval(this.showAlert.t);
+        } else {
+          this.elapse++;
+        }
+      }, 1000);
     }
   },
-  mounted() {},
-  methods: {},
   computed: {
     convertDate: function() {
       let newDate = new Date(this.auction.end_time);
@@ -136,7 +217,7 @@ export default {
 }
 
 #contact_info,
-#bidCard {
+#bidCard, #bidAlert {
   display: flex;
   justify-content: center;
   align-items: center;
