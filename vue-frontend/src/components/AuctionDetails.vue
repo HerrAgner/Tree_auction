@@ -38,6 +38,8 @@
                 :rules="bidRules"
                 required
                 v-model="bidField"
+                prefix="£"
+                mask="########"
                 >{{ bidField }}
               </v-text-field>
             </v-form>
@@ -50,7 +52,7 @@
           </v-flex>
         </v-card>
         <v-alert id="bidAlert" :color="type" value="true" v-if="type">
-          {{bidAlertText}}
+          {{ bidAlertText }}
         </v-alert>
       </v-content>
     </v-layout>
@@ -139,17 +141,20 @@ export default {
         };
         await this.$store.dispatch("addBidToDb", bidObject);
         await this.getBids();
-        this.showAlert('success', 'Bid placed.')
+        this.showAlert("success", "Bid placed.");
       } else {
-        this.showAlert('error', 'Bid not high enough.')
+        this.showAlert("error", "Bid not high enough.");
       }
     },
     validate() {
       if (this.$refs.form.validate()) {
         this.snackbar = true;
-        this.compareBid(this.bidField);
+        if (this.$store.state.userEmail === this.auction.seller_id) {
+          this.showAlert("error", "Can't bid on your own auction.");
+        } else {
+          this.compareBid(this.bidField);
+        }
       } else {
-      
       }
     },
     reset() {
@@ -217,7 +222,8 @@ export default {
 }
 
 #contact_info,
-#bidCard, #bidAlert {
+#bidCard,
+#bidAlert {
   display: flex;
   justify-content: center;
   align-items: center;

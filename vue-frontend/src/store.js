@@ -6,7 +6,7 @@ const API_URL = "http://localhost:7999/api/";
 export default new Vuex.Store({
   state: {
     auctions: [],
-    userEmail: 'ellio@gmail.com',
+    userEmail: 'eric.rl@me.com',
     currentAuction: "",
     currentSeller: ""
   },
