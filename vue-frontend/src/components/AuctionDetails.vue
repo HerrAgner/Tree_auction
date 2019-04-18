@@ -31,7 +31,7 @@
         </v-layout>
         <v-card id="bidCard">
           <v-flex xs8>
-            <v-form ref="form" v-model="valid" lazy-validation>
+            <v-form ref="form" v-model="valid" @submit.prevent lazy-validation>
               <v-text-field
                 solo
                 placeholder="Enter bid"
@@ -149,7 +149,9 @@ export default {
     validate() {
       if (this.$refs.form.validate()) {
         this.snackbar = true;
-        if (this.$store.state.userEmail === this.auction.seller_id) {
+        if (this.$store.state.userEmail === null) {
+          this.showAlert("error", "You must be logged in to place a bid.");
+        } else if (this.$store.state.userEmail === this.auction.seller_id) {
           this.showAlert("error", "Can't bid on your own auction.");
         } else {
           this.compareBid(this.bidField);
