@@ -34,7 +34,7 @@ export default {
     };
   },
   props: {
-    title: String,
+    title: Number,
     image: String,
     endTime: String,
     currBid: String, 

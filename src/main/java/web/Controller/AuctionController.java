@@ -3,6 +3,7 @@ package web.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
@@ -46,11 +47,20 @@ public class AuctionController {
         return repo.count();
     }
 
-    @GetMapping("/test")
-    Page<Auction> pageTest(){
-        Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
-        Page<Auction> all = repo.findAll(firstPageWithTwoElements);
-        return all;
+    @GetMapping("/auctionPage/{pageNumber}")
+    Page<Auction> auctionPage (@PathVariable int pageNumber){
+        Pageable pageRequest = PageRequest.of(pageNumber, 10, Sort.by("AddedTime").descending());
+        Page<Auction> page = repo.findAll(pageRequest);
+        return page;
     }
+
+
+    @GetMapping("/auctionPageContent/{pageNumber}")
+    List<Auction> auctionPageContent(@PathVariable int pageNumber){
+        Pageable pageRequest = PageRequest.of(pageNumber, 10, Sort.by("AddedTime").descending());
+        Page<Auction> page = repo.findAll(pageRequest);
+        return page.getContent();
+    }
+
 
 }
