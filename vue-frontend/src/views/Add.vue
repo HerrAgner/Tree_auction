@@ -119,7 +119,7 @@ export default {
       };
 
       const imageData = {
-        auction_id: 1,
+        auction_id: '1',
         picture: this.image 
       }
 
@@ -130,6 +130,7 @@ export default {
 
       this.$store.dispatch("addPictureToDB", imageData);
       this.$store.dispatch("addAuctionToDB", productData);
+      console.log(imageData)
       // this.$router.push('/') //Går till startsidan
       }
     },

@@ -123,6 +123,7 @@ export default new Vuex.Store({
       });
       console.log("Efter addPictureToDB")
     },
+    
     async addBidToDb(state, reqBody) {
       await fetch(API_URL + "bids", {
         method: "POST",
