@@ -11,7 +11,7 @@
                 <v-icon>home</v-icon>
             </v-btn>
             
-            <v-btn to="/about" color="teal" flat value="add">
+            <v-btn to="/add-auction" color="teal" flat value="add">
                 <span>Add Auction</span>
                 <v-icon>add</v-icon>
             </v-btn>
