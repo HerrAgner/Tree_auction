@@ -34,8 +34,6 @@
 </template>
 
 <script>
-
-
 export default {
   data: () => ({
     valid: true,
@@ -51,12 +49,11 @@ export default {
 
   methods: {    
             async validate() {
-            if(this.$refs.loginForm.validate()) {
-              let u = await this.$store.dispatch('checkUserInDb', this.email, this.password);
-              console.log(u);
-                
+              if(this.$refs.loginForm.validate()) {
+                let u = await this.$store.dispatch('checkUserInDb', 
+                              {email: this.email, password: this.password});                
+              }
             }
-        }
   }
 
 }
