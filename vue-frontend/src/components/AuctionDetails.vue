@@ -73,7 +73,7 @@
       </v-content>
       <v-card id="contact_info">
         <v-flex xs8>
-          <p>{{ sellerName.firstname }} {{ sellerName.lastname }}</p>
+          <p>{{ seller.firstname }} {{ seller.lastname }}</p>
         </v-flex>
         <v-flex xs8>
           <v-btn round color="success" dark>Chat with seller</v-btn>
@@ -92,7 +92,7 @@ export default {
   data() {
     return {
       auction: "",
-      sellerName: "",
+      seller: "",
       bids: [],
       highestBid: null,
       bidRules: [v => !!v || "Bid is required"],
@@ -118,19 +118,18 @@ export default {
     };
   },
   async created() {
-    this.auction = await fetch(
-      API_URL + "auctions/" + this.$route.params.id
-    ).then(res => res.json());
-    this.sellerName = await fetch(
-      API_URL + "users/" + this.auction.seller_id
-    ).then(res => res.json());
+    await this.$store.dispatch("getOneAuction", this.$route.params.id)
+    this.auction = this.$store.state.currentAuction;    
+
+    await this.$store.dispatch("getSeller", this.auction.seller_id)
+    this.seller = this.$store.state.currentSeller;    
+
     this.getBids();
   },
   methods: {
-    async getBids() {
-      this.bids = await (await fetch(
-        API_URL + "bids/" + this.auction.id
-      )).json();
+    async getBids() {      
+      await this.$store.dispatch("getBidsForOneAuction", this.auction.id)
+      this.bids = this.$store.state.currentBids;
       this.bids.sort((a, b) => b.amount - a.amount);
       if (this.bids.length === 0) {
         this.highestBid = this.auction.start_price;
