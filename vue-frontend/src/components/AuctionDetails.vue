@@ -23,12 +23,18 @@
             <h5>End time</h5>
             <p>{{ convertDate }}</p>
             <p>{{ convertTime }}</p>
+            
           </v-container>
           <v-container class="bid">
             <h5>Bids</h5>
             {{ bids.length }}
           </v-container>
         </v-layout>
+        <div>
+          <Timer deadline="August 22, 2022"></Timer>
+          <Timer :deadline="endTime"></Timer>
+
+        </div>
         <v-card id="bidCard">
           <v-flex xs8>
             <v-form ref="form" v-model="valid" @submit.prevent lazy-validation>
@@ -79,7 +85,9 @@
 
 <script>
 const API_URL = "http://localhost:7999/api/";
+import Timer from "@/components/Timer.vue"
 export default {
+  components: { Timer },
   name: "AuctionDetails",
   data() {
     return {
