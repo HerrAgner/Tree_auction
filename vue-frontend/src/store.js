@@ -39,7 +39,7 @@ export default new Vuex.Store({
   },
   actions: {
     async getUsersFromDb() {
-      let users = await (await fetch(API_URL2 + "/users")).json().catch(e => {});
+      let users = await (await fetch(API_URL + "/users")).json().catch(e => {});
       console.log(users);
       
       return users;
