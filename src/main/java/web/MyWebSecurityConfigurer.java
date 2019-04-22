@@ -25,7 +25,7 @@ public class MyWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         http
                 .cors().and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/api/users").permitAll()
+                .antMatchers(HttpMethod.POST,"/login").permitAll()
                 .antMatchers("/api/**").hasRole("USER")
                 .and().formLogin().permitAll().defaultSuccessUrl("/", true)
                 .and().logout().permitAll().logoutSuccessUrl("/")

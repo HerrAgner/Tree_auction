@@ -11,15 +11,19 @@
                 <v-icon>home</v-icon>
             </v-btn>
             
-            <v-btn to="/add-auction" color="teal" flat value="add">
+            <v-btn to="/add-auction" color="teal" flat value="add" v-if="status">
                 <span>Add Auction</span>
                 <v-icon>add</v-icon>
             </v-btn>
             
-            <v-btn to="/login" color="teal" flat value="LoginRegister">
-                <span>Login</span>
-                <v-icon>account_circle
-</v-icon>
+            <v-btn to="/login" color="teal" flat value="LoginRegister" v-if="!status">
+                <span>login</span>
+                <v-icon>account_circle</v-icon>
+            </v-btn>
+
+            <v-btn color="teal" flat value="log out" v-if="status" @click="changeStatus">
+                <span>log out</span>
+                <v-icon>account_circle</v-icon>
             </v-btn>
         </v-bottom-nav>
     </v-card>
@@ -27,7 +31,17 @@
 
 <script>
     export default {
-        name: "BottomNav"
+        name: "BottomNav",
+        data(){
+            return {
+                status: this.$store.status
+            }
+        },
+        methods:{
+            changeStatus(){
+                this.status = false;
+            }
+        }
     }
 </script>
 

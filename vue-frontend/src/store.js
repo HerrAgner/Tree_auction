@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import router from '@/router.js'
 
 Vue.use(Vuex);
 const API_URL = "http://localhost:7999/api/";
@@ -14,7 +15,8 @@ function transformRequest(jsonData = {}){
 export default new Vuex.Store({
   state: {
     auctions: [],
-    userEmail: 'eric.rl@me.com',
+    status: true,
+    userInfo: [],
     currentAuction: "",
     currentSeller: ""
   },
@@ -22,8 +24,8 @@ export default new Vuex.Store({
     setAuctions(state, auctions) {
       state.auctions = auctions;
     },
-    setUserEmail(state, userEmail) {
-      state.userEmail = userEmail;
+    setUserInfo(state, user) {      
+      state.userInfo = user;
     },
     setCurrentAuction(state, auction) {
       state.currentAuction = auction;
@@ -31,6 +33,9 @@ export default new Vuex.Store({
     setCurrentSeller(state, seller) {
       state.currentSeller = seller;
     },
+    setStatus(state, status){
+      state.status = status;
+    }
   },
   actions: {
     async getUsersFromDb() {
@@ -42,7 +47,9 @@ export default new Vuex.Store({
     async getUserEmailFromDb(context, email) {      
       let user = await (await fetch(API_URL2 + "/" + email)).json().catch(e => {});
       if (user) {
-        this.commit("setUserEmail", user.email);
+        console.log(user);
+        
+        this.commit("setUserEmail", user);
       }
       return user;
     },
@@ -55,7 +62,11 @@ export default new Vuex.Store({
       .then(function(response) {
         let successfulLogin = !response.url.includes("error");
         console.log("the login result is:", successfulLogin);
-      }).catch(e => {})
+        if(successfulLogin){
+          this.commit("setStatus", successfulLogin);
+          router.push({ path: '/' })          
+        }
+      })
     },
 
     async addUserToDB(state, reqBody) {      

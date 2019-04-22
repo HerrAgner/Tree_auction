@@ -93,11 +93,8 @@ export default {
         async validate() {
             if (this.$refs.registerForm.validate()) {
                 this.$store.state.userEmail = ''
-                
-                let u = await this.$store.dispatch('getUserEmailFromDb', this.email);
-                console.log(u);
-                
-                if (this.$store.state.userEmail === ''){
+                let u = await this.$store.dispatch('getUserEmailFromDb', this.email);                
+                if (this.$store.state.userInfo.email === undefined){
                     this.messageToClient = '';
                     this.snackbar = true;
                     
