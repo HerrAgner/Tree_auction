@@ -2,8 +2,8 @@
   <div class="v-content__wrap">
     <v-flex lg4 offset-lg4 class="searchField">
       <v-layout row wrap>
-        <v-text-field label="Search for items" solo></v-text-field>
-        <v-btn>Search items</v-btn>
+        <v-text-field label="Search for items" @keyup.enter="searchClicked" v-model="search" solo></v-text-field>
+        <v-btn @click="searchClicked">Search items</v-btn>
       </v-layout>
     </v-flex>
     <div class="container grid-list-xl">
@@ -30,13 +30,27 @@ export default {
   },
   methods: {
     onPageChange(page){
-      this.getPageFromDB(page-1);
+      if(this.contentIsSearchResult){
+        this.searchClicked(page-1);
+      }else{
+        this.getPageFromDB(page-1);
+      }
       window.scrollTo(0,0);
     },
     async getPageFromDB(page) {
       this.page = await (await fetch("http://localhost:7999/api/auctions/auctionPage/"+page)).json();
       this.pageContent = this.page.content;
       this.totalPages = this.page.totalPages;
+      this.contentIsSearchResult = false;
+    },
+    searchClicked() {
+      this.getSearchPage(0);
+    },
+    async getSearchPage(page) {
+      this.page = await (await fetch("http://localhost:7999/api/auctions/auctionPage/"+this.search+"/0")).json();
+      this.pageContent = this.page.content;
+      this.totalPages = this.page.totalPages;
+      this.contentIsSearchResult = true;
     },
   },
   data() {
@@ -45,7 +59,8 @@ export default {
       pageContent: null,
       page: null,
       totalPages: null,
-    
+      search: '',
+      contentIsSearchResult: false
     };
   }
 };
