@@ -19,4 +19,7 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
     long count();
     Page<Auction> findAll(Pageable pageable);
 
+    Page<Auction> findByTitleContaining(String title, Pageable pageable);
+
+
 }
