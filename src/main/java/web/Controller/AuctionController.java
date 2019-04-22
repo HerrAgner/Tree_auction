@@ -54,13 +54,11 @@ public class AuctionController {
         return page;
     }
 
-
-    @GetMapping("/auctionPageContent/{pageNumber}")
-    List<Auction> auctionPageContent(@PathVariable int pageNumber){
+    @GetMapping("/auctionPage/{searchTitle}/{pageNumber}")
+    Page<Auction> searchPage (@PathVariable int pageNumber, @PathVariable String searchTitle){
         Pageable pageRequest = PageRequest.of(pageNumber, 10, Sort.by("AddedTime").descending());
-        Page<Auction> page = repo.findAll(pageRequest);
-        return page.getContent();
+        Page<Auction> searchPage = repo.findByTitleContaining(searchTitle, pageRequest);
+        return searchPage;
     }
-
 
 }

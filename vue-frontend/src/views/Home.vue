@@ -30,19 +30,27 @@ export default {
   },
   methods: {
     onPageChange(page){
-      this.getPageFromDB(page-1);
+      if(this.contentIsSearchResult){
+        this.searchClicked(page-1);
+      }else{
+        this.getPageFromDB(page-1);
+      }
       window.scrollTo(0,0);
     },
     async getPageFromDB(page) {
       this.page = await (await fetch("http://localhost:7999/api/auctions/auctionPage/"+page)).json();
       this.pageContent = this.page.content;
       this.totalPages = this.page.totalPages;
+      this.contentIsSearchResult = false;
     },
-    async searchClicked() {
-      console.log(this.search)
-      let auctions = await (await fetch("http://localhost:7999/api/auctions/search/" + this.search)).json()
-      this.pageContent = auctions
-
+    searchClicked() {
+      this.getSearchPage(0);
+    },
+    async getSearchPage(page) {
+      this.page = await (await fetch("http://localhost:7999/api/auctions/auctionPage/"+this.search+"/0")).json();
+      this.pageContent = this.page.content;
+      this.totalPages = this.page.totalPages;
+      this.contentIsSearchResult = true;
     },
   },
   data() {
@@ -51,8 +59,8 @@ export default {
       pageContent: null,
       page: null,
       totalPages: null,
-      search: ''
-    
+      search: '',
+      contentIsSearchResult: false
     };
   }
 };
