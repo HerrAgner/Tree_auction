@@ -77,17 +77,17 @@ export default {
     }
   },
   created () {
-    if (!this.deadline) {
-      throw new Error("Missing props 'deadline'")
-    }
-    const endTime = this.deadline
-    this.date = Math.trunc(Date.parse(endTime.replace(/-/g, '/')) / 1000)
-    if (!this.date) {
-      throw new Error("Invalid props value, correct the 'deadline'")
-    }
-    this.interval = setInterval(() => {
-      this.now = Math.trunc(new Date().getTime() / 1000)
-    }, 1000)
+      // if (!this.deadline) {
+      //     throw new Error("Missing props 'deadline'")
+      // }
+      const endTime = this.deadline
+      this.date = Math.trunc(Date.parse(endTime.replace(/-/g, '/')) / 1000)
+      // if (!this.date) {
+      //     throw new Error("Invalid props value, correct the 'deadline'")
+      // }
+      this.interval = setInterval(() => {
+          this.now = Math.trunc(new Date().getTime() / 1000)
+      }, 1000)
   },
   mounted () {
     if (this.diff !== 0) {
@@ -106,7 +106,10 @@ export default {
     },
     days () {
       return Math.trunc(this.diff / 60 / 60 / 24)
-    }
+    },
+      countdownValue() {
+        return this.deadline;
+      }
   },
   watch: {
     now (value) {

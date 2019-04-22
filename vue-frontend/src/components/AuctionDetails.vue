@@ -30,8 +30,8 @@
             {{ bids.length }}
           </v-container>
         </v-layout>
-        <div>
-          <flip-countdown :deadline="this.countdown"></flip-countdown>
+        <div id="countdownTimer">
+          <flip-countdown v-if="showCountdownTimer" :key="countdownKey" :deadline="countdown"></flip-countdown>
         </div>
         <v-card id="bidCard">
           <v-flex xs8>
@@ -93,7 +93,8 @@ export default {
       seller: "",
       bids: [],
       highestBid: null,
-      countdown: "2019-04-29 10:30:00",
+      countdown: "",
+      countdownKey: 0,
       bidRules: [v => !!v || "Bid is required"],
       valid: true,
       bidField: "",
@@ -126,6 +127,7 @@ export default {
     this.getBids();
   
     this.countdown = new Date(this.auction.end_time).toLocaleString()
+    this.forceRerender();
   },
   methods: {
     async getBids() {      
@@ -199,6 +201,9 @@ export default {
           this.elapse++;
         }
       }, 1000);
+    },
+    forceRerender() {
+      this.countdownKey += 1;
     }
   },
   computed: {
@@ -210,10 +215,15 @@ export default {
       let newDate = new Date(this.auction.end_time);
       return newDate.getHours() + ":" + newDate.getMinutes();
     },
-    countdownTimer() {
-      //2019-04-29 10:30
-      //Nov 8, 2019 16:37:25
-      return new Date(this.auction.end_time).toLocaleString()
+    showCountdownTimer() {
+     //  let ONE_DAY = new Date().getTime() - (24 * 60 * 60 * 1000)
+     // let thisDate = new Date()
+     //  if (ONE_DAY <= new Date(this.auction.end_time).getTime()){
+     //    console.log( new Date(new Date(this.auction.end_time).getTime()) < new Date(ONE_DAY))
+     //    return true;
+     //  }
+      return true;
+     
     }
   }
 };
