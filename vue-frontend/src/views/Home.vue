@@ -9,7 +9,7 @@
     <div class="container grid-list-xl">
      <div class="layout wrap" v-for="auction in this.pageContent">
         <AuctionListItem :auctionId = "auction.id" :title="auction.title" image="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
-         :endTime="auction.end_time" currBid=2500 :seller="auction.seller_id"></AuctionListItem> 
+         :endTime="auction.end_time" :sellerId="auction.seller_id" :startPrice="auction.start_price" ></AuctionListItem> 
        </div>
     </div>
     <div class="text-xs-center">
