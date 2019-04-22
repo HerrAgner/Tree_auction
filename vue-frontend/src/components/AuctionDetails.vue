@@ -23,12 +23,16 @@
             <h5>End time</h5>
             <p>{{ convertDate }}</p>
             <p>{{ convertTime }}</p>
+            
           </v-container>
           <v-container class="bid">
             <h5>Bids</h5>
             {{ bids.length }}
           </v-container>
         </v-layout>
+        <div>
+          <flip-countdown :deadline="this.countdown"></flip-countdown>
+        </div>
         <v-card id="bidCard">
           <v-flex xs8>
             <v-form ref="form" v-model="valid" @submit.prevent lazy-validation>
@@ -78,8 +82,10 @@
 </template>
 
 <script>
-const API_URL = "http://localhost:7999/api/";
+import FlipCountdown from "@/components/FlipCountdown.vue"
+
 export default {
+  components: { FlipCountdown },
   name: "AuctionDetails",
   data() {
     return {
@@ -87,6 +93,7 @@ export default {
       seller: "",
       bids: [],
       highestBid: null,
+      countdown: "2019-04-29 10:30:00",
       bidRules: [v => !!v || "Bid is required"],
       valid: true,
       bidField: "",
@@ -117,6 +124,8 @@ export default {
     this.seller = this.$store.state.currentSeller;    
 
     this.getBids();
+  
+    this.countdown = new Date(this.auction.end_time).toLocaleString()
   },
   methods: {
     async getBids() {      
@@ -200,6 +209,11 @@ export default {
     convertTime: function() {
       let newDate = new Date(this.auction.end_time);
       return newDate.getHours() + ":" + newDate.getMinutes();
+    },
+    countdownTimer() {
+      //2019-04-29 10:30
+      //Nov 8, 2019 16:37:25
+      return new Date(this.auction.end_time).toLocaleString()
     }
   }
 };
