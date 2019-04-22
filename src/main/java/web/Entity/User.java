@@ -4,17 +4,43 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "users")
 public class User {
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private final String email = null;
-    private final String firstname = null;
-    private final String lastname = null;
-    private final String password = null;
-    private final String phone = null;
+    private long id;
+    private String email = null;
+    private String firstname = null;
+    private String lastname = null;
+    private String password = null;
+    private String phone = null;
 
     public User() {
 
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setFirstName(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastName(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setPhoneNumber(String phone) {
+        this.phone = phone;
     }
 
     public String getEmail() {

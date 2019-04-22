@@ -5,20 +5,13 @@ Vue.use(Vuex);
 const API_URL = "http://localhost:7999/api/";
 export default new Vuex.Store({
   state: {
-    profilename: "",
-    header: "",
-    profilePicture: "",
-    text: "",
     auctions: [],
-    userEmail: '',
+    userEmail: 'eric.rl@me.com',
     currentAuction: "",
     currentSeller: "",
     amountOfAuctions: null
   },
   mutations: {
-    setProfilePicture(state, image) {
-      state.profilePicture = image;
-    },
     setAuctions(state, auctions) {
       state.auctions = auctions;
     },
@@ -67,6 +60,13 @@ export default new Vuex.Store({
       this.dispatch("getAuctionsFromDb");
     },
 
+    async addBidToDb(state, reqBody) {
+      await fetch(API_URL + "bids", {
+        method: "POST",
+        body: JSON.stringify(reqBody),
+        headers: {"Content-Type": "application/json"}
+      });
+    },
 
     async addUserToDB(state, reqBody) {
       await fetch(API_URL + "users", {
