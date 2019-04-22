@@ -2,7 +2,7 @@
   <div class="v-content__wrap">
     <v-flex lg4 offset-lg4 class="searchField">
       <v-layout row wrap>
-        <v-text-field label="Search for items" v-model="search" solo></v-text-field>
+        <v-text-field label="Search for items" @keyup.enter="searchClicked" v-model="search" solo></v-text-field>
         <v-btn @click="searchClicked">Search items</v-btn>
       </v-layout>
     </v-flex>
@@ -42,7 +42,7 @@ export default {
       console.log(this.search)
       let auctions = await (await fetch("http://localhost:7999/api/auctions/search/" + this.search)).json()
       this.pageContent = auctions
-      
+
     },
   },
   data() {
