@@ -54,8 +54,8 @@ public class CreateDBData implements CommandLineRunner {
 
         Auction auction1 = new Auction();
         LocalDateTime ldt1 = LocalDateTime.of(2019,4, 29, 10, 30);
-        auction1.setTitle("Very fast bike, much wow!");
-        auction1.setDescription("Worlds fastest bike is up for grabbs!");
+        auction1.setTitle("Very fast boat, much wow!");
+        auction1.setDescription("Worlds fastest boat is up for grabbs!");
         auction1.setAdded_time(Timestamp.from(Instant.now()));
         auction1.setEnd_time(Timestamp.valueOf(ldt1));
         auction1.setSeller_id("john.doe@gmail.com");
@@ -64,8 +64,8 @@ public class CreateDBData implements CommandLineRunner {
 
         Auction auction2 = new Auction();
         LocalDateTime ldt2 = LocalDateTime.of(2019,5, 29, 10, 30);
-        auction2.setTitle("Very fast bike, much wow!");
-        auction2.setDescription("Worlds fastest bike is up for grabbs!");
+        auction2.setTitle("Very fast car, much wow!");
+        auction2.setDescription("Worlds fastest car is up for grabbs!");
         auction2.setAdded_time(Timestamp.from(Instant.now()));
         auction2.setEnd_time(Timestamp.valueOf(ldt2));
         auction2.setSeller_id("eric.rl@me.com");
@@ -84,8 +84,8 @@ public class CreateDBData implements CommandLineRunner {
 
         Auction auction4 = new Auction();
         LocalDateTime ldt4 = LocalDateTime.of(2019,4, 25, 12, 30);
-        auction4.setTitle("Very fast bike, much wow!");
-        auction4.setDescription("Worlds fastest bike is up for grabbs!");
+        auction4.setTitle("Very fast skateboard, much wow!");
+        auction4.setDescription("Worlds fastest skateboard is up for grabbs!");
         auction4.setAdded_time(Timestamp.from(Instant.now()));
         auction4.setEnd_time(Timestamp.valueOf(ldt4));
         auction4.setSeller_id("eric.rl@me.com");
@@ -104,8 +104,8 @@ public class CreateDBData implements CommandLineRunner {
 
         Auction auction6 = new Auction();
         LocalDateTime ldt6 = LocalDateTime.of(2019,4, 29, 2, 30);
-        auction6.setTitle("Very fast bike, much wow!");
-        auction6.setDescription("Worlds fastest bike is up for grabbs!");
+        auction6.setTitle("Very fast table, much wow!");
+        auction6.setDescription("Worlds fastest table is up for grabbs!");
         auction6.setAdded_time(Timestamp.from(Instant.now()));
         auction6.setEnd_time(Timestamp.valueOf(ldt6));
         auction6.setSeller_id("eric.rl@me.com");
@@ -114,7 +114,7 @@ public class CreateDBData implements CommandLineRunner {
 
         Auction auction7 = new Auction();
         LocalDateTime ldt7 = LocalDateTime.of(2019,4, 29, 5, 30);
-        auction7.setTitle("Very fast bike, much wow!");
+        auction7.setTitle("Very fast sofa, much wow!");
         auction7.setDescription("Worlds fastest bike is up for grabbs!");
         auction7.setAdded_time(Timestamp.from(Instant.now()));
         auction7.setEnd_time(Timestamp.valueOf(ldt7));
@@ -125,7 +125,7 @@ public class CreateDBData implements CommandLineRunner {
         Auction auction8 = new Auction();
         LocalDateTime ldt8 = LocalDateTime.of(2019,4, 28, 10, 30);
         auction8.setTitle("Very fast bike, much wow!");
-        auction8.setDescription("Worlds fastest bike is up for grabbs!");
+        auction8.setDescription("Worlds fastest sofa is up for grabbs!");
         auction8.setAdded_time(Timestamp.from(Instant.now()));
         auction8.setEnd_time(Timestamp.valueOf(ldt8));
         auction8.setSeller_id("eric.rl@me.com");
