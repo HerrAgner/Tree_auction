@@ -9,7 +9,8 @@ export default new Vuex.Store({
     userEmail: 'eric.rl@me.com',
     currentAuction: "",
     currentSeller: "",
-    amountOfAuctions: null
+    currentBids: null,
+
   },
   mutations: {
     setAuctions(state, auctions) {
@@ -26,6 +27,9 @@ export default new Vuex.Store({
     },
     setAmountOfAuctions(state, amountOfAuctions) {
       state.amountOfAuctions = amountOfAuctions;
+    },
+    setCurrentBids(state, currBids){
+      state.currentBids = currBids;
     }
   },
   actions: {
@@ -82,17 +86,15 @@ export default new Vuex.Store({
       let currAuction = await fetch(API_URL + "auctions/" + auction).then(res =>
         res.json()
       );
-      this.commit("setCurrentAuction", currAuction);
+      this.commit("setCurrentAuction", currAuction);      
     },
-    async getSellerName(context, user) {
+    async getSeller(context, user) {
       let currSeller = await (await fetch(API_URL + "users/" + user)).json();
-      console.log(currSeller)
       this.commit("setCurrentSeller", currSeller);
     },
-    async countAuctions(context) {
-      let amountOfAuctions = await (await fetch(API_URL + "auctions/length")).json();
-      this.commit("setAmountOfAuctions", amountOfAuctions);
-      return amountOfAuctions;
-    }
+    async getBidsForOneAuction(context, auctionId) {      
+      let bids = await (await fetch(API_URL + "bids/" + auctionId)).json();
+      this.commit("setCurrentBids", bids);      
+    },
   }
 });
