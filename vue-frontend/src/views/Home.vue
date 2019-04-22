@@ -7,37 +7,45 @@
       </v-layout>
     </v-flex>
     <div class="container grid-list-xl">
-
-      <div class="layout wrap" v-bind:key="post" v-for="post in getPosts"> 
-
-        <BlogCard :title="post.title" :description="post.description"></BlogCard>
-      </div>
+     <div class="layout wrap" v-for="auction in this.pageContent">
+        <AuctionListItem :auctionId = "auction.id" :title="auction.title" image="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
+         :endTime="auction.end_time" currBid=2500 :seller="auction.seller_id"></AuctionListItem> 
+       </div>
     </div>
     <div class="text-xs-center">
-      <v-pagination v-model="page" :length="6"></v-pagination>
+      <v-pagination v-model="pageNumber" :length="this.totalPages" @input="onPageChange"></v-pagination>
     </div>
   </div>
 </template>
 
 <script>
-import BlogCard from "@/components/BlogCard.vue";
+import AuctionListItem from "@/components/AuctionListItem.vue";
 
 export default {
   components: {
-    // Profile,
-    BlogCard
+    AuctionListItem
   },
-  methods: {},
-  computed: {
-    getAuctions() {
-      // console.log(this.$store.state.posts.length);
-      return this.$store.state.auctions;
-    }
+  created: function() {
+    this.getPageFromDB(0);
   },
-
+  methods: {
+    onPageChange(page){
+      this.getPageFromDB(page-1);
+      window.scrollTo(0,0);
+    },
+    async getPageFromDB(page) {
+      this.page = await (await fetch("http://localhost:7999/api/auctions/auctionPage/"+page)).json();
+      this.pageContent = this.page.content;
+      this.totalPages = this.page.totalPages;
+    },
+  },
   data() {
     return {
-      page: 1
+      pageNumber: 0,
+      pageContent: null,
+      page: null,
+      totalPages: null,
+    
     };
   }
 };

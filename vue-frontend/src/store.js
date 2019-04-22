@@ -8,7 +8,8 @@ export default new Vuex.Store({
     auctions: [],
     userEmail: 'eric.rl@me.com',
     currentAuction: "",
-    currentSeller: ""
+    currentSeller: "",
+    amountOfAuctions: null
   },
   mutations: {
     setAuctions(state, auctions) {
@@ -22,6 +23,9 @@ export default new Vuex.Store({
     },
     setCurrentSeller(state, seller) {
       state.currentSeller = seller;
+    },
+    setAmountOfAuctions(state, amountOfAuctions) {
+      state.amountOfAuctions = amountOfAuctions;
     }
   },
   actions: {
@@ -84,6 +88,11 @@ export default new Vuex.Store({
       let currSeller = await (await fetch(API_URL + "users/" + user)).json();
       console.log(currSeller)
       this.commit("setCurrentSeller", currSeller);
+    },
+    async countAuctions(context) {
+      let amountOfAuctions = await (await fetch(API_URL + "auctions/length")).json();
+      this.commit("setAmountOfAuctions", amountOfAuctions);
+      return amountOfAuctions;
     }
   }
 });
