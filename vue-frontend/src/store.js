@@ -44,16 +44,15 @@ export default new Vuex.Store({
       
       return users;
     },
-    async getUserEmailFromDb(context, email) {      
+    async getUserInfoFromDb(context, email) {  
       let user = await (await fetch(API_URL2 + "/" + email)).json().catch(e => {});
       if (user) {
         console.log(user);
-        
-        this.commit("setUserEmail", user);
+        this.commit("setUserInfo", user);
       }
       return user;
     },
-    async checkUserInDb(context, info) { 
+    async login(context, info) {       
       await fetch(API_URL2, {
         method: "POST",
         body: transformRequest({username: info.email, password: info.password}),
@@ -63,10 +62,11 @@ export default new Vuex.Store({
         let successfulLogin = !response.url.includes("error");
         console.log("the login result is:", successfulLogin);
         if(successfulLogin){
-          this.commit("setStatus", successfulLogin);
-          router.push({ path: '/' })          
+          //this.commit("setStatus", successfulLogin);
+          //router.push({ path: '/' })          
         }
       })
+      
     },
 
     async addUserToDB(state, reqBody) {      

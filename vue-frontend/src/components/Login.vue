@@ -50,8 +50,9 @@ export default {
   methods: {    
     async validate() {
       if(this.$refs.loginForm.validate()) {
-        let u = await this.$store.dispatch('checkUserInDb', 
-                      {email: this.email, password: this.password});                                              
+        let u = await this.$store.dispatch('login', 
+                      {email: this.email, password: this.password});  
+                                                                  
       }
     }
   }
