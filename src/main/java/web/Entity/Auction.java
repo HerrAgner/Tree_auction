@@ -32,8 +32,8 @@ public class Auction {
         this.end_time = end_time;
     }
 
-    public void setAdded_time(Timestamp added_time) {
-        this.added_time = added_time;
+    public void setAddedTime(Timestamp addedTime) {
+        this.addedTime = addedTime;
     }
 
     public void setSeller_id(String seller_id) {
