@@ -68,7 +68,7 @@ created: async function() {
       if (bids.length === 0) {
         this.highestBid = this.startPrice;        
       } else {
-        this.highestBid = this.bids[0].amount;
+        this.highestBid = bids[0].amount;
       }
       this.bids = bids.length;
     },
