@@ -11,7 +11,7 @@ public class Auction {
     private String title = null;
     private String description = null;
     private Timestamp end_time = null;
-    private Timestamp added_time = null;
+    private Timestamp addedTime = null;
     private String seller_id = null;
 
     private Float start_price = null;
