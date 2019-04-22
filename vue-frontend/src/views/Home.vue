@@ -2,8 +2,8 @@
   <div class="v-content__wrap">
     <v-flex lg4 offset-lg4 class="searchField">
       <v-layout row wrap>
-        <v-text-field label="Search for items" solo></v-text-field>
-        <v-btn>Search items</v-btn>
+        <v-text-field label="Search for items" v-model="search" solo></v-text-field>
+        <v-btn @click="searchClicked">Search items</v-btn>
       </v-layout>
     </v-flex>
     <div class="container grid-list-xl">
@@ -38,6 +38,12 @@ export default {
       this.pageContent = this.page.content;
       this.totalPages = this.page.totalPages;
     },
+    async searchClicked() {
+      console.log(this.search)
+      let auctions = await (await fetch("http://localhost:7999/api/auctions/search/" + this.search)).json()
+      this.pageContent = auctions
+      
+    },
   },
   data() {
     return {
@@ -45,6 +51,7 @@ export default {
       pageContent: null,
       page: null,
       totalPages: null,
+      search: ''
     
     };
   }
