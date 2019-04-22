@@ -7,14 +7,13 @@
       </v-layout>
     </v-flex>
     <div class="container grid-list-xl">
-
-     <div class="layout wrap" v-for="auction in getAuctions">
-        <AuctionListItem :title="auction.title" image="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
-         :endTime="auction.end_time" currBid=2500 :seller="auction.seller_id"></AuctionListItem>
-      </div>
+     <div class="layout wrap" v-for="auction in this.pageContent">
+        <AuctionListItem :auctionId = "auction.id" :title="auction.title" image="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
+         :endTime="auction.end_time" currBid=2500 :seller="auction.seller_id"></AuctionListItem> 
+       </div>
     </div>
     <div class="text-xs-center">
-      <v-pagination v-model="page" :length="pages" @input="onPageChange"></v-pagination>
+      <v-pagination v-model="pageNumber" :length="this.totalPages" @input="onPageChange"></v-pagination>
     </div>
   </div>
 </template>
@@ -24,33 +23,29 @@ import AuctionListItem from "@/components/AuctionListItem.vue";
 
 export default {
   components: {
-    // Profile,
     AuctionListItem
+  },
+  created: function() {
+    this.getPageFromDB(0);
   },
   methods: {
     onPageChange(page){
-      console.log("page change!")
-      console.log(page)
-    }
+      this.getPageFromDB(page-1);
+      window.scrollTo(0,0);
+    },
+    async getPageFromDB(page) {
+      this.page = await (await fetch("http://localhost:7999/api/auctions/auctionPage/"+page)).json();
+      this.pageContent = this.page.content;
+      this.totalPages = this.page.totalPages;
+    },
   },
-  computed: {
-    getAuctions() {
-      // console.log(this.$store.state.posts.length);
-      return this.$store.state.auctions;
-    }, 
-    countAuctions() {
-      this.$store.dispatch("countAuctions");
-      return this.$store.state.amountOfAuctions;
-    }, 
-    pages() {
-      let pages= Math.round(this.countAuctions/10+0.5);
-      return pages;
-    }, 
-
-  },
-
   data() {
     return {
+      pageNumber: 0,
+      pageContent: null,
+      page: null,
+      totalPages: null,
+    
     };
   }
 };

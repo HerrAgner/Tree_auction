@@ -1,27 +1,29 @@
 <template>
   <v-flex xs12 class="AuctionListItem">
-    <v-card color="cyan darken-2" class="white--text">
-      <v-layout >
-        <v-flex xs6>
-          <v-img
-            :src="image"
-            height="125px"
-            contain
-          ></v-img>
-        </v-flex>
-        <v-flex xs7 >
-          <v-card-title primary-title>
-             <div>
-              <div class="headline">{{title}}</div>  
-              <div>{{currBid}} kr</div>
-               <div>{{bids}} bud</div>
-               <div>{{seller}}</div>
-              <div>Avslutas: {{convertDate}}</div>
-            </div>         
-          </v-card-title>
-        </v-flex>
-      </v-layout>
-    </v-card>
+    <router-link :to="this.auctionLink" >
+      <v-card color="cyan darken-2" class="white--text">
+        <v-layout >
+          <v-flex xs6>
+            <v-img
+              :src="image"
+              height="125px"
+              contain
+            ></v-img>
+          </v-flex>
+          <v-flex xs7 >
+            <v-card-title primary-title>
+              <div>
+                <div class="headline">{{title}}</div>  
+                <div>{{currBid}} kr</div>
+                <div>{{bids}} bud</div>
+                <div>{{seller}}</div>
+                <div>Avslutas: {{convertDate}}</div>
+              </div>         
+            </v-card-title>
+          </v-flex>
+        </v-layout>
+      </v-card>
+    </router-link>
   </v-flex>
 </template>
 
@@ -30,10 +32,14 @@ export default {
   name: "AuctionListItem",
   data() {
     return {
-      router: "/about",
+      auctionLink: "/auction/"
     };
   },
+created: function() {
+  this.auctionLink += this.auctionId;  
+},
   props: {
+    auctionId: Number,
     title: String,
     image: String,
     endTime: String,
@@ -54,5 +60,9 @@ export default {
 <style scoped>
 .AuctionListItem{
   margin: 5px;
+}
+
+a{
+  text-decoration: none;
 }
 </style>

@@ -12,7 +12,7 @@ public class Auction {
     private final String title = null;
     private final String description = null;
     private final Timestamp end_time = null;
-    private final Timestamp added_time = null;
+    private final Timestamp addedTime = null;
     private final String seller_id = null;
     private final Float start_price = null;
 
@@ -36,8 +36,8 @@ public class Auction {
         return end_time;
     }
 
-    public Timestamp getAdded_time() {
-        return added_time;
+    public Timestamp getAddedTime() {
+        return addedTime;
     }
 
     public String getSeller_id() {
