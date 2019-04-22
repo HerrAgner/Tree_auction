@@ -31,9 +31,7 @@
           </v-container>
         </v-layout>
         <div>
-          <Timer deadline="August 22, 2022"></Timer>
-          <Timer :deadline="endTime"></Timer>
-
+          <flip-countdown :deadline="this.countdown"></flip-countdown>
         </div>
         <v-card id="bidCard">
           <v-flex xs8>
@@ -84,10 +82,10 @@
 </template>
 
 <script>
-const API_URL = "http://localhost:7999/api/";
-import Timer from "@/components/Timer.vue"
+import FlipCountdown from "@/components/FlipCountdown.vue"
+
 export default {
-  components: { Timer },
+  components: { FlipCountdown },
   name: "AuctionDetails",
   data() {
     return {
@@ -95,6 +93,7 @@ export default {
       seller: "",
       bids: [],
       highestBid: null,
+      countdown: "2019-04-29 10:30:00",
       bidRules: [v => !!v || "Bid is required"],
       valid: true,
       bidField: "",
@@ -125,6 +124,8 @@ export default {
     this.seller = this.$store.state.currentSeller;    
 
     this.getBids();
+  
+    this.countdown = new Date(this.auction.end_time).toLocaleString()
   },
   methods: {
     async getBids() {      
@@ -208,6 +209,11 @@ export default {
     convertTime: function() {
       let newDate = new Date(this.auction.end_time);
       return newDate.getHours() + ":" + newDate.getMinutes();
+    },
+    countdownTimer() {
+      //2019-04-29 10:30
+      //Nov 8, 2019 16:37:25
+      return new Date(this.auction.end_time).toLocaleString()
     }
   }
 };
