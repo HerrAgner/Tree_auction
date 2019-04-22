@@ -118,7 +118,7 @@ export default {
         start_price: this.price,
         seller_id: "eric.rl@me.com",
         end_time: dateEnd,
-        added_time: dateToday
+        addedTime: dateToday
       };
       // const pictureData = {
       //   picture: {title: 'hej'},
