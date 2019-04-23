@@ -28,16 +28,17 @@
                 >
                 Log in
                 </v-btn>
+                {{messageToClient}}
+
             </v-form>
       </v-app>
     </div>    
 </template>
 
 <script>
-
-
 export default {
   data: () => ({
+    messageToClient: '',
     valid: true,
     password: '',
     passwordRules: [
@@ -49,10 +50,15 @@ export default {
     ]
   }),
 
-  methods: {
-    validate() {
-      if (this.$refs.loginForm.validate()) {
-        this.snackbar = true
+  methods: {    
+    async validate() {
+      if(this.$refs.loginForm.validate()) {
+        await this.$store.dispatch('login', 
+                      {email: this.email, password: this.password}); 
+        if (!this.$store.state.status){
+          this.messageToClient = 'This account does not exist';
+        }
+                                                                             
       }
     }
   }

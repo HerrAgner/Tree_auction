@@ -66,7 +66,7 @@ public class Auction {
         return endTime;
     }
 
-    public Timestamp getAddedTime() {
+    public Timestamp getAdded_time() {
         return addedTime;
     }
 

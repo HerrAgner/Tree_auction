@@ -64,7 +64,6 @@
 export default {
     data: () => ({
     valid: true,
-    props:['users'],
     messageToClient: '',
     password: '',
     passwordRules: [
@@ -74,14 +73,17 @@ export default {
     emailRules: [
         v => !!v || 'E-mail is required'
     ],
+    firstName: '',
     firstNameRules: [
         v => !!v || 'First name is required',
         v => (v && v.length <= 10) || 'Name must be less than 10 characters'
     ],
+    lastName: '',
     lastNameRules: [
         v => !!v || 'Last name is required',
         v => (v && v.length <= 10) || 'Name must be less than 10 characters'
     ],
+    phoneNumber: '',
     phoneRules: [
         v => !!v || 'Phone number is required',
         v => (v && v.length <= 10) || 'Number must be less than 10 characters'
@@ -90,20 +92,20 @@ export default {
     methods: {
         async validate() {
             if (this.$refs.registerForm.validate()) {
-                this.$store.state.userEmail = ''
-                let u = await this.$store.dispatch('getUserEmailFromDb', this.email);
-                if (this.$store.state.userEmail === ''){
+                this.$store.state.userInfo = [];
+                let u = await this.$store.dispatch('getUserInfoFromDb', this.email);                
+                if (this.$store.state.userInfo.email === undefined){
                     this.messageToClient = '';
-                    this.snackbar = true
+                    this.snackbar = true;
+                    
                     this.$store.dispatch('addUserToDB',{email: this.email,
-                                                        firstname:this.firstName,
-                                                        lastname: this.lastName,
-                                                        password: this.password,
-                                                        phone: this.phoneNumber})
+                                                         firstname:this.firstName,
+                                                         lastname: this.lastName,
+                                                         password: this.password,
+                                                         phone: this.phoneNumber})
                     this.messageToClient = 'Successfully!'
                 }else{
                     this.messageToClient = 'This email is already used!';
-                    this.$store.state.userEmail = ''
                 }
             }
         }
