@@ -152,7 +152,7 @@ export default {
         let bidObject = {
           amount: bid,
           auctionId: this.auction.id,
-          bidder_id: this.$store.state.userEmail,
+          bidder_id: this.$store.state.userInfo.email,
           time: new Date().toJSON()
         };
         await this.$store.dispatch("addBidToDb", bidObject);
@@ -165,9 +165,9 @@ export default {
     validate() {
       if (this.$refs.form.validate()) {
         this.snackbar = true;
-        if (this.$store.state.userEmail === null) {
+        if (this.$store.state.status === false) {
           this.showAlert("error", "You must be logged in to place a bid.");
-        } else if (this.$store.state.userEmail === this.auction.seller_id) {
+        } else if (this.$store.state.userInfo.email === this.auction.seller_id) {
           this.showAlert("error", "Can't bid on your own auction.");
         } else {
           this.compareBid(this.bidField);

@@ -11,23 +11,51 @@
                 <v-icon>home</v-icon>
             </v-btn>
             
-            <v-btn to="/add-auction" color="teal" flat value="add">
+            <v-btn to="/add-auction" color="teal" flat value="add" v-if="statusT">
                 <span>Add Auction</span>
                 <v-icon>add</v-icon>
             </v-btn>
             
-            <v-btn to="/login" color="teal" flat value="LoginRegister">
-                <span>Login</span>
-                <v-icon>account_circle
-</v-icon>
+            <v-btn to="/login" color="teal" flat value="LoginRegister" v-if="!statusT">
+                <span>login</span>
+                <v-icon>account_circle</v-icon>
+            </v-btn>
+
+            <v-btn color="teal" flat value="log out" v-if="statusT" @click="changeStatus">
+                <span>log out</span>
+                <v-icon>account_circle</v-icon>
             </v-btn>
         </v-bottom-nav>
     </v-card>
 </template>
 
 <script>
-    export default {
-        name: "BottomNav"
+import { mapState } from 'vuex';
+export default {
+    name: "BottomNav",
+    data(){
+        return {
+            statusT: this.$store.state.status
+        }
+    },
+    methods:{
+        changeStatus(){
+            this.$store.state.status = false;
+        }
+    },
+
+    watch: {
+        status(newValue, oldValue) {
+            console.log(`Updating from ${oldValue} to ${newValue}`);
+            if (newValue === true) {
+                this.statusT = true
+            }else{
+                this.statusT = false
+            }
+        }
+    },
+
+    computed: mapState(['status']),
     }
 </script>
 

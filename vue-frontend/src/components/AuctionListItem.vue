@@ -14,7 +14,7 @@
             <v-card-title primary-title>
               <div>
                 <div>{{auctionId}}</div>
-                <div class="headline">{{title}}</div>  
+                <div class="headline">{{title}}</div>
                 <div>{{highestBid}} £ </div>
                 <div>{{bids}} bids</div>
                 <div>Seller: {{sellerName}}</div>
@@ -41,7 +41,7 @@ export default {
     };
   },
 created: async function() {
-  this.auctionLink += this.auctionId;  
+  this.auctionLink += this.auctionId;
   this.getBids();
 
   await this.$store.dispatch("getSeller", this.sellerId)
@@ -62,12 +62,12 @@ created: async function() {
     }
   },
   methods: {
-    async getBids() {      
+    async getBids() {
       await this.$store.dispatch("getBidsForOneAuction", this.auctionId)
-      let bids = this.$store.state.currentBids;      
+      let bids = this.$store.state.currentBids;
       bids.sort((a, b) => b.amount - a.amount);
       if (bids.length === 0) {
-        this.highestBid = this.startPrice;        
+        this.highestBid = this.startPrice;
       } else {
         this.highestBid = bids[0].amount;
       }

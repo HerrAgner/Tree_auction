@@ -15,8 +15,16 @@ public class User {
     private String password = null;
     private String phone = null;
 
-    public User() {
+    public User(){
 
+    }
+
+    public User(String firstname, String password, String email, String lastname, String phone) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
     }
 
     public void setId(long id) {
@@ -33,10 +41,6 @@ public class User {
 
     public void setLastName(String lastname) {
         this.lastname = lastname;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public void setPhoneNumber(String phone) {
@@ -61,5 +65,9 @@ public class User {
 
     public String getPhone() {
         return phone;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
