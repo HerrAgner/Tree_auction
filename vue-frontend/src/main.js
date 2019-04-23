@@ -17,10 +17,12 @@ connect();
 function connect() {
   ws = new WebSocket('ws://localhost:7999/api/socket');
   ws.onmessage = (e) => {
-    showSomething(JSON.parse(e.data));
+   console.log(JSON.parse(e.data).auctionId);
+    console.log(JSON.parse(e.data).amount);
+    console.log(JSON.parse(e.data).time);
+
   }
   ws.onopen = (e) => {
-    sendSomething();
     isConnected = true;
   };
 
@@ -39,14 +41,14 @@ function disconnect() {
   console.log("Disconnected");
 }
 
-function sendSomething() {
-  ws.send(JSON.stringify({firstname: "Hello World!" }));
-}
+// function sendSomething() {
+//   ws.send(JSON.stringify({firstname: "Hello World!" }));
+// }
 
-function showSomething(message) {
-  document.querySelector("#messages").innerText += message.firstname + " " + message.lastname + "\n";
-}
-
+// function showSomething(message) {
+//   document.querySelector("#messages").innerText += message.firstname + " " + message.lastname + "\n";
+// }
+export {ws}
 new Vue({
   router,
   store,

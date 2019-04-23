@@ -153,7 +153,8 @@ export default {
           amount: bid,
           auctionId: this.auction.id,
           bidder_id: this.$store.state.userInfo.email,
-          time: new Date().toJSON()
+          time: new Date().toJSON(),
+          type: "bid"
         };
         await this.$store.dispatch("addBidToDb", bidObject);
         await this.getBids();
@@ -165,7 +166,7 @@ export default {
     validate() {
       if (this.$refs.form.validate()) {
         this.snackbar = true;
-        if (this.$store.state.status === false) {
+        if (this.$store.state.status === true) {
           this.showAlert("error", "You must be logged in to place a bid.");
         } else if (this.$store.state.userInfo.email === this.auction.seller_id) {
           this.showAlert("error", "Can't bid on your own auction.");
