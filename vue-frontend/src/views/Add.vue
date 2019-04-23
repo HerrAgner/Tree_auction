@@ -75,6 +75,7 @@
 
 
 <script>
+import router from '@/router.js'
 export default {
   components: {},
   data() {
@@ -171,6 +172,13 @@ export default {
       return maxDate
     }
   },
+  created(){
+    if (this.$store.state.status === false){
+      this.$router.push({ path: '/login' })
+      
+    }
+          
+  }
 };
 </script>
 
