@@ -4,6 +4,7 @@
     <v-content class="content">
       <router-view />
     </v-content>
+    <div id="messages"></div>
     <BottomFooter />
   </v-app>
 </template>
