@@ -13,11 +13,12 @@
           <v-flex xs7 >
             <v-card-title primary-title>
               <div>
-                <div class="headline">{{title}}</div>  
-                <div>{{currBid}} kr</div>
-                <div>{{bids}} bud</div>
-                <div>{{seller}}</div>
-                <div>Avslutas: {{convertDate}}</div>
+                <div>{{auctionId}}</div>
+                <div class="headline">{{title}}</div>
+                <div>{{highestBid}} £ </div>
+                <div>{{bids}} bids</div>
+                <div>Seller: {{sellerName}}</div>
+                <div>Ends: {{convertDate}}</div>
               </div>         
             </v-card-title>
           </v-flex>
@@ -32,20 +33,27 @@ export default {
   name: "AuctionListItem",
   data() {
     return {
-      auctionLink: "/auction/"
+      auctionLink: "/auction/",
+      highestBid : null,
+      bids: null,
+      sellerName: null
+
     };
   },
-created: function() {
-  this.auctionLink += this.auctionId;  
+created: async function() {
+  this.auctionLink += this.auctionId;
+  this.getBids();
+
+  await this.$store.dispatch("getSeller", this.sellerId)
+  this.sellerName = this.$store.state.currentSeller.firstname + " "+this.$store.state.currentSeller.lastname;
 },
   props: {
     auctionId: Number,
     title: String,
     image: String,
     endTime: String,
-    currBid: String, 
-    seller: String,
-    bids: Number,
+    sellerId: String,
+    startPrice: Number
   },
   computed: {
     convertDate: function () {
@@ -53,7 +61,19 @@ created: function() {
       return newDate.toLocaleDateString()+" "+newDate.getHours() + ":" + newDate.getMinutes();
     }
   },
-  methods: {},
+  methods: {
+    async getBids() {
+      await this.$store.dispatch("getBidsForOneAuction", this.auctionId)
+      let bids = this.$store.state.currentBids;
+      bids.sort((a, b) => b.amount - a.amount);
+      if (bids.length === 0) {
+        this.highestBid = this.startPrice;
+      } else {
+        this.highestBid = bids[0].amount;
+      }
+      this.bids = bids.length;
+    },
+  },
 };
 </script>
 

@@ -161,6 +161,37 @@ public class CreateDBData implements CommandLineRunner {
         auction11.setSeller_id("eric.rl@me.com");
         auction11.setStart_price((float) 550.0);
         AuctionRepo.save(auction11);
+
+        Auction auction12 = new Auction();
+        LocalDateTime ldt12 = LocalDateTime.of(2019,4, 22, 5, 30);
+        auction12.setTitle("utgången aktion jao, much wow!");
+        auction12.setDescription("utgången aktion jao");
+        auction12.setAddedTime(Timestamp.from(Instant.now()));
+        auction12.setEnd_time(Timestamp.valueOf(ldt12));
+        auction12.setSeller_id("eric.rl@me.com");
+        auction12.setStart_price((float) 520.0);
+        AuctionRepo.save(auction12);
+
+        Auction auction13 = new Auction();
+        LocalDateTime ldt13 = LocalDateTime.of(2019,4, 21, 5, 30);
+        auction13.setTitle("wow! utgången aktion much wow!");
+        auction13.setDescription("Worlds fastest bike is up for grabbs!");
+        auction13.setAddedTime(Timestamp.from(Instant.now()));
+        auction13.setEnd_time(Timestamp.valueOf(ldt13));
+        auction13.setSeller_id("ted@gmail.com");
+        auction13.setStart_price((float) 33.0);
+        AuctionRepo.save(auction13);
+
+        Auction auction14 = new Auction();
+        LocalDateTime ldt14 = LocalDateTime.of(2019,4, 23, 9, 30);
+        auction14.setTitle(" much wow! utgången aktion jao");
+        auction14.setDescription("Worlds fastest bike is up for grabbs!");
+        auction14.setAddedTime(Timestamp.from(Instant.now()));
+        auction14.setEnd_time(Timestamp.valueOf(ldt14));
+        auction14.setSeller_id("john.doe@gmail.com");
+        auction14.setStart_price((float) 11.0);
+        AuctionRepo.save(auction14);
+
     }
 }
 

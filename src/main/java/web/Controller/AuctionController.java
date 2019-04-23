@@ -11,7 +11,8 @@ import web.Repository.AuctionRepository;
 import web.Entity.Auction;
 import org.springframework.data.domain.Pageable;
 
-
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,25 +43,20 @@ public class AuctionController {
         repo.save(body);
     }
 
-    @GetMapping("/length")
-    long checkLength(){
-        return repo.count();
-    }
-
     @GetMapping("/auctionPage/{pageNumber}")
     Page<Auction> auctionPage (@PathVariable int pageNumber){
+        Timestamp now = Timestamp.from(Instant.now());
         Pageable pageRequest = PageRequest.of(pageNumber, 10, Sort.by("AddedTime").descending());
-        Page<Auction> page = repo.findAll(pageRequest);
+        Page<Auction> page = repo.findByEndTimeAfter(pageRequest, now);
         return page;
     }
 
-
-    @GetMapping("/auctionPageContent/{pageNumber}")
-    List<Auction> auctionPageContent(@PathVariable int pageNumber){
+    @GetMapping("/auctionPage/{searchTitle}/{pageNumber}")
+    Page<Auction> searchPage (@PathVariable int pageNumber, @PathVariable String searchTitle){
+        Timestamp now = Timestamp.from(Instant.now());
         Pageable pageRequest = PageRequest.of(pageNumber, 10, Sort.by("AddedTime").descending());
-        Page<Auction> page = repo.findAll(pageRequest);
-        return page.getContent();
+        Page<Auction> searchPage = repo.findByTitleContainingAndEndTimeAfter(searchTitle, now, pageRequest);
+        return searchPage;
     }
-
 
 }

@@ -23,12 +23,16 @@
             <h5>End time</h5>
             <p>{{ convertDate }}</p>
             <p>{{ convertTime }}</p>
+            
           </v-container>
           <v-container class="bid">
             <h5>Bids</h5>
             {{ bids.length }}
           </v-container>
         </v-layout>
+        <div id="countdownTimer">
+          <flip-countdown v-if="showCountdownTimer" :key="countdownKey" :deadline="countdown"></flip-countdown>
+        </div>
         <v-card id="bidCard">
           <v-flex xs8>
             <v-form ref="form" v-model="valid" @submit.prevent lazy-validation>
@@ -78,8 +82,10 @@
 </template>
 
 <script>
-const API_URL = "http://localhost:7999/api/";
+import FlipCountdown from "@/components/FlipCountdown.vue"
+
 export default {
+  components: { FlipCountdown },
   name: "AuctionDetails",
   data() {
     return {
@@ -87,6 +93,8 @@ export default {
       seller: "",
       bids: [],
       highestBid: null,
+      countdown: "",
+      countdownKey: 0,
       bidRules: [v => !!v || "Bid is required"],
       valid: true,
       bidField: "",
@@ -117,6 +125,9 @@ export default {
     this.seller = this.$store.state.currentSeller;    
 
     this.getBids();
+  
+    this.countdown = new Date(this.auction.end_time).toLocaleString()
+    this.forceRerender();
   },
   methods: {
     async getBids() {      
@@ -190,6 +201,9 @@ export default {
           this.elapse++;
         }
       }, 1000);
+    },
+    forceRerender() {
+      this.countdownKey += 1;
     }
   },
   computed: {
@@ -200,6 +214,16 @@ export default {
     convertTime: function() {
       let newDate = new Date(this.auction.end_time);
       return newDate.getHours() + ":" + newDate.getMinutes();
+    },
+    showCountdownTimer() {
+     //  let ONE_DAY = new Date().getTime() - (24 * 60 * 60 * 1000)
+     // let thisDate = new Date()
+     //  if (ONE_DAY <= new Date(this.auction.end_time).getTime()){
+     //    console.log( new Date(new Date(this.auction.end_time).getTime()) < new Date(ONE_DAY))
+     //    return true;
+     //  }
+      return true;
+     
     }
   }
 };
