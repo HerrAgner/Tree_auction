@@ -17,7 +17,7 @@ connect();
 function connect() {
   ws = new WebSocket('ws://localhost:7999/api/socket');
   ws.onmessage = (e) => {
-    showSomething(e.data);
+    showSomething(JSON.parse(e.data));
   }
   ws.onopen = (e) => {
     sendSomething();
@@ -44,7 +44,7 @@ function sendSomething() {
 }
 
 function showSomething(message) {
-  document.querySelector("#messages").innerText += message + "\n";
+  document.querySelector("#messages").innerText += message.firstname + " " + message.lastname + "\n";
 }
 
 new Vue({
