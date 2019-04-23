@@ -10,7 +10,7 @@ public class Auction {
     private long id;
     private String title = null;
     private String description = null;
-    private Timestamp end_time = null;
+    private Timestamp endTime = null;
     private Timestamp addedTime = null;
     private String seller_id = null;
 
@@ -29,7 +29,7 @@ public class Auction {
     }
 
     public void setEnd_time(Timestamp end_time) {
-        this.end_time = end_time;
+        this.endTime = end_time;
     }
 
     public void setAddedTime(Timestamp addedTime) {
@@ -63,7 +63,7 @@ public class Auction {
     }
 
     public Timestamp getEnd_time() {
-        return end_time;
+        return endTime;
     }
 
     public Timestamp getAddedTime() {
