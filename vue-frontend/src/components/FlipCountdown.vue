@@ -1,7 +1,7 @@
 <template>
   <div class="both">
     <p>Time left:</p>
-    <div class="container flip-clock hela">
+    <div class="container flip-clock hela" id="countdownTimer">
       <template v-for="data in timeData" v-show="show">
         <span
           v-bind:key="data.label"
@@ -93,14 +93,8 @@ export default {
     };
   },
   created() {
-    // if (!this.deadline) {
-    //     throw new Error("Missing props 'deadline'")
-    // }
     const endTime = this.deadline;
     this.date = Math.trunc(Date.parse(endTime.replace(/-/g, "/")) / 1000);
-    // if (!this.date) {
-    //     throw new Error("Invalid props value, correct the 'deadline'")
-    // }
     this.interval = setInterval(() => {
       this.now = Math.trunc(new Date().getTime() / 1000);
     }, 1000);
@@ -125,7 +119,12 @@ export default {
     },
     countdownValue() {
       return this.deadline;
-    }
+    },
+      oneHourLeft() {
+        if (this.hours) {
+        
+        }
+      }
   },
   watch: {
     now(value) {
@@ -158,6 +157,10 @@ export default {
 
       if (window["requestAnimationFrame"]) {
         this.frame = requestAnimationFrame(this.updateTime.bind(this));
+      }
+      
+      if (idx === 1 && !newValue) {
+          document.getElementById("countdownTimer").style.color = "red";
       }
 
       const d = this.timeData[idx];
