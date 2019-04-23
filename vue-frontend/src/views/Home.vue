@@ -7,7 +7,7 @@
       </v-layout>
     </v-flex>
     <div class="container grid-list-xl">
-     <div class="layout wrap" v-for="auction in this.pageContent">
+     <div class="layout wrap" v-for="auction in this.pageContent" :key="auction.id">
         <AuctionListItem :auctionId = "auction.id" :title="auction.title" image="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
          :endTime="auction.end_time" :sellerId="auction.seller_id" :startPrice="auction.start_price" ></AuctionListItem> 
        </div>
@@ -29,9 +29,9 @@ export default {
     this.getPageFromDB(0);
   },
   methods: {
-    onPageChange(pageNumber){
+    onPageChange(pageNumber){      
       if(this.contentIsSearchResult){
-        this.searchClicked(pageNumber-1);
+        this.getSearchPage(pageNumber-1);
       }else{
         this.getPageFromDB(pageNumber-1);
       }
@@ -41,7 +41,7 @@ export default {
       this.page = await (await fetch("http://localhost:7999/api/auctions/auctionPage/"+pageNumber)).json();
       this.pageContent = this.page.content;
       this.totalPages = this.page.totalPages;
-      this.contentIsSearchResult = false;
+      this.contentIsSearchResult = false;      
     },
     searchClicked() {
       this.getSearchPage(0);
