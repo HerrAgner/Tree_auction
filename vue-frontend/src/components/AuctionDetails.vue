@@ -30,10 +30,10 @@
             {{ bids.length }}
           </v-container>
         </v-layout>
-        <div id="countdownTimer">
-          <flip-countdown v-if="showCountdownTimer" :key="countdownKey" :deadline="countdown"></flip-countdown>
+        <div id="countdownTimerBox" v-if="showCountdownTimer" :key="countdownKey">
+          <flip-countdown id="countdownTimer" :deadline="countdown"></flip-countdown>
         </div>
-        <v-card id="bidCard">
+        <v-card id="bidCard" v-if="!auctionEnded">
           <v-flex xs8>
             <v-form ref="form" v-model="valid" @submit.prevent lazy-validation>
               <v-text-field
@@ -44,17 +44,22 @@
                 v-model="bidField"
                 prefix="£"
                 mask="########"
+                
                 >{{ bidField }}
               </v-text-field>
             </v-form>
           </v-flex>
 
           <v-flex xs8>
-            <v-btn round color="success" dark @click="validate"
+            <v-btn round color="success" dark
+                   @click="validate"
               >Place bid</v-btn
             >
           </v-flex>
         </v-card>
+          <v-layout align-center justify-center row v-else>
+            <h2 id="ended">Auction ended</h2>
+          </v-layout>
         <v-alert id="bidAlert" :color="type" value="true" v-if="type">
           {{ bidAlertText }}
         </v-alert>
@@ -97,6 +102,7 @@ export default {
       countdownKey: 0,
       bidRules: [v => !!v || "Bid is required"],
       valid: true,
+      auctionEnded: false,
       bidField: "",
       type: null,
       bidAlertText: "asd",
@@ -216,14 +222,17 @@ export default {
       return newDate.getHours() + ":" + newDate.getMinutes();
     },
     showCountdownTimer() {
-     //  let ONE_DAY = new Date().getTime() - (24 * 60 * 60 * 1000)
-     // let thisDate = new Date()
-     //  if (ONE_DAY <= new Date(this.auction.end_time).getTime()){
-     //    console.log( new Date(new Date(this.auction.end_time).getTime()) < new Date(ONE_DAY))
-     //    return true;
-     //  }
-      return true;
-     
+      let ONE_DAY = new Date().getTime() + (24 * 60 * 60 * 1000)
+        let endtime = new Date().getTime()
+      if (new Date(ONE_DAY) <= new Date(this.auction.end_time).getTime()) {
+          return false;
+      } else if (new Date(endtime) > new Date(this.auction.end_time).getTime()){
+        this.auctionEnded = true;
+        return false;
+      }
+      else {
+          return true;
+      }
     }
   }
 };
@@ -277,4 +286,15 @@ export default {
 .bid p {
   margin: 0;
 }
+    
+    #countdownTimer {
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+  
+  #ended {
+    color: red;
+  }
 </style>
