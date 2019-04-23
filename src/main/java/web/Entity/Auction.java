@@ -63,11 +63,11 @@ public class Auction {
     }
 
     public Timestamp getEnd_time() {
-        return end_time;
+        return endTime;
     }
 
     public Timestamp getAdded_time() {
-        return added_time;
+        return addedTime;
     }
 
     public String getSeller_id() {

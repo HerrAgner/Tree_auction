@@ -16,7 +16,7 @@ export default new Vuex.Store({
   state: {
     auctions: [],
     status: false,
-    userInfo: [],
+    userInfo: {},
     currentAuction: "",
     currentSeller: "",
     currentBids: null,
@@ -47,7 +47,7 @@ export default new Vuex.Store({
   },
   actions: {
     async getUsersFromDb() {
-      let users = await (await fetch(API_URL + "/users")).json().catch(e => {});
+      let users = await (await fetch(API_URL + "users")).json().catch(e => {});
       console.log(users);
       
       return users;
@@ -71,7 +71,8 @@ export default new Vuex.Store({
         console.log("the login result is:", successfulLogin);
         if(successfulLogin){
           this.commit("setStatus", successfulLogin);
-          router.push({ path: '/' })          
+          router.push({ path: '/' }) 
+          this.dispatch('getUserInfoFromDb', info.email)         
         }
         
       })
@@ -99,17 +100,20 @@ export default new Vuex.Store({
       // this.commit("setCurrentAuction", auctions[0]);
     },
     async addAuctionToDB(state, reqBody) {
+      console.log('hellllllo');
       await fetch(API_URL + "auctions", {
         method: "POST",
         body: JSON.stringify(reqBody),
         headers: { "Content-Type": "application/json" }
       });
+      
 
       // Update the state.blogPosts since we just added a new one
       this.dispatch("getAuctionsFromDb");
     },
 
     async addBidToDb(state, reqBody) {
+      console.log('helllllo');      
       await fetch(API_URL + "bids", {
         method: "POST",
         body: JSON.stringify(reqBody),
