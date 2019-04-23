@@ -29,16 +29,16 @@ export default {
     this.getPageFromDB(0);
   },
   methods: {
-    onPageChange(page){
+    onPageChange(pageNumber){
       if(this.contentIsSearchResult){
-        this.searchClicked(page-1);
+        this.searchClicked(pageNumber-1);
       }else{
-        this.getPageFromDB(page-1);
+        this.getPageFromDB(pageNumber-1);
       }
       window.scrollTo(0,0);
     },
-    async getPageFromDB(page) {
-      this.page = await (await fetch("http://localhost:7999/api/auctions/auctionPage/"+page)).json();
+    async getPageFromDB(pageNumber) {
+      this.page = await (await fetch("http://localhost:7999/api/auctions/auctionPage/"+pageNumber)).json();
       this.pageContent = this.page.content;
       this.totalPages = this.page.totalPages;
       this.contentIsSearchResult = false;
@@ -46,8 +46,8 @@ export default {
     searchClicked() {
       this.getSearchPage(0);
     },
-    async getSearchPage(page) {
-      this.page = await (await fetch("http://localhost:7999/api/auctions/auctionPage/"+this.search+"/0")).json();
+    async getSearchPage(pageNumber) {
+      this.page = await (await fetch("http://localhost:7999/api/auctions/auctionPage/"+this.search+"/"+pageNumber)).json();
       this.pageContent = this.page.content;
       this.totalPages = this.page.totalPages;
       this.contentIsSearchResult = true;
