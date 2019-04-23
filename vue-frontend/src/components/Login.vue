@@ -28,6 +28,8 @@
                 >
                 Log in
                 </v-btn>
+                {{messageToClient}}
+
             </v-form>
       </v-app>
     </div>    
@@ -36,6 +38,7 @@
 <script>
 export default {
   data: () => ({
+    messageToClient: '',
     valid: true,
     password: '',
     passwordRules: [
@@ -50,8 +53,12 @@ export default {
   methods: {    
     async validate() {
       if(this.$refs.loginForm.validate()) {
-        let u = await this.$store.dispatch('login', 
-                      {email: this.email, password: this.password});                                                        
+        await this.$store.dispatch('login', 
+                      {email: this.email, password: this.password}); 
+        if (!this.$store.state.status){
+          this.messageToClient = 'This account does not exist';
+        }
+                                                                             
       }
     }
   }

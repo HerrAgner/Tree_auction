@@ -61,7 +61,7 @@ export default new Vuex.Store({
       return user;
     },
     async login(context, info) {       
-      await fetch(API_URL2, {
+      let response = await fetch(API_URL2, {
         method: "POST",
         body: transformRequest({username: info.email, password: info.password}),
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
@@ -76,6 +76,7 @@ export default new Vuex.Store({
         }
         
       })
+      return response
       
     },
 
