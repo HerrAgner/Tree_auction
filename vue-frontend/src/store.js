@@ -15,10 +15,12 @@ function transformRequest(jsonData = {}){
 export default new Vuex.Store({
   state: {
     auctions: [],
-    status: true,
+    status: false,
     userInfo: [],
     currentAuction: "",
-    currentSeller: ""
+    currentSeller: "",
+    currentBids: null,
+
   },
   mutations: {
     setAuctions(state, auctions) {
@@ -35,6 +37,12 @@ export default new Vuex.Store({
     },
     setStatus(state, status){
       state.status = status;
+    },
+    setAmountOfAuctions(state, amountOfAuctions) {
+      state.amountOfAuctions = amountOfAuctions;
+    },
+    setCurrentBids(state, currBids){
+      state.currentBids = currBids;
     }
   },
   actions: {
@@ -58,13 +66,14 @@ export default new Vuex.Store({
         body: transformRequest({username: info.email, password: info.password}),
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       })
-      .then(function(response) {
+      .then(response => {
         let successfulLogin = !response.url.includes("error");
         console.log("the login result is:", successfulLogin);
         if(successfulLogin){
-          //this.commit("setStatus", successfulLogin);
-          //router.push({ path: '/' })          
+          this.commit("setStatus", successfulLogin);
+          router.push({ path: '/' })          
         }
+        
       })
       
     },
@@ -115,10 +124,13 @@ export default new Vuex.Store({
       );
       this.commit("setCurrentAuction", currAuction);
     },
-    async getSellerName(context, user) {
+    async getSeller(context, user) {
       let currSeller = await (await fetch(API_URL + "users/" + user)).json();
-      console.log(currSeller)
       this.commit("setCurrentSeller", currSeller);
-    }
+    },
+    async getBidsForOneAuction(context, auctionId) {
+      let bids = await (await fetch(API_URL + "bids/" + auctionId)).json();
+      this.commit("setCurrentBids", bids);
+    },
   }
 });

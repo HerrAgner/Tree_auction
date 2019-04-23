@@ -4,17 +4,47 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "auctions")
 public class Auction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private final String title = null;
-    private final String description = null;
-    private final Timestamp end_time = null;
-    private final Timestamp added_time = null;
-    private final String seller_id = null;
-    private final Float start_price = null;
+    private String title = null;
+    private String description = null;
+    private Timestamp end_time = null;
+    private Timestamp addedTime = null;
+    private String seller_id = null;
+
+    private Float start_price = null;
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setEnd_time(Timestamp end_time) {
+        this.end_time = end_time;
+    }
+
+    public void setAddedTime(Timestamp addedTime) {
+        this.addedTime = addedTime;
+    }
+
+    public void setSeller_id(String seller_id) {
+        this.seller_id = seller_id;
+    }
+
+    public void setStart_price(Float start_price) {
+        this.start_price = start_price;
+    }
+
+
 
     public Auction() {
 
@@ -36,8 +66,8 @@ public class Auction {
         return end_time;
     }
 
-    public Timestamp getAdded_time() {
-        return added_time;
+    public Timestamp getAddedTime() {
+        return addedTime;
     }
 
     public String getSeller_id() {
@@ -47,4 +77,10 @@ public class Auction {
     public float getStart_price() {
         return start_price;
     }
+
+    public Timestamp calcTime() {
+        Timestamp newEndTime = null;
+        return newEndTime;
+    }
+
 }

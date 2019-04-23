@@ -16,7 +16,14 @@
         ></v-text-field>
       </v-flex>
       <v-flex xs5>
-        <v-date-picker id="datePicker" v-model="date" :min="minDate" :max="maxDate"></v-date-picker>
+        <h3>Pick an end date for the auction</h3>
+        <v-date-picker id="datePicker" 
+        v-model="date" 
+        :min="minDate" 
+        :max="maxDate"
+        required
+        
+        ></v-date-picker>
       </v-flex>
 
       <v-flex xs7 id="productDescription">
@@ -85,6 +92,12 @@ export default {
   },
   methods: {
     addAuction() {
+      if (this.date== '') {
+        return alert ("Please pick an end date")
+      } else {
+        console.log("Datum")
+
+      
       var dateToday = new Date();
       var dateEnd = new Date(
         this.date +
@@ -114,6 +127,7 @@ export default {
 
       this.$store.dispatch("addAuctionToDB", productData);
       this.$router.push('/') //Går till startsidan
+      }
     },
     onPickFile() {
       this.$refs.fileInput.click();
@@ -142,11 +156,13 @@ export default {
   },
   computed: {
     formIsValid() {
-      return this.title !== "" && this.description !== "" && this.price !== "";
+      return this.title !== "" && this.description !== "" && this.price !== "" && this.title.length < 40 && this.description.length < 300;
     },
     minDate() {
-      const today = new Date().toISOString().slice(0, 10);
-      return today;
+      let minDate = new Date()
+      minDate.setDate(minDate.getDate()+1)
+      minDate = minDate.toISOString().slice(0, 10);
+      return minDate;
     },
     maxDate() {
       let maxDate = new Date()
@@ -154,7 +170,7 @@ export default {
       maxDate = maxDate.toISOString().slice(0,10)
       return maxDate
     }
-  }
+  },
 };
 </script>
 
