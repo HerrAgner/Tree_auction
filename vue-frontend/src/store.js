@@ -4,8 +4,7 @@ import router from '@/router.js'
 
 Vue.use(Vuex);
 const API_URL = "http://localhost:7999/api/";
-const API_URLLogin = "http://localhost:7999/login";
-const API_URLLogout = "http://localhost:7999/logout";
+const API_URLLog = "http://localhost:7999/";
 
 function transformRequest(jsonData = {}){
   return Object.entries(jsonData)
@@ -52,14 +51,14 @@ export default new Vuex.Store({
       return users;
     },
     async getUserInfoFromDb(context, email) {  
-      let user = await (await fetch(API_URLLogin + "/" + email)).json().catch(e => {});
+      let user = await (await fetch(API_URL + "users/" + email)).json().catch(e => {});
       if (user) {
         this.commit("setUserInfo", user);
       }
       return user;
     },
     async login(context, info) {       
-      await fetch(API_URLLogin, {
+      await fetch(API_URLLog + 'login', {
         method: "POST",
         body: transformRequest({username: info.email, password: info.password}),
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
@@ -74,9 +73,8 @@ export default new Vuex.Store({
         }
       })
     },
-
     async logout(context) {       
-      await fetch(API_URLLogout, {
+      await fetch(API_URLLog + 'logout', {
         method: "GET",
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       })
@@ -89,9 +87,8 @@ export default new Vuex.Store({
         }
       })
     },
-
     async addUserToDB(state, reqBody) {      
-      await fetch(API_URLLogin + "/", {
+      await fetch(API_URL + "users", {
         method: "POST",
         body: JSON.stringify(reqBody),
         headers: { "Content-Type": "application/json" }
