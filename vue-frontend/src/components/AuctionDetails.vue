@@ -123,7 +123,6 @@ export default {
     this.getBids();
 
     // this.items = [{src:this.auction.image}]
-    await console.log(this.items)
   
     this.countdown = new Date(this.auction.end_time).toLocaleString()
     this.forceRerender();
