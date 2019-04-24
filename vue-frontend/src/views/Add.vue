@@ -71,11 +71,13 @@
 
 
 <script>
+import { mapState } from 'vuex';
 import router from "@/router.js";
 export default {
   components: {},
   data() {
     return {
+      statusT: "",
       title: "",
       description: "",
       price: "",
@@ -194,7 +196,18 @@ export default {
     if (this.$store.state.status === false) {
       this.$router.push({ path: "/login" });
     }
-  }
+  },
+  watch: {
+    status(newValue, oldValue) {
+        console.log(`Updating from ${oldValue} to ${newValue}`);
+        if (newValue === true) {
+            this.$router.push({ path: "/login" });
+        }
+    }
+    },
+
+  computed: mapState(['status']),
+    
 };
 </script>
 
