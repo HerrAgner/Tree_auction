@@ -43,7 +43,7 @@
                 required
                 v-model="bidField"
                 prefix="£"
-                mask="########"
+                mask="######"
                 
                 >{{ bidField }}
               </v-text-field>
