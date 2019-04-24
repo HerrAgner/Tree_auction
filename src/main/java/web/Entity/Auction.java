@@ -13,6 +13,7 @@ public class Auction {
     private Timestamp endTime = null;
     private Timestamp addedTime = null;
     private String seller_id = null;
+    private String image = null;
 
     private Float start_price = null;
 
@@ -44,7 +45,13 @@ public class Auction {
         this.start_price = start_price;
     }
 
+    public void setImage(String image) {
+        this.image = image;
+    }
 
+    public String getImage() {
+        return image;
+    }
 
     public Auction() {
 

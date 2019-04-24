@@ -111,10 +111,9 @@ export default new Vuex.Store({
       // this.commit("setCurrentAuction", auctions[0]);
     },
     async addAuctionToDB(state, reqBody) {
-      console.log('hellllllo');
       await fetch(API_URL + "auctions", {
         method: "POST",
-        body: JSON.stringify(reqBody),
+        body: reqBody,
         headers: { "Content-Type": "application/json" }
       });
       
