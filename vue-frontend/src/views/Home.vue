@@ -6,14 +6,17 @@
         <v-btn @click="searchClicked">Search items</v-btn>
       </v-layout>
     </v-flex>
-        <div class="text-xs-center">
-      <v-pagination v-model="getPageFromStore" :length="this.totalPages" @input="onPageChange"></v-pagination>
+    <div class="text-xs-center">
+      <v-pagination v-model="pageNumber" :length="this.totalPages" @input="onPageChange"></v-pagination>
     </div>
     <div class="container grid-list-xl">
      <div class="layout wrap" v-for="auction in this.pageContent" :key="auction.id">
         <AuctionListItem :auctionId = "auction.id" :title="auction.title" image="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
          :endTime="auction.end_time" :sellerId="auction.seller_id" :startPrice="auction.start_price" ></AuctionListItem> 
        </div>
+    </div>
+   <div class="text-xs-center">
+      <v-pagination v-model="pageNumber" :length="this.totalPages" @input="onPageChange"></v-pagination>
     </div>
   </div>
 </template>
@@ -22,31 +25,37 @@
 import AuctionListItem from "@/components/AuctionListItem.vue";
 import router from '@/router.js'
 
-//TO DO: Fixa navBtn för home!
-
 export default {
   components: {
     AuctionListItem
   },
- created: async function() {    
-    if(this.$route.params.search && this.$route.params.page){
-      if (this.validatePageInput(this.$route.params.page)){
-        await this.getSearchPage(this.pageNumber-1, this.$route.params.search);
-      }
-    }else if(this.$route.params.page){
-      if (this.validatePageInput(this.$route.params.page)){
-        await this.getPageFromDB(this.pageNumber-1);
-      }
-    }else{
-      this.pageNumber = 1;
-      await this.getPageFromDB(this.pageNumber-1)
-    }
-
-    if(this.pageNumber > this.totalPages || this.pageNumber < 1){
-      this.routerChange("/missing");    
+ created: function() {    
+    this.loadList();
+  },
+  watch: {
+    '$route' (to, from) {
+    this.loadList();
     }
   },
   methods: {
+    async loadList(){
+      if(this.$route.params.search && this.$route.params.page){
+        if (this.validatePageInput(this.$route.params.page)){
+          await this.getSearchPage(this.pageNumber-1, this.$route.params.search);
+        }
+      }else if(this.$route.params.page){
+        if (this.validatePageInput(this.$route.params.page)){
+          await this.getPageFromDB(this.pageNumber-1);
+        }
+      }else{
+        this.pageNumber = 1;
+        await this.getPageFromDB(this.pageNumber-1)
+      }
+
+      if(this.pageNumber > this.totalPages || this.pageNumber < 1){
+        this.routerChange("/missing");    
+      }
+    },
     validatePageInput(input){
       this.pageNumber = Number(this.$route.params.page);
       if (!this.pageNumber){
@@ -69,7 +78,11 @@ export default {
       this.pageContent = this.page.content;
       this.totalPages = this.page.totalPages;
       this.contentIsSearchResult = false;   
-      this.routerChange("/page/"+(++pageNumber));
+      if(pageNumber !== 0){
+        this.routerChange("/page/"+(++pageNumber));
+      }else{
+        this.routerChange("/");
+      }
     },
     searchClicked() {
       this.getSearchPage(0, this.search);

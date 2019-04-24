@@ -1,6 +1,7 @@
 <template>
   <v-container id="container">
-    <div>MISSING PAGE</div>
+    <div>Missing Page</div>
+    <p>The page you are trying to reach is not existing</p>
   </v-container>
 </template>
 
