@@ -8,18 +8,13 @@ import web.Repository.UserRepository;
 
 @RestController
 @RequestMapping("/login")
-public class loginRegisterController {
+public class loginRegisterController{
 
     @Autowired
     UserRepository repo;
 
     @Autowired
     MyUserDetailsService myUserDetailsService;
-
-    @GetMapping("/users")
-    Iterable<User> getUsers(){
-        return repo.findAll();
-    }
 
     @GetMapping("/{email}")
     User getUserEmail(@PathVariable String email){
