@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
     User findOneByEmail(String mail);
+    User findDistinctFirstByEmail(String email);
 }

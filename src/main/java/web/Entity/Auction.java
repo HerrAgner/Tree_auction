@@ -10,9 +10,10 @@ public class Auction {
     private long id;
     private String title = null;
     private String description = null;
-    private Timestamp end_time = null;
+    private Timestamp endTime = null;
     private Timestamp addedTime = null;
     private String seller_id = null;
+    private String image = null;
 
     private Float start_price = null;
 
@@ -29,7 +30,7 @@ public class Auction {
     }
 
     public void setEnd_time(Timestamp end_time) {
-        this.end_time = end_time;
+        this.endTime = end_time;
     }
 
     public void setAddedTime(Timestamp addedTime) {
@@ -44,7 +45,13 @@ public class Auction {
         this.start_price = start_price;
     }
 
+    public void setImage(String image) {
+        this.image = image;
+    }
 
+    public String getImage() {
+        return image;
+    }
 
     public Auction() {
 
@@ -63,10 +70,10 @@ public class Auction {
     }
 
     public Timestamp getEnd_time() {
-        return end_time;
+        return endTime;
     }
 
-    public Timestamp getAddedTime() {
+    public Timestamp getAdded_time() {
         return addedTime;
     }
 
