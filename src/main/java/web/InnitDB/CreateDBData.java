@@ -60,7 +60,7 @@ public class CreateDBData implements CommandLineRunner {
         auction1.setEnd_time(Timestamp.valueOf(ldt1));
         auction1.setSeller_id("john.doe@gmail.com");
         auction1.setStart_price((float) 24.03);
-        auction1.setImage("exampleImage");
+        auction1.setImage("Example.jpg");
         AuctionRepo.save(auction1);
 
         Auction auction2 = new Auction();
@@ -71,7 +71,7 @@ public class CreateDBData implements CommandLineRunner {
         auction2.setEnd_time(Timestamp.valueOf(ldt2));
         auction2.setSeller_id("eric.rl@me.com");
         auction2.setStart_price((float) 1004.03);
-        auction1.setImage("exampleImage");
+        auction2.setImage("Example.jpg");
         AuctionRepo.save(auction2);
 
         Auction auction3 = new Auction();
@@ -82,7 +82,7 @@ public class CreateDBData implements CommandLineRunner {
         auction3.setEnd_time(Timestamp.valueOf(ldt3));
         auction3.setSeller_id("ted@gmail.com");
         auction3.setStart_price((float) 5032.0);
-        auction1.setImage("exampleImage");
+        auction3.setImage("Example.jpg");
         AuctionRepo.save(auction3);
 
         Auction auction4 = new Auction();
@@ -93,7 +93,7 @@ public class CreateDBData implements CommandLineRunner {
         auction4.setEnd_time(Timestamp.valueOf(ldt4));
         auction4.setSeller_id("eric.rl@me.com");
         auction4.setStart_price((float) 55432.0);
-        auction1.setImage("exampleImage");
+        auction4.setImage("Example.jpg");
         AuctionRepo.save(auction4);
 
         Auction auction5 = new Auction();
@@ -104,7 +104,7 @@ public class CreateDBData implements CommandLineRunner {
         auction5.setEnd_time(Timestamp.valueOf(ldt5));
         auction5.setSeller_id("eric.rl@me.com");
         auction5.setStart_price((float) 32.0);
-        auction1.setImage("exampleImage");
+        auction5.setImage("Example.jpg");
         AuctionRepo.save(auction5);
 
         Auction auction6 = new Auction();
@@ -115,7 +115,7 @@ public class CreateDBData implements CommandLineRunner {
         auction6.setEnd_time(Timestamp.valueOf(ldt6));
         auction6.setSeller_id("eric.rl@me.com");
         auction6.setStart_price((float) 302.0);
-        auction1.setImage("exampleImage");
+        auction6.setImage("Example.jpg");
         AuctionRepo.save(auction6);
 
         Auction auction7 = new Auction();
@@ -126,7 +126,7 @@ public class CreateDBData implements CommandLineRunner {
         auction7.setEnd_time(Timestamp.valueOf(ldt7));
         auction7.setSeller_id("eric.rl@me.com");
         auction7.setStart_price((float) 150.0);
-        auction1.setImage("exampleImage");
+        auction7.setImage("Example.jpg");
         AuctionRepo.save(auction7);
 
         Auction auction8 = new Auction();
@@ -137,7 +137,7 @@ public class CreateDBData implements CommandLineRunner {
         auction8.setEnd_time(Timestamp.valueOf(ldt8));
         auction8.setSeller_id("eric.rl@me.com");
         auction8.setStart_price((float) 250.0);
-        auction1.setImage("exampleImage");
+        auction8.setImage("Example.jpg");
         AuctionRepo.save(auction8);
 
         Auction auction9 = new Auction();
@@ -148,7 +148,7 @@ public class CreateDBData implements CommandLineRunner {
         auction9.setEnd_time(Timestamp.valueOf(ldt9));
         auction9.setSeller_id("eric.rl@me.com");
         auction9.setStart_price((float) 350.0);
-        auction1.setImage("exampleImage");
+        auction9.setImage("Example.jpg");
         AuctionRepo.save(auction9);
 
         Auction auction10 = new Auction();
@@ -159,7 +159,7 @@ public class CreateDBData implements CommandLineRunner {
         auction10.setEnd_time(Timestamp.valueOf(ldt10));
         auction10.setSeller_id("eric.rl@me.com");
         auction10.setStart_price((float) 450.0);
-        auction1.setImage("exampleImage");
+        auction10.setImage("Example.jpg");
         AuctionRepo.save(auction10);
 
         Auction auction11 = new Auction();
@@ -170,7 +170,7 @@ public class CreateDBData implements CommandLineRunner {
         auction11.setEnd_time(Timestamp.valueOf(ldt11));
         auction11.setSeller_id("eric.rl@me.com");
         auction11.setStart_price((float) 550.0);
-        auction1.setImage("exampleImage");
+        auction11.setImage("Example.jpg");
         AuctionRepo.save(auction11);
 
         Auction auction12 = new Auction();
@@ -181,7 +181,7 @@ public class CreateDBData implements CommandLineRunner {
         auction12.setEnd_time(Timestamp.valueOf(ldt12));
         auction12.setSeller_id("eric.rl@me.com");
         auction12.setStart_price((float) 520.0);
-        auction1.setImage("exampleImage");
+        auction12.setImage("Example.jpg");
         AuctionRepo.save(auction12);
 
         Auction auction13 = new Auction();
@@ -192,7 +192,7 @@ public class CreateDBData implements CommandLineRunner {
         auction13.setEnd_time(Timestamp.valueOf(ldt13));
         auction13.setSeller_id("ted@gmail.com");
         auction13.setStart_price((float) 33.0);
-        auction1.setImage("exampleImage");
+        auction13.setImage("Example.jpg");
         AuctionRepo.save(auction13);
 
         Auction auction14 = new Auction();
@@ -203,7 +203,7 @@ public class CreateDBData implements CommandLineRunner {
         auction14.setEnd_time(Timestamp.valueOf(ldt14));
         auction14.setSeller_id("john.doe@gmail.com");
         auction14.setStart_price((float) 11.0);
-        auction1.setImage("exampleImage");
+        auction14.setImage("Example.jpg");
         AuctionRepo.save(auction14);
 
     }

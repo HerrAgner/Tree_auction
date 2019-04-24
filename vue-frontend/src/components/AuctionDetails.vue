@@ -107,30 +107,23 @@ export default {
       type: null,
       bidAlertText: "asd",
       elapse: null,
-      items: [
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg"
-        },
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg"
-        },
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg"
-        },
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg"
-        }
-      ]
+      items: []
     };
   },
   async created() {
     await this.$store.dispatch("getOneAuction", this.$route.params.id)
-    this.auction = this.$store.state.currentAuction;    
+    this.auction = this.$store.state.currentAuction;
 
     await this.$store.dispatch("getSeller", this.auction.seller_id)
     this.seller = this.$store.state.currentSeller;    
 
+    this.items =[{ src: await fetch("http://localhost:7999/images/" + this.auction.image).then(res => res.url)
+    }]
+    
     this.getBids();
+
+    // this.items = [{src:this.auction.image}]
+    await console.log(this.items)
   
     this.countdown = new Date(this.auction.end_time).toLocaleString()
     this.forceRerender();
