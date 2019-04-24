@@ -13,7 +13,6 @@
           <v-flex xs7 >
             <v-card-title primary-title>
               <div>
-                <div>{{auctionId}}</div>
                 <div class="headline">{{title}}</div>
                 <div>{{highestBid}} £ </div>
                 <div>{{bids}} bids</div>
