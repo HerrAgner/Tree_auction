@@ -107,20 +107,7 @@ export default {
       type: null,
       bidAlertText: "asd",
       elapse: null,
-      items: [
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg"
-        },
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg"
-        },
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg"
-        },
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg"
-        }
-      ]
+      items: []
     };
   },
   async created() {
@@ -131,6 +118,9 @@ export default {
     this.seller = this.$store.state.currentSeller;    
 
     this.getBids();
+
+    this.items = [{src:this.auction.image}]
+    console.log(this.items)
   
     this.countdown = new Date(this.auction.end_time).toLocaleString()
     this.forceRerender();
