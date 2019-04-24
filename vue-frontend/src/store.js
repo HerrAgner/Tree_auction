@@ -47,15 +47,12 @@ export default new Vuex.Store({
   },
   actions: {
     async getUsersFromDb() {
-      let users = await (await fetch(API_URL + "users")).json().catch(e => {});
-      console.log(users);
-      
+      let users = await (await fetch(API_URL + "users")).json().catch(e => {});      
       return users;
     },
     async getUserInfoFromDb(context, email) {  
       let user = await (await fetch(API_URL2 + "/" + email)).json().catch(e => {});
       if (user) {
-        console.log(user);
         this.commit("setUserInfo", user);
       }
       return user;
@@ -114,7 +111,6 @@ export default new Vuex.Store({
     },
 
     async addBidToDb(state, reqBody) {
-      console.log('helllllo');      
       await fetch(API_URL + "bids", {
         method: "POST",
         body: JSON.stringify(reqBody),
