@@ -87,7 +87,7 @@ export default {
     };
   },
   methods: {
-    addAuction() {
+    async addAuction() {
       if (this.date == "") {
         return alert("Please pick an end date");
       } else {
@@ -126,8 +126,8 @@ export default {
         //   auctionID: '1'
         // };
 
-        this.$store.dispatch("addAuctionToDB", productData);
-        this.$router.push("/"); //Går till startsidan
+        await this.$store.dispatch("addAuctionToDB", productData);
+        await this.$router.push("/"); //Går till startsidan
       }
     },
     onPickFile() {
@@ -194,7 +194,7 @@ export default {
     if (this.$store.state.status === false) {
       this.$router.push({ path: "/login" });
     }
-  }
+  },
 };
 </script>
 
