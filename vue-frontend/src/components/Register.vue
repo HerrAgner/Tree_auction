@@ -97,7 +97,7 @@ export default {
                     this.messageToClient = 'Wrong input of email!'
                 }else {
                     this.$store.state.userInfo = [];
-                    let u = await this.$store.dispatch('getUserInfoFromDb', this.email);                
+                    await this.$store.dispatch('getUserInfoFromDb', this.email);                
                     if (this.$store.state.userInfo.email === undefined){
                         this.messageToClient = '';
                         this.snackbar = true;

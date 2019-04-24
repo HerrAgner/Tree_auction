@@ -223,10 +223,9 @@ export default {
     },
     showCountdownTimer() {
       let ONE_DAY = new Date().getTime() + (24 * 60 * 60 * 1000)
-        let endtime = new Date().getTime()
       if (new Date(ONE_DAY) <= new Date(this.auction.end_time).getTime()) {
           return false;
-      } else if (new Date(endtime) > new Date(this.auction.end_time).getTime()){
+      } else if (new Date().getTime() > new Date(this.auction.end_time).getTime()){
         this.auctionEnded = true;
         return false;
       }
