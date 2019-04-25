@@ -145,7 +145,8 @@ export default {
           amount: bid,
           auctionId: this.auction.id,
           bidder_id: this.$store.state.userInfo.email,
-          time: new Date().toJSON()
+          time: new Date().toJSON(),
+          type: "bid"
         };
         await this.$store.dispatch("addBidToDb", bidObject);
         await this.getBids();

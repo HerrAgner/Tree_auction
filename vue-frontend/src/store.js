@@ -6,12 +6,13 @@ Vue.use(Vuex);
 const API_URL = "http://localhost:7999/api/";
 const API_URLLog = "http://localhost:7999/";
 
+
 function transformRequest(jsonData = {}){
   return Object.entries(jsonData)
     .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
     .join('&');
 }
-
+import {ws} from '@/main.js'
 export default new Vuex.Store({
   state: {
     auctions: [],
@@ -125,6 +126,7 @@ export default new Vuex.Store({
         body: JSON.stringify(reqBody),
         headers: {"Content-Type": "application/json"}
       });
+      ws.send(JSON.stringify(reqBody))
     },
 
 
