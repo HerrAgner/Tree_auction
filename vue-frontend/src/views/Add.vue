@@ -58,7 +58,7 @@
             accept="image/*"
             @change="onFilePicked"
             value="Upload file(s)"
-            required
+            multiple
           >
           <v-btn small type="submit" form="addAuction" :disabled="!formIsValid">Add Auction</v-btn>
         </v-form>
@@ -82,6 +82,7 @@ export default {
       price: "",
       imageUrl: "",
       image: null,
+      images: [],
       date: "",
       rules: [v => v.length <= 40 || "Max 40 characters"],
       textRules: [v => v.length <= 300 || "Max 300 characters"],
@@ -91,7 +92,7 @@ export default {
   },
   methods: {
     async addAuction() {
-      this.uploadFiles(this.formData)
+      await this.uploadFiles(this.formData)
         .then(image => {
           this.image = image;
           console.log(this.image);
@@ -142,15 +143,16 @@ export default {
         return alert("Please add a valid file!"); //Validering av fil
       }
       this.fileReader.addEventListener("load", () => {
-        this.imageUrl = this.fileReader.result;
-        console.log("fileReader.addEventListener" + this.imageUrl); //För att visa bilden
+        this.imageUrl = this.fileReader.result; //För att visa bilden
       });
       this.fileReader.readAsDataURL(files[0]);
       this.image = files[0];
-      this.formData = this.formData.append("files", files[0], files[0].name);
+      this.formData.append("files", files[0], files[0].name);
+
+      console.log("this.formData " + this.formData)
+      console.log("this.image " + this.image)
     },
-    uploadFiles(formData) {
-      //Spara till disk
+    uploadFiles(formData) { //Spara till disk
       console.log("UploadFiles(formData");
       return fetch("http://localhost:7999/upload-files", {
         method: "POST",
