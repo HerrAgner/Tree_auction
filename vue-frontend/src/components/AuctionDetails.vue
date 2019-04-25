@@ -128,9 +128,9 @@ export default {
     this.forceRerender();
   },
   methods: {
-    async getBids() {      
-      await this.$store.dispatch("getBidsForOneAuction", this.auction.id)
-      this.bids = this.$store.state.currentBids;
+    async getBids() {
+      this.bids = await this.$store.dispatch("getBidsForOneAuction", this.auction.id).then(res => res);
+      // this.bids = this.$store.state.currentBids;
       this.bids.sort((a, b) => b.amount - a.amount);
       if (this.bids.length === 0) {
         this.highestBid = this.auction.start_price;

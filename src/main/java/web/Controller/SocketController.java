@@ -1,6 +1,7 @@
 package web.Controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -32,12 +33,18 @@ public class SocketController extends TextWebSocketHandler {
         // Example with a generic Map instead of converting the JSON to a specific class
          Map keysAndValues = new Gson().fromJson(message.getPayload(), Map.class);
         // Get the value of a key named "firstname"
+
         if (keysAndValues.get("type").equals("bid")) {
             Bid bid = new Bid();
             bid.setAuctionId(Double.valueOf(String.valueOf(keysAndValues.get("auctionId"))).intValue());
             bid.setAmount(Float.valueOf((String) keysAndValues.get("amount")));
-            socketService.sendToAll(new Gson().toJson(bid));
+            socketService.sendToAll(new Gson().toJson(bid, Bid.class));
+            Gson gson = new GsonBuilder()
+                  
+                    .create();
+            String json = gson.toJson(bid, Bid.class);
 
+            System.out.println(json);
         }
 
     }
