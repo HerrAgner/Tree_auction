@@ -43,7 +43,7 @@
                 required
                 v-model="bidField"
                 prefix="£"
-                mask="########"
+                mask="######"
                 
                 >{{ bidField }}
               </v-text-field>
@@ -123,7 +123,6 @@ export default {
     this.getBids();
 
     // this.items = [{src:this.auction.image}]
-    await console.log(this.items)
   
     this.countdown = new Date(this.auction.end_time).toLocaleString()
     this.forceRerender();
