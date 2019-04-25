@@ -7,6 +7,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import web.Entity.Bid;
+import web.Entity.Chat;
 import web.Entity.User;
 import web.SocketService;
 
@@ -37,6 +38,14 @@ public class SocketController extends TextWebSocketHandler {
             bid.setAuctionId(Double.valueOf(String.valueOf(keysAndValues.get("auctionId"))).intValue());
             bid.setAmount(Float.valueOf((String) keysAndValues.get("amount")));
             socketService.sendToAll(new Gson().toJson(bid));
+
+        }
+
+        if (keysAndValues.get("type").equals("chat")) {
+            Chat chat = new Chat();
+            chat.setId(Double.valueOf(String.valueOf(keysAndValues.get("senderID"))).intValue());
+            chat.setMessage((String) keysAndValues.get("message"));
+            socketService.sendToAll(new Gson().toJson(chat));
 
         }
 
