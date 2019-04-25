@@ -158,7 +158,7 @@ export default {
     validate() {
       if (this.$refs.form.validate()) {
         this.snackbar = true;
-        if (this.$store.state.status === true) {
+        if (this.$store.state.status === false) {
           this.showAlert("error", "You must be logged in to place a bid.");
         } else if (this.$store.state.userInfo.email === this.auction.seller_id) {
           this.showAlert("error", "Can't bid on your own auction.");
