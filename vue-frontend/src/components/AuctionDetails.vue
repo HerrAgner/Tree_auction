@@ -33,6 +33,7 @@
             </v-container>
           </v-layout>
           <div id="countdownTimerBox" v-if="showCountdownTimer" :key="countdownKey">
+             <p>Time left:</p>
             <flip-countdown id="countdownTimer" :deadline="countdown"></flip-countdown>
           </div>
           <v-card id="bidCard" v-if="!auctionEnded">
@@ -284,15 +285,18 @@ export default {
 .bid p {
   margin: 0;
 }
-    
-    #countdownTimer {
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-  
+#countdownTimerBox {
+  margin-top: 50px;
+  text-align: center;
+}  
+#countdownTimer {
+  margin-top: -20px;
+
+} 
+
   #ended {
     color: red;
   }
+
+
 </style>
