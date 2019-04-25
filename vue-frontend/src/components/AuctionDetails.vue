@@ -228,7 +228,10 @@ export default {
       }
     },
     bidUpdate() {
-      if(this.$store.state.currentBids[0]) {
+      if (!this.$store.state.currentBids) {
+        this.highestBid = this.auction.start_price;
+      }
+      else if(this.$store.state.currentBids[0]) {
         this.highestBid = this.$store.state.currentBids[0].amount;
       } else {
         this.highestBid = this.auction.start_price;

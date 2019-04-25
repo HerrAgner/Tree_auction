@@ -57,6 +57,9 @@ export default new Vuex.Store({
             this.dispatch("getBidsForOneAuction", data.auctionId);
           }
         }
+        else if (data.type === "chat") {
+
+        }
       }
     },
     async getUsersFromDb() {

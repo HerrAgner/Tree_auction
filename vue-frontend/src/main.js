@@ -16,12 +16,7 @@ connect();
 
 function connect() {
   ws = new WebSocket('ws://localhost:7999/api/socket');
-  // ws.onmessage = (e) => {
-  //  console.log(JSON.parse(e.data).auctionId);
-  //   console.log(JSON.parse(e.data).amount);
-  //   console.log(JSON.parse(e.data).time);
-  //
-  // }
+
   ws.onopen = (e) => {
     isConnected = true;
     console.log("Connected!")
