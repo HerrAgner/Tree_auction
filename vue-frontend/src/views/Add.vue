@@ -64,7 +64,8 @@
         </v-form>
       </v-flex>
       <v-flex sm2 class="imageOne">
-        <img :src="imageUrl" height="200">
+        <v-img :src="imageUrl[0]" height="100" contain/>
+        <p>Primary image</p>
       </v-flex>
     </v-layout>
   </v-container>
@@ -90,6 +91,7 @@ export default {
       fileReader: new FileReader()
     };
   },
+
   methods: {
     async addAuction() {
       await this.uploadFiles(this.formData)
@@ -136,23 +138,29 @@ export default {
     },
     onFilePicked(event) {
       let files = event.target.files;
-      if (!files.length) return;
-      let fileName = files[0].name;
 
+      if (!files.length) return; //Validering
+      let fileName = files[0].name;
       if (fileName.lastIndexOf(".") <= 0) {
         return alert("Please add a valid file!"); //Validering av fil
       }
+
       this.fileReader.addEventListener("load", () => {
+        this.imageUrl = ""
+        console.log("this.imageUrl" + this.imageUrl)
         this.imageUrl = this.fileReader.result; //För att visa bilden
+        console.log("this.fileReader.result: " + this.fileReader.result);
+        console.log("this.imageUrl" + this.imageUrl);
       });
       this.fileReader.readAsDataURL(files[0]);
       this.image = files[0];
       this.formData.append("files", files[0], files[0].name);
 
-      console.log("this.formData " + this.formData)
-      console.log("this.image " + this.image)
+      console.log("this.formData " + this.formData);
+      console.log("this.image " + this.image);
     },
-    uploadFiles(formData) { //Spara till disk
+    uploadFiles(formData) {
+      //Spara till disk
       console.log("UploadFiles(formData");
       return fetch("http://localhost:7999/upload-files", {
         method: "POST",
@@ -184,10 +192,18 @@ export default {
       return maxDate;
     }
   },
-  created() {
+  created: async function() {
     if (this.$store.state.status === false) {
       this.$router.push({ path: "/login" });
     }
+
+    this.imageUrl = [
+      {
+        src: await fetch("http://localhost:7999/images/noImage.jpg").then(
+          res => res.url
+        )
+      }
+    ];
   }
 };
 </script>
@@ -197,7 +213,6 @@ export default {
   margin-top: -220px;
 }
 .imageOne {
-  margin-top: -64px;
   margin-left: 20px;
 }
 </style>
