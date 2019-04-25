@@ -101,6 +101,7 @@ export default {
   },
   mounted() {
     if (this.diff !== 0) {
+      
       this.show = true;
     }
   },

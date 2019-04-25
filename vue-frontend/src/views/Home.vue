@@ -11,7 +11,7 @@
     </div>
     <div class="container grid-list-xl">
      <div class="layout wrap" v-for="auction in this.pageContent" :key="auction.id">
-        <AuctionListItem :auctionId = "auction.id" :title="auction.title" image="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
+        <AuctionListItem :auctionId = "auction.id" :title="auction.title" :image="auction.image"
          :endTime="auction.end_time" :sellerId="auction.seller_id" :startPrice="auction.start_price" ></AuctionListItem> 
        </div>
     </div>

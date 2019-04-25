@@ -105,11 +105,6 @@ export default {
         );
         dateEnd = dateEnd.toISOString().replace("Z", "+0000");
 
-        console.log("this.image.name= " + this.image.name)
-        console.log("this.image= " + this.image)
-
-
-
         const productData = JSON.stringify({
           title: this.title,
           description: this.description,
@@ -118,13 +113,8 @@ export default {
           end_time: dateEnd,
           addedTime: dateToday,
           image: this.image[0]
-          
         });
         console.log("productData: " + productData)
-        // const pictureData = {
-        //   picture: {title: 'hej'},
-        //   auctionID: '1'
-        // };
 
         await this.$store.dispatch("addAuctionToDB", productData);
         await this.$router.push("/"); //Går till startsidan

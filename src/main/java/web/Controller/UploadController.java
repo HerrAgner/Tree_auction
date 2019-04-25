@@ -48,7 +48,7 @@ public class UploadController {
 
             try {
                 file.transferTo(targetLocation);
-                resultingFilepaths.add(frontendUploadDirectory + filename);
+                resultingFilepaths.add(filename);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
