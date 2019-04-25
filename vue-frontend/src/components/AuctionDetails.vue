@@ -79,7 +79,7 @@
           <p>{{ seller.firstname }} {{ seller.lastname }}</p>
         </v-flex>
         <v-flex xs8>
-          <v-btn round color="success" dark>Chat with seller</v-btn>
+          <v-btn round color="success" @click="goToChat" dark>Chat with seller</v-btn>
         </v-flex>
       </v-card>
     </v-layout>
@@ -88,6 +88,7 @@
 
 <script>
 import FlipCountdown from "@/components/FlipCountdown.vue"
+import router from '@/router.js'
 
 export default {
   components: { FlipCountdown },
@@ -128,6 +129,9 @@ export default {
     this.forceRerender();
   },
   methods: {
+    goToChat(){
+      router.push({ path: '/chat' }) 
+    },
     async getBids() {      
       await this.$store.dispatch("getBidsForOneAuction", this.auction.id)
       this.bids = this.$store.state.currentBids;

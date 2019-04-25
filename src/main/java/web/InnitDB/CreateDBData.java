@@ -6,8 +6,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import web.Entity.Auction;
+import web.Entity.Chat;
 import web.Entity.User;
 import web.Repository.AuctionRepository;
+import web.Repository.ChatRepository;
 import web.Repository.UserRepository;
 
 import java.sql.Timestamp;
@@ -25,8 +27,14 @@ public class CreateDBData implements CommandLineRunner {
     @Autowired
     AuctionRepository AuctionRepo;
 
+    @Autowired
+    ChatRepository ChatRepo;
+
     @Override
     public void run(String... args) throws Exception {
+        Chat chat = new Chat();
+        ChatRepo.save(chat);
+
         User user1 = new User();
         user1.setPassword(encoder.encode("password1234"));  //passwordet ska crypteras innan det laddas upp till DB
         user1.setEmail("john.doe@gmail.com");

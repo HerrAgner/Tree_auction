@@ -30,6 +30,12 @@ export default new Router({
         import(/* webpackChunkName: "about" */ "./views/LoginRegister.vue")
     },
     {
+      path: "/chat",
+      name: "ChatPage",
+      component: () =>
+        import(/* webpackChunkName: "about" */ "./views/ChatPage.vue")
+    },
+    {
       path: "/auction/:id",
       name: "AuctionDetailsView",
       component: () =>
