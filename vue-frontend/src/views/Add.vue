@@ -49,23 +49,55 @@
       <v-flex xs10></v-flex>
       <v-flex class="mb-5" xs2>
         <v-form method="POST" @submit.prevent="addAuction" id="addAuction">
-          <v-btn small raised @click="onPickFile">Add Image</v-btn>
+          <v-btn class="imageBtn" small raised @click="onPickFilePrimary
+    ">Add Image</v-btn>
           <input
             type="file"
-            name="files"
+            name="filesPrimary"
             style="display:none"
-            ref="fileInput"
+            ref="fileInputPrimary"  
+          
             accept="image/*"
             @change="onFilePicked"
             value="Upload file(s)"
-            multiple
+          >
+          <v-btn class="imageBtn2" small raised @click="onPickFileSecondary
+    ">Add Image</v-btn>
+          <input
+            type="file"
+            name="filesSecondary"
+            style="display:none"
+            ref="fileInputSecondary"
+            accept="image/*"
+            @change="onSecondFilePicked"
+            value="Upload file(s)"
+          >
+
+          <v-btn class="imageBtn3" small raised @click="onPickFileThird
+    ">Add Image</v-btn>
+          <input
+            type="file"
+            name="filesThird"
+            style="display:none"
+            ref="fileInputThird"
+            accept="image/*"
+            @change="onThirdFilePicked"
+            value="Upload file(s)"
           >
           <v-btn small type="submit" form="addAuction" :disabled="!formIsValid">Add Auction</v-btn>
         </v-form>
       </v-flex>
       <v-flex sm2 class="imageOne">
-        <v-img :src="imageUrl[0]" height="100" contain/>
+        <v-img :src="imageUrl" height="100" contain/>
         <p>Primary image</p>
+      </v-flex>
+      <v-flex sm2 class="imageOne">
+        <v-img :src="imageUrlExtra1" height="100" contain/>
+        <p>Extra image</p>
+      </v-flex>
+      <v-flex sm2 class="imageOne">
+        <v-img :src="imageUrlExtra2" height="100" contain/>
+        <p>Extra image</p>
       </v-flex>
     </v-layout>
   </v-container>
@@ -82,13 +114,16 @@ export default {
       description: "",
       price: "",
       imageUrl: "",
+      imageUrlExtra1: "",
+      imageUrlExtra2: "",
       image: null,
       images: [],
       date: "",
       rules: [v => v.length <= 40 || "Max 40 characters"],
       textRules: [v => v.length <= 300 || "Max 300 characters"],
-      formData: new FormData(),
-      fileReader: new FileReader()
+      fileReader: new FileReader(),
+      formData: new FormData()
+
     };
   },
 
@@ -97,9 +132,6 @@ export default {
       await this.uploadFiles(this.formData)
         .then(image => {
           this.image = image;
-          console.log(this.image);
-          console.log(this.formData);
-          console.log("this.uploadFiles(formData) i addAuction");
         })
         .catch(console.warn);
 
@@ -133,11 +165,18 @@ export default {
         // await this.$router.push("/"); //Går till startsidan
       }
     },
-    onPickFile() {
-      this.$refs.fileInput.click(); //Reffererar till fileInput så man kan ha annat utseende på knapp
+    onPickFilePrimary() {
+      this.$refs.fileInputPrimary.click(); //Reffererar till fileInput så man kan ha annat utseende på knapp
+    },
+    onPickFileSecondary() {
+      this.$refs.fileInputSecondary.click(); //Reffererar till fileInput så man kan ha annat utseende på knapp
+    },
+    onPickFileThird() {
+      this.$refs.fileInputThird.click(); //Reffererar till fileInput så man kan ha annat utseende på knapp
     },
     onFilePicked(event) {
       let files = event.target.files;
+
 
       if (!files.length) return; //Validering
       let fileName = files[0].name;
@@ -146,18 +185,50 @@ export default {
       }
 
       this.fileReader.addEventListener("load", () => {
-        this.imageUrl = ""
-        console.log("this.imageUrl" + this.imageUrl)
+        // console.log("this.imageUrl" + this.imageUrl);
         this.imageUrl = this.fileReader.result; //För att visa bilden
-        console.log("this.fileReader.result: " + this.fileReader.result);
-        console.log("this.imageUrl" + this.imageUrl);
       });
       this.fileReader.readAsDataURL(files[0]);
-      this.image = files[0];
+      // this.image = files[0];
       this.formData.append("files", files[0], files[0].name);
 
-      console.log("this.formData " + this.formData);
-      console.log("this.image " + this.image);
+
+    },
+    onSecondFilePicked(event) {
+      let filesSecondary = event.target.files;
+      let formData2 = new FormData();
+      let fileReader2 = new FileReader();
+
+      // if (!files.length) return; //Validering
+      // let fileName = files[0].name;
+      // if (fileName.lastIndexOf(".") <= 0) {
+      //   return alert("Please add a valid file!"); //Validering av fil
+      // }
+
+      fileReader2.addEventListener("load", () => {
+        this.imageUrlExtra1 = fileReader2.result; //För att visa bilden
+      });
+      fileReader2.readAsDataURL(filesSecondary[0]);
+      // this.image = files[0];
+      // this.formData.append("files", files[0], files[0].name);
+    },
+    onThirdFilePicked(event) {
+      let filesThird = event.target.files;
+      let formData3 = new FormData();
+      let fileReader3 = new FileReader();
+
+      // if (!files.length) return; //Validering
+      // let fileName = files[0].name;
+      // if (fileName.lastIndexOf(".") <= 0) {
+      //   return alert("Please add a valid file!"); //Validering av fil
+      // }
+
+      fileReader3.addEventListener("load", () => {
+        this.imageUrlExtra2 = fileReader3.result; //För att visa bilden
+      });
+      fileReader3.readAsDataURL(filesThird[0]);
+      // this.image = files[0];
+      // this.formData.append("files", files[0], files[0].name);
     },
     uploadFiles(formData) {
       //Spara till disk
@@ -175,8 +246,7 @@ export default {
         this.description !== "" &&
         this.price !== "" &&
         this.title.length < 40 &&
-        this.description.length < 300 &&
-        this.image !== null
+        this.description.length < 300 
       );
     },
     minDate() {
@@ -197,13 +267,21 @@ export default {
       this.$router.push({ path: "/login" });
     }
 
-    this.imageUrl = [
-      {
-        src: await fetch("http://localhost:7999/images/noImage.jpg").then(
-          res => res.url
-        )
-      }
-    ];
+    this.imageUrl = {
+      src: await fetch("http://localhost:7999/images/noImage.jpg").then(
+        res => res.url
+      )
+    };
+    this.imageUrlExtra1 = {
+      src: await fetch("http://localhost:7999/images/noImage.jpg").then(
+        res => res.url
+      )
+    };
+    this.imageUrlExtra2 = {
+      src: await fetch("http://localhost:7999/images/noImage.jpg").then(
+        res => res.url
+      )
+    };
   }
 };
 </script>
@@ -214,5 +292,18 @@ export default {
 }
 .imageOne {
   margin-left: 20px;
+}
+.imageBtn {
+  margin-left: 140%;
+  margin-top: -40%;
+}
+.imageBtn2 {
+  margin-left: 254%;
+  margin-top: -70%;
+}
+.imageBtn3 {
+  margin-left: 369%;
+  margin-top: -100%;
+  z-index: 1;
 }
 </style>

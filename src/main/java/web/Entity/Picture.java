@@ -8,8 +8,8 @@ public class Picture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private final String picture = null;
-    private final int auction_id = 0;
+    private String picture = null;
+    private int auction_id;
 
     public Picture() {
 
