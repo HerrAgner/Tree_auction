@@ -49,7 +49,7 @@
       <v-flex xs10></v-flex>
       <v-flex class="mb-5" xs2>
         <v-form method="POST" @submit.prevent="addAuction" id="addAuction">
-          <v-btn raised @click="onPickFile">Add Image</v-btn>
+          <v-btn small raised @click="onPickFile">Add Image</v-btn>
           <input
             type="file"
             name="files"
@@ -58,8 +58,9 @@
             accept="image/*"
             @change="onFilePicked"
             value="Upload file(s)"
+            required
           >
-          <v-btn type="submit" form="addAuction" :disabled="!formIsValid">Add Auction</v-btn>
+          <v-btn small type="submit" form="addAuction" :disabled="!formIsValid">Add Auction</v-btn>
         </v-form>
       </v-flex>
       <v-flex sm2 class="imageOne">
@@ -164,7 +165,8 @@ export default {
         this.description !== "" &&
         this.price !== "" &&
         this.title.length < 40 &&
-        this.description.length < 300
+        this.description.length < 300 &&
+        this.image !== null
       );
     },
     minDate() {
@@ -193,7 +195,7 @@ export default {
   margin-top: -220px;
 }
 .imageOne {
-  margin-top: -84px;
+  margin-top: -64px;
   margin-left: 20px;
 }
 </style>
