@@ -6,7 +6,7 @@ Vue.use(Vuex);
 const API_URL = "http://localhost:7999/api/";
 const API_URLLog = "http://localhost:7999/";
 
-function transformRequest(jsonData = {}){
+function transformRequest(jsonData = {}) {
   return Object.entries(jsonData)
     .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
     .join('&');
@@ -26,7 +26,7 @@ export default new Vuex.Store({
     setAuctions(state, auctions) {
       state.auctions = auctions;
     },
-    setUserInfo(state, user) {      
+    setUserInfo(state, user) {
       state.userInfo = user;
     },
     setCurrentAuction(state, auction) {
@@ -35,64 +35,64 @@ export default new Vuex.Store({
     setCurrentSeller(state, seller) {
       state.currentSeller = seller;
     },
-    setStatus(state, status){
+    setStatus(state, status) {
       state.status = status;
     },
     setAmountOfAuctions(state, amountOfAuctions) {
       state.amountOfAuctions = amountOfAuctions;
     },
-    setCurrentBids(state, currBids){
+    setCurrentBids(state, currBids) {
       state.currentBids = currBids;
     }
   },
   actions: {
     async getUsersFromDb() {
-      let users = await (await fetch(API_URL + "users")).json().catch(e => {});      
+      let users = await (await fetch(API_URL + "users")).json().catch(e => { });
       return users;
     },
-    async getUserInfoFromDb(context, email) {  
-      let user = await (await fetch(API_URL + "users/" + email)).json().catch(e => {});
+    async getUserInfoFromDb(context, email) {
+      let user = await (await fetch(API_URL + "users/" + email)).json().catch(e => { });
       if (user) {
         this.commit("setUserInfo", user);
       }
       return user;
     },
-    async login(context, info) {       
+    async login(context, info) {
       await fetch(API_URLLog + 'login', {
         method: "POST",
-        body: transformRequest({username: info.email, password: info.password}),
+        body: transformRequest({ username: info.email, password: info.password }),
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       })
-      .then(response => {
-        let successfulLogin = !response.url.includes("error");
-        console.log("the login result is:", successfulLogin);
-        if(successfulLogin){
-          this.commit("setStatus", successfulLogin);
-          router.push({ path: '/' }) 
-          this.dispatch('getUserInfoFromDb', info.email)         
-        }
-      })
+        .then(response => {
+          let successfulLogin = !response.url.includes("error");
+          console.log("the login result is:", successfulLogin);
+          if (successfulLogin) {
+            this.commit("setStatus", successfulLogin);
+            router.push({ path: '/' })
+            this.dispatch('getUserInfoFromDb', info.email)
+          }
+        })
     },
-    async logout(context) {       
+    async logout(context) {
       await fetch(API_URLLog + 'logout', {
         method: "GET",
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       })
-      .then(response => {
-        let successfulLogin = !response.url.includes("error");
-        console.log("the logout result is:", successfulLogin);        
-        if(successfulLogin){
-          this.commit("setStatus", !successfulLogin);
-          router.push({ path: '/' }) 
-        }
-      })
+        .then(response => {
+          let successfulLogin = !response.url.includes("error");
+          console.log("the logout result is:", successfulLogin);
+          if (successfulLogin) {
+            this.commit("setStatus", !successfulLogin);
+            router.push({ path: '/' })
+          }
+        })
     },
-    async addUserToDB(state, reqBody) {      
+    async addUserToDB(state, reqBody) {
       await fetch(API_URL + "users", {
         method: "POST",
         body: JSON.stringify(reqBody),
         headers: { "Content-Type": "application/json" }
-      }).catch(e => {});
+      }).catch(e => { });
 
       // Update the state.blogPosts since we just added a new one
       // this.dispatch("getUsersFromDb");
@@ -107,23 +107,31 @@ export default new Vuex.Store({
       this.commit("setAuctions", auctions);
       // this.commit("setCurrentAuction", auctions[0]);
     },
+    //LÄGG TILL AUCTIONS/BILDER ________________________________
     async addAuctionToDB(state, reqBody) {
       await fetch(API_URL + "auctions", {
         method: "POST",
         body: reqBody,
         headers: { "Content-Type": "application/json" }
       });
-      
-
       // Update the state.blogPosts since we just added a new one
       this.dispatch("getAuctionsFromDb");
     },
+    async addImagesToDB(state, reqBody) {
+      console.log("I addImagesToDB")
+      await fetch(API_URL + "pictures", {
+        method: "POST",
+        body: reqBody,
+        headers: { "Content-Type": "application/json" }
+      });
+    },
+    //__________________________________________________________________
 
     async addBidToDb(state, reqBody) {
       await fetch(API_URL + "bids", {
         method: "POST",
         body: JSON.stringify(reqBody),
-        headers: {"Content-Type": "application/json"}
+        headers: { "Content-Type": "application/json" }
       });
     },
 

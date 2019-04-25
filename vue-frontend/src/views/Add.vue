@@ -55,8 +55,7 @@
             type="file"
             name="filesPrimary"
             style="display:none"
-            ref="fileInputPrimary"  
-          
+            ref="fileInputPrimary"
             accept="image/*"
             @change="onFilePicked"
             value="Upload file(s)"
@@ -122,8 +121,8 @@ export default {
       rules: [v => v.length <= 40 || "Max 40 characters"],
       textRules: [v => v.length <= 300 || "Max 300 characters"],
       fileReader: new FileReader(),
-      formData: new FormData()
-
+      formData: new FormData(),
+      formDataSecond: new FormData()
     };
   },
 
@@ -134,6 +133,14 @@ export default {
           this.image = image;
         })
         .catch(console.warn);
+
+      console.log("Från addAuction " + this.formDataSecond);
+      await this.uploadFiles(this.formDataSecond)
+        .then(images => {
+          this.images = images;
+        })
+        .catch(console.warn)
+      console.log("Från addAuction " + this.formDataSecond);
 
       if (this.date == "") {
         return alert("Please pick an end date");
@@ -159,10 +166,22 @@ export default {
           addedTime: dateToday,
           image: this.image[0]
         });
-        console.log("this.image[0] " + this.image[0]);
 
         await this.$store.dispatch("addAuctionToDB", productData);
         // await this.$router.push("/"); //Går till startsidan
+
+        console.log(this.images.length)
+        for (let i = 0; i<this.images.length; i++) {
+
+          const imageData = JSON.stringify({
+            picture: this.images[i],
+            auction_id: "10"
+          });
+          console.log("Innan det skickas iväg")
+  
+          await this.$store.dispatch("addImagesToDB", imageData);
+
+        }
       }
     },
     onPickFilePrimary() {
@@ -176,63 +195,56 @@ export default {
     },
     onFilePicked(event) {
       let files = event.target.files;
-
-
       if (!files.length) return; //Validering
       let fileName = files[0].name;
       if (fileName.lastIndexOf(".") <= 0) {
         return alert("Please add a valid file!"); //Validering av fil
       }
-
       this.fileReader.addEventListener("load", () => {
-        // console.log("this.imageUrl" + this.imageUrl);
         this.imageUrl = this.fileReader.result; //För att visa bilden
       });
       this.fileReader.readAsDataURL(files[0]);
-      // this.image = files[0];
       this.formData.append("files", files[0], files[0].name);
-
-
     },
     onSecondFilePicked(event) {
       let filesSecondary = event.target.files;
-      let formData2 = new FormData();
       let fileReader2 = new FileReader();
 
-      // if (!files.length) return; //Validering
-      // let fileName = files[0].name;
-      // if (fileName.lastIndexOf(".") <= 0) {
-      //   return alert("Please add a valid file!"); //Validering av fil
-      // }
-
+      if (!filesSecondary.length) return; //Validering
+      if (filesSecondary[0].name.lastIndexOf(".") <= 0) {
+        return alert("Please add a valid file!"); //Validering av fil
+      }
       fileReader2.addEventListener("load", () => {
         this.imageUrlExtra1 = fileReader2.result; //För att visa bilden
       });
       fileReader2.readAsDataURL(filesSecondary[0]);
-      // this.image = files[0];
-      // this.formData.append("files", files[0], files[0].name);
+      this.formDataSecond.append(
+        "files",
+        filesSecondary[0],
+        filesSecondary[0].name
+      );
+
     },
     onThirdFilePicked(event) {
       let filesThird = event.target.files;
-      let formData3 = new FormData();
       let fileReader3 = new FileReader();
 
-      // if (!files.length) return; //Validering
-      // let fileName = files[0].name;
-      // if (fileName.lastIndexOf(".") <= 0) {
-      //   return alert("Please add a valid file!"); //Validering av fil
-      // }
-
+      if (!filesThird.length) return; //Validering
+      if (filesThird[0].name.lastIndexOf(".") <= 0) {
+        return alert("Please add a valid file!"); //Validering av fil
+      }
       fileReader3.addEventListener("load", () => {
         this.imageUrlExtra2 = fileReader3.result; //För att visa bilden
       });
       fileReader3.readAsDataURL(filesThird[0]);
-      // this.image = files[0];
-      // this.formData.append("files", files[0], files[0].name);
+      this.formDataSecond.append(
+        "files",
+        filesThird[0],
+        filesThird[0].name
+      );
     },
     uploadFiles(formData) {
       //Spara till disk
-      console.log("UploadFiles(formData");
       return fetch("http://localhost:7999/upload-files", {
         method: "POST",
         body: formData
@@ -246,7 +258,7 @@ export default {
         this.description !== "" &&
         this.price !== "" &&
         this.title.length < 40 &&
-        this.description.length < 300 
+        this.description.length < 300
       );
     },
     minDate() {
