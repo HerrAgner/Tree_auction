@@ -83,16 +83,25 @@ export default {
       image: null,
       date: "",
       rules: [v => v.length <= 40 || "Max 40 characters"],
-      textRules: [v => v.length <= 300 || "Max 300 characters"]
+      textRules: [v => v.length <= 300 || "Max 300 characters"],
+      formData: new FormData(),
+      fileReader: new FileReader()
     };
   },
   methods: {
     async addAuction() {
+      this.uploadFiles(this.formData)
+        .then(image => {
+          this.image = image;
+          console.log(this.image);
+          console.log(this.formData);
+          console.log("this.uploadFiles(formData) i addAuction");
+        })
+        .catch(console.warn);
+
       if (this.date == "") {
         return alert("Please pick an end date");
       } else {
-        console.log("Datum");
-
         var dateToday = new Date();
         var dateEnd = new Date(
           this.date +
@@ -114,43 +123,34 @@ export default {
           addedTime: dateToday,
           image: this.image[0]
         });
-        console.log("productData: " + productData)
+        console.log("this.image[0] " + this.image[0]);
 
         await this.$store.dispatch("addAuctionToDB", productData);
-        await this.$router.push("/"); //Går till startsidan
+        // await this.$router.push("/"); //Går till startsidan
       }
     },
     onPickFile() {
-      this.$refs.fileInput.click();
+      this.$refs.fileInput.click(); //Reffererar till fileInput så man kan ha annat utseende på knapp
     },
     onFilePicked(event) {
-      let formData = new FormData();
-
       let files = event.target.files;
       if (!files.length) return;
-
       let fileName = files[0].name;
-      console.log(fileName);
 
       if (fileName.lastIndexOf(".") <= 0) {
-        return alert("Please add a valid file!");
+        return alert("Please add a valid file!"); //Validering av fil
       }
-      const fileReader = new FileReader();
-      fileReader.addEventListener("load", () => {
-        this.imageUrl = fileReader.result;
+      this.fileReader.addEventListener("load", () => {
+        this.imageUrl = this.fileReader.result;
+        console.log("fileReader.addEventListener" + this.imageUrl); //För att visa bilden
       });
-      fileReader.readAsDataURL(files[0]);
+      this.fileReader.readAsDataURL(files[0]);
       this.image = files[0];
-
-      formData.append("files", files[0], files[0].name);
-
-      this.uploadFiles(formData)
-        .then(image => {
-          this.image = image;
-        })
-        .catch(console.warn);
+      this.formData = this.formData.append("files", files[0], files[0].name);
     },
     uploadFiles(formData) {
+      //Spara till disk
+      console.log("UploadFiles(formData");
       return fetch("http://localhost:7999/upload-files", {
         method: "POST",
         body: formData
@@ -184,7 +184,7 @@ export default {
     if (this.$store.state.status === false) {
       this.$router.push({ path: "/login" });
     }
-  },
+  }
 };
 </script>
 
