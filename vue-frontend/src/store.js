@@ -51,15 +51,9 @@ export default new Vuex.Store({
   actions: {
     init() {
       ws.onmessage = (e) => {
-          console.log(e)
         let data = JSON.parse(e.data);
-        console.log(data)
         if(data.type === "bid") {
-          console.log(data.auctionId)
-          console.log(this.currentAuction)
-          console.log(this.userInfo.email)
-          if (data.auctionId === this.currentAuction) {
-
+          if (data.auctionId === this.state.currentAuction.id) {
             this.dispatch("getBidsForOneAuction", data.auctionId);
           }
         }
@@ -160,6 +154,8 @@ export default new Vuex.Store({
     },
     async getBidsForOneAuction(context, auctionId) {
       let bids = await (await fetch(API_URL + "bids/" + auctionId)).json();
+      bids.sort((a, b) => b.amount - a.amount);
+
       this.commit("setCurrentBids", bids);
       return bids;
     },
