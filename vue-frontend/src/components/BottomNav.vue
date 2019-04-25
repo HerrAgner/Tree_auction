@@ -40,7 +40,8 @@ export default {
     },
     methods:{
         changeStatus(){
-            this.$store.state.status = false;
+            if (this.$store.dispatch('logout')){
+            }
         }
     },
 

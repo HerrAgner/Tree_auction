@@ -25,8 +25,6 @@ export default {
     };
   },
   async created() {
-    // this.$store.dispatch("addPostToDB", { name: "sup", populationInMillions: 2 });
-    this.$store.dispatch("getAuctionsFromDb");
   }
 };
 </script>

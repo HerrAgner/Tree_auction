@@ -35,6 +35,7 @@
                 :counter="10"
                 :rules="phoneRules"
                 label="Phone number"
+                mask="### ### - ####"
                 required
                 ></v-text-field>
 
@@ -58,8 +59,8 @@
     </div>    
 </template>
 
-<script>
 
+<script>
 
 export default {
     data: () => ({
@@ -92,22 +93,30 @@ export default {
     methods: {
         async validate() {
             if (this.$refs.registerForm.validate()) {
-                this.$store.state.userInfo = [];
-                let u = await this.$store.dispatch('getUserInfoFromDb', this.email);                
-                if (this.$store.state.userInfo.email === undefined){
-                    this.messageToClient = '';
-                    this.snackbar = true;
-                    
-                    this.$store.dispatch('addUserToDB',{email: this.email,
-                                                         firstname:this.firstName,
-                                                         lastname: this.lastName,
-                                                         password: this.password,
-                                                         phone: this.phoneNumber})
-                    this.messageToClient = 'Successfully!'
-                }else{
-                    this.messageToClient = 'This email is already used!';
+                if (!await this.validEmail(this.email)){
+                    this.messageToClient = 'Wrong input of email!'
+                }else {
+                    this.$store.state.userInfo = [];
+                    await this.$store.dispatch('getUserInfoFromDb', this.email);                
+                    if (this.$store.state.userInfo.email === undefined){
+                        this.messageToClient = '';
+                        this.snackbar = true;
+                        
+                        this.$store.dispatch('addUserToDB',{email: this.email,
+                                                            firstname:this.firstName,
+                                                            lastname: this.lastName,
+                                                            password: this.password,
+                                                            phone: this.phoneNumber})
+                        this.messageToClient = 'Successfully!'
+                    }else{
+                        this.messageToClient = 'This email is already used!';
+                    }
                 }
             }
+        },
+        validEmail(email) {
+            let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
         }
     },
 }

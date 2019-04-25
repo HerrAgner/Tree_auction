@@ -5,7 +5,7 @@
         <v-layout >
           <v-flex xs6>
             <v-img
-              :src="image"
+              :src="items[0]"
               height="125px"
               contain
             ></v-img>
@@ -13,7 +13,6 @@
           <v-flex xs7 >
             <v-card-title primary-title>
               <div>
-                <div>{{auctionId}}</div>
                 <div class="headline">{{title}}</div>
                 <div>{{highestBid}} £ </div>
                 <div>{{bids}} bids</div>
@@ -36,14 +35,18 @@ export default {
       auctionLink: "/auction/",
       highestBid : null,
       bids: null,
-      sellerName: null
-
+      sellerName: null,
+      items: []
     };
   },
 created: async function() {
   this.auctionLink += this.auctionId;
   this.getBids();
-
+  
+  
+  // flytta till store. Ta bort härifrån och från auctionDetails
+  this.items = [{ src: await fetch("http://localhost:7999/images/" + this.image).then(res => res.url)
+  }]
   await this.$store.dispatch("getSeller", this.sellerId)
   this.sellerName = this.$store.state.currentSeller.firstname + " "+this.$store.state.currentSeller.lastname;
 },

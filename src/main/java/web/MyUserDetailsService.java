@@ -38,7 +38,12 @@ public class MyUserDetailsService implements UserDetailsService {
     }
 
     public void addUser(String firstname, String password, String email, String lastname, String phone){
-        User u = new User(firstname, encoder.encode(password), email, lastname, phone);
+        User u = new User();
+        u.setFirstName(firstname);
+        u.setPassword(encoder.encode(password));
+        u.setEmail(email);
+        u.setLastName(lastname);
+        u.setPhoneNumber(phone);
         try {
             repository.save(u);
         } catch (Exception ex) {

@@ -14,6 +14,16 @@ export default new Router({
       component: Home
     },
     {
+      path: "/page/:page",
+      name: "home/page",
+      component: Home
+    },
+    {
+      path: "/search/:search/page/:page",
+      name: "home/search",
+      component: Home
+    },
+    {
       path: "/login",
       name: "LoginRegister",
       component: () =>
@@ -33,6 +43,14 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () =>
         import(/* webpackChunkName: "about" */ "./views/Add.vue")
+    },
+    // using path "*" matches every route
+    // put this last to catch all missing routes
+    {
+      path: "*",
+      name: "Missing-Page",
+      component: () =>
+       import("./views/MissingPage.vue")
     }
   ]
 });

@@ -12,6 +12,8 @@ class MyWebMvcConfigurer implements WebMvcConfigurer {
         registry.addResourceHandler("/**").addResourceLocations(
                 "file:src/main/resources/static/"
         );
+        String imageDir = "uploads/";
+        registry.addResourceHandler("/images/**").addResourceLocations("file:src/main/resources/static/" + imageDir);
     }
     @Override
     public void addCorsMappings(CorsRegistry registry) {
