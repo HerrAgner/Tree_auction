@@ -117,7 +117,7 @@ export default {
 
     await this.$store.dispatch("getImages", this.$route.params.id)
     this.images = this.$store.state.images;
-    
+
     await this.$store.dispatch("getSeller", this.auction.seller_id)
     this.seller = this.$store.state.currentSeller;    
 
@@ -125,9 +125,6 @@ export default {
     }]
 
     this.images.forEach(image => this.items.push({src: "http://localhost:7999/images/" + image.picture}))
-    
-    
-
     
     this.getBids();
 
@@ -173,8 +170,7 @@ export default {
         } else {
           this.compareBid(this.bidField);
         }
-      } else {
-      }
+      } 
     },
     reset() {
       this.$refs.form.reset();
