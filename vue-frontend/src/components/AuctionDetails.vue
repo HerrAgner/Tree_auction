@@ -1,5 +1,7 @@
 <template>
   <v-responsive>
+      <h1 class="text-xs-center" v-if="!this.auction">The auction you're looking for does not exist</h1>
+      <div  v-else>
     <v-card-text id="header">
       <h1>{{ auction.title }}</h1>
     </v-card-text>
@@ -23,6 +25,7 @@
             <h5>End time</h5>
             <p>{{ convertDate }}</p>
             <p>{{ convertTime }}</p>
+            
           </v-container>
           <v-container class="bid">
             <h5>Bids</h5>
@@ -34,6 +37,7 @@
           v-if="showCountdownTimer"
           :key="countdownKey"
         >
+            <p>Time left:</p>
           <flip-countdown
             id="countdownTimer"
             :deadline="countdown"
@@ -70,23 +74,24 @@
       </v-content>
     </v-layout>
 
-    <v-layout justify-space-around row id="second_section">
-      <v-content id="description">
-        <v-card>
-          <p>
-            {{ auction.description }}
-          </p>
+      <v-layout justify-space-around row id="second_section">
+        <v-content id="description">
+          <v-card>
+            <p>
+              {{ auction.description }}
+            </p>
+          </v-card>
+        </v-content>
+        <v-card id="contact_info">
+          <v-flex xs8>
+            <p>{{ seller.firstname }} {{ seller.lastname }}</p>
+          </v-flex>
+          <v-flex xs8>
+            <v-btn round color="success" dark>Chat with seller</v-btn>
+          </v-flex>
         </v-card>
-      </v-content>
-      <v-card id="contact_info">
-        <v-flex xs8>
-          <p>{{ seller.firstname }} {{ seller.lastname }}</p>
-        </v-flex>
-        <v-flex xs8>
-          <v-btn round color="success" dark>Chat with seller</v-btn>
-        </v-flex>
-      </v-card>
-    </v-layout>
+      </v-layout>
+    </div>
   </v-responsive>
 </template>
 
@@ -108,7 +113,8 @@ export default {
       type: null,
       bidAlertText: "",
       items: [],
-      index: 0
+      index: 0,
+      images: []
     };
   },
   async created() {
@@ -117,26 +123,27 @@ export default {
 
     await this.$store.dispatch("getSeller", this.auction.seller_id);
     this.seller = this.$store.state.currentSeller;
+    await this.$store.dispatch("getImages", this.$route.params.id)
+    this.images = this.$store.state.images;
 
-    this.items = [
-      {
-        src: await fetch(
-          "http://localhost:7999/images/" + this.auction.image
-        ).then(res => res.url)
-      }
-    ];
+    this.items =[{ src: await fetch("http://localhost:7999/images/" + this.auction.image).then(res => res.url)
+    }]
 
-    this.getBids();
-
-    this.countdown = new Date(this.auction.end_time).toLocaleString();
-    this.forceRerender();
-  },
+    this.images.forEach(image => this.items.push({src: "http://localhost:7999/images/" + image.picture}))
+      this.getBids();
+    
+      this.countdown = new Date(this.auction.end_time).toLocaleString()
+      this.forceRerender();
+    },
   methods: {
     async getBids() {
       let bids = await this.$store
         .dispatch("returnBidsForOneAuction", this.auction.id)
         .then(res => res);
       await this.$store.commit("setCurrentBids", bids);
+      if (this.$store.state.currentBids[0] === undefined) {
+          this.$store.state.currentBids[0] = {"amount":this.auction.start_price, "auction_id":this.auction.id};
+      }
     },
     async compareBid(bid) {
       await this.getBids();
@@ -166,7 +173,6 @@ export default {
         } else {
           this.compareBid(this.bidField);
         }
-      } else {
       }
     },
     reset() {
@@ -295,14 +301,18 @@ export default {
 .bid p {
   margin: 0;
 }
-
+#countdownTimerBox {
+  margin-top: 50px;
+  text-align: center;
+}
 #countdownTimer {
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin-top: -20px;
+
 }
-#ended {
-  color: red;
-}
+
+  #ended {
+    color: red;
+  }
+
+
 </style>

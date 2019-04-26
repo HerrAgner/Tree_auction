@@ -17,12 +17,12 @@
             </v-btn>
             
             <v-btn to="/login" color="teal" flat value="LoginRegister" v-if="!statusT">
-                <span>login</span>
+                <span>Login / Register</span>
                 <v-icon>account_circle</v-icon>
             </v-btn>
 
             <v-btn color="teal" flat value="log out" v-if="statusT" @click="changeStatus">
-                <span>log out</span>
+                <span>Log out</span>
                 <v-icon>account_circle</v-icon>
             </v-btn>
 

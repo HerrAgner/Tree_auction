@@ -36,7 +36,7 @@ public class CreateDBData implements CommandLineRunner {
         UserRepo.save(user1);
 
         User user2 = new User();
-        user2.setPassword(encoder.encode("securePassword"));  //passwordet ska crypteras innan det laddas upp till DB
+        user2.setPassword(encoder.encode("1"));  //passwordet ska crypteras innan det laddas upp till DB
         user2.setEmail("eric.rl@me.com");
         user2.setFirstName("Eric");
         user2.setLastName("Rasmusson");

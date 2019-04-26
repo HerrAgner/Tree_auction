@@ -21,6 +21,8 @@ export default new Vuex.Store({
     searchAuctions: [],
     currentAuction: "",
     currentSeller: "",
+    latestAddedAuction: "",
+    images: [],
     currentBids: [],
     userBids: null,
     showNotification: false
@@ -35,8 +37,14 @@ export default new Vuex.Store({
     setUserInfo(state, user) {
       state.userInfo = user;
     },
+    setLatestAddedAuction(state, auction) {
+      state.latestAddedAuction = auction.id;
+    },
     setCurrentAuction(state, auction) {
       state.currentAuction = auction;
+    },
+    setCurrentImages(state, images) {
+      state.images = images
     },
     setCurrentSeller(state, seller) {
       state.currentSeller = seller;
@@ -92,16 +100,16 @@ export default new Vuex.Store({
 
           //om den uppdaterade auction är samma som något currUser har högst bud på - gör notifikation
           /*await this.dispatch("getUsersBids", this.state.userInfo.email)
-          
+
                     this.state.userBids.forEach(element => {
                       //om  användaren har lagt bud tidigare på auktionen det nya budet gäller
                       if(data.auctionId == element.auction_id && this.state.userInfo.email !== data.bidderId ){
                         console.log(element);
                         this.state.showNotification = true;
-          
+
                       }
                     });
-          
+
                     this.dispatch('getHighestBidder', data.auctionId);*/
         } else if (data.type === "chat") {
         }
@@ -167,7 +175,7 @@ export default new Vuex.Store({
         method: "POST",
         body: JSON.stringify(reqBody),
         headers: { "Content-Type": "application/json" }
-      }).catch(e => {});
+      }).catch(e => { });
 
       // Update the state.blogPosts since we just added a new one
       // this.dispatch("getUsersFromDb");
@@ -182,15 +190,28 @@ export default new Vuex.Store({
       this.commit("setAuctions", auctions);
       // this.commit("setCurrentAuction", auctions[0]);
     },
+    //LÄGG TILL AUCTIONS/BILDER ________________________________
+    async getLatest() {
+      let auction = await (await fetch(API_URL + "auctions/latest")).json().catch(e => { });
+      this.commit("setLatestAddedAuction", auction);
+    },
     async addAuctionToDB(state, reqBody) {
       await fetch(API_URL + "auctions", {
         method: "POST",
         body: reqBody,
         headers: { "Content-Type": "application/json" }
       });
-      // Update the state.blogPosts since we just added a new one
       this.dispatch("getAuctionsFromDb");
     },
+    async addImagesToDB(state, reqBody) {
+      await fetch(API_URL + "pictures", {
+        method: "POST",
+        body: reqBody,
+        headers: { "Content-Type": "application/json" }
+      });
+    },
+    //__________________________________________________________________
+
     async addBidToDb(state, reqBody) {
       await fetch(API_URL + "bids", {
         method: "POST",
@@ -205,9 +226,17 @@ export default new Vuex.Store({
       );
       this.commit("setCurrentAuction", currAuction);
     },
-    async getSearchAuctions(state, content) {
-      await this.commit("setSearchAuctions", content);
+      async getSearchAuctions(state, content) {
+          await this.commit("setSearchAuctions", content);
+      },
+
+    async getImages(context, auctionId) {
+      let currImages = await fetch (API_URL + "pictures/" + auctionId).then(res =>
+        res.json()
+        );
+        this.commit("setCurrentImages", currImages)
     },
+
     async getSeller(context, user) {
       let currSeller = await (await fetch(API_URL + "users/" + user)).json();
       this.commit("setCurrentSeller", currSeller);
