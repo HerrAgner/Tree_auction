@@ -10,7 +10,7 @@ public class Picture {
     private long id;
     private final String picture = null;
 
-    private final int auction_id = 0;
+    private int auction_id;
 
     public Picture() {
 

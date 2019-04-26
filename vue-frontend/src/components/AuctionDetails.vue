@@ -114,6 +114,8 @@ export default {
     await this.$store.dispatch("getOneAuction", this.$route.params.id)
     this.auction = this.$store.state.currentAuction;
 
+    console.log(this.auction.id)
+
     await this.$store.dispatch("getSeller", this.auction.seller_id)
     this.seller = this.$store.state.currentSeller;    
 
