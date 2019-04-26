@@ -183,7 +183,8 @@ export default {
         });
         await this.$store.dispatch("addAuctionToDB", productData);
         await this.$store.dispatch("getLatest");
-        
+        let id = this.$store.state.latestAddedAuction;
+
         for (let i = 0; i < this.images.length; i++) {
           const imageData = JSON.stringify({
             picture: this.images[i],
@@ -191,7 +192,7 @@ export default {
           });
           await this.$store.dispatch("addImagesToDB", imageData);
         }
-        // await this.$router.push("/"); //Går till startsidan
+        await this.$router.push("/auction/" + id); //Går till startsidan
       }
     },
     onPickFilePrimary() {
