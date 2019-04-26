@@ -108,7 +108,8 @@ export default {
       type: null,
       bidAlertText: "asd",
       elapse: null,
-      items: []
+      items: [],
+      index: 0
     };
   },
   async created() {

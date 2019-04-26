@@ -16,10 +16,12 @@ function transformRequest(jsonData = {}){
 }
 
 export default new Vuex.Store({
+
   state: {
     auctions: [],
     status: false,
     userInfo: {},
+    searchAuctions: [],
     currentAuction: "",
     currentSeller: "",
     currentBids: null,
@@ -28,6 +30,9 @@ export default new Vuex.Store({
   mutations: {
     setAuctions(state, auctions) {
       state.auctions = auctions;
+    },
+    setSearchAuctions(state, auctions) {
+      state.searchAuctions = auctions;
     },
     setUserInfo(state, user) {      
       state.userInfo = user;
@@ -56,6 +61,15 @@ export default new Vuex.Store({
           if (data.auctionId === this.state.currentAuction.id) {
             this.dispatch("getBidsForOneAuction", data.auctionId);
           }
+
+          let index = this.state.searchAuctions.findIndex(a => a.id === data.auctionId)
+          console.log(index);
+            if (index !== -1) {
+              console.log("I GOT HERE");
+              this.state.searchAuctions[index].highestBid = data.amount;
+              this.dispatch("getBidsForOneAuction", data.auctionId)
+              Vue.set(this.state.searchAuctions, index, this.state.searchAuctions[index])
+            }
         }
         else if (data.type === "chat") {
 
@@ -159,8 +173,8 @@ export default new Vuex.Store({
       let bids = await (await fetch(API_URL + "bids/" + auctionId)).json();
       bids.sort((a, b) => b.amount - a.amount);
 
-      this.commit("setCurrentBids", bids);
+      await this.commit("setCurrentBids", bids);
       return bids;
     },
-  }
+  },
 });
