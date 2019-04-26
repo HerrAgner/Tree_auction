@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface BidRepository extends CrudRepository<Bid, Long> {
     List<Bid> findByAuctionId(int auctionId);
+    List<Bid> findAllByBidderId(String bidderId);
+
 }

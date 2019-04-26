@@ -9,7 +9,7 @@ public class Bid implements MessageInterface{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private Integer auctionId = null;
-    private String bidder_id = null;
+    private String bidderId = null;
     private Float amount = null;
     private Timestamp time = null;
 
@@ -21,8 +21,8 @@ public class Bid implements MessageInterface{
         return auctionId;
     }
 
-    public String getBidder_id() {
-        return bidder_id;
+    public String getBidderId() {
+        return bidderId;
     }
 
     public float getAmount() {
@@ -37,8 +37,8 @@ public class Bid implements MessageInterface{
         this.auctionId = auctionId;
     }
 
-    public void setBidder_id(String bidder_id) {
-        this.bidder_id = bidder_id;
+    public void setBidderId(String bidderId) {
+        this.bidderId = bidderId;
     }
 
     public void setAmount(Float amount) {
