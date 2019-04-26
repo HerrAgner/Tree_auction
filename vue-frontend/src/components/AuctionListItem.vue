@@ -2,7 +2,7 @@
   <v-flex xs12 class="AuctionListItem">
     <router-link :to="this.auctionLink">
       <v-card color="cyan darken-2" class="white--text">
-        <v-layout>
+        <v-layout align-center justify-center>
           <v-flex xs6>
             <v-img :src="items[0]" height="125px" contain></v-img>
           </v-flex>
@@ -39,7 +39,6 @@ export default {
     this.auctionLink += this.auctionId;
     this.getBids();
 
-    // flytta till store. Ta bort härifrån och från auctionDetails
     this.items = [
       {
         src: await fetch("http://localhost:7999/images/" + this.image).then(
