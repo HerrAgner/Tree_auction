@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import web.Entity.Picture;
 import web.Repository.PictureRepository;
 
+import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/api/pictures")
@@ -18,6 +20,10 @@ public class PictureController {
         return repo.findAll();
     }
 
+    @GetMapping("/{id}")
+    Optional<Picture> getPicture(@PathVariable long id){
+        return repo.findById(id);
+    }
 
     @PostMapping
     void addPicture(@RequestBody Picture body) {

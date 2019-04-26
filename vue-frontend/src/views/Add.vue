@@ -95,7 +95,7 @@
         <p>Extra image</p>
       </v-flex>
       <v-flex sm2 class="imageOne">
-        <v-img :src="imageUrlExtra2" height="100" contain/>
+        <v-img :src="imageUrlExtra2" height="100" contain @click="clickOnImage"/>
         <p>Extra image</p>
       </v-flex>
     </v-layout>
@@ -139,7 +139,7 @@ export default {
         .then(images => {
           this.images = images;
         })
-        .catch(console.warn)
+        .catch(console.warn);
       console.log("Från addAuction " + this.formDataSecond);
 
       if (this.date == "") {
@@ -161,27 +161,23 @@ export default {
           title: this.title,
           description: this.description,
           start_price: this.price,
-          seller_id: "eric.rl@me.com",
+          seller_id: this.$store.state.userInfo.email,
           end_time: dateEnd,
           addedTime: dateToday,
           image: this.image[0]
         });
 
         await this.$store.dispatch("addAuctionToDB", productData);
-        // await this.$router.push("/"); //Går till startsidan
 
-        console.log(this.images.length)
-        for (let i = 0; i<this.images.length; i++) {
-
+        console.log(this.images.length);
+        for (let i = 0; i < this.images.length; i++) {
           const imageData = JSON.stringify({
             picture: this.images[i],
             auction_id: "10"
           });
-          console.log("Innan det skickas iväg")
-  
           await this.$store.dispatch("addImagesToDB", imageData);
-
         }
+        // await this.$router.push("/"); //Går till startsidan
       }
     },
     onPickFilePrimary() {
@@ -223,7 +219,6 @@ export default {
         filesSecondary[0],
         filesSecondary[0].name
       );
-
     },
     onThirdFilePicked(event) {
       let filesThird = event.target.files;
@@ -237,11 +232,7 @@ export default {
         this.imageUrlExtra2 = fileReader3.result; //För att visa bilden
       });
       fileReader3.readAsDataURL(filesThird[0]);
-      this.formDataSecond.append(
-        "files",
-        filesThird[0],
-        filesThird[0].name
-      );
+      this.formDataSecond.append("files", filesThird[0], filesThird[0].name);
     },
     uploadFiles(formData) {
       //Spara till disk
@@ -249,6 +240,9 @@ export default {
         method: "POST",
         body: formData
       }).then(response => response.json());
+    },
+    clickOnImage() {
+      console.log("CLICKED IMAGE")
     }
   },
   computed: {
