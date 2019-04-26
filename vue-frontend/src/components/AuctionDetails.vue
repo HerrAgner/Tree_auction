@@ -41,7 +41,7 @@
         </div>
         <v-card id="bidCard" v-if="!auctionEnded">
           <v-flex xs8>
-            <v-form ref="form" v-model="valid" @submit.prevent lazy-validation>
+            <v-form ref="form" @submit.prevent lazy-validation>
               <v-text-field
                 solo
                 placeholder="Enter bid"
@@ -100,17 +100,13 @@ export default {
     return {
       auction: "",
       seller: "",
-      bids: [],
-      highestBid: null,
       countdown: "",
       countdownKey: 0,
       bidRules: [v => !!v || "Bid is required"],
-      valid: true,
       auctionEnded: false,
       bidField: "",
       type: null,
-      bidAlertText: "asd",
-      elapse: null,
+      bidAlertText: "",
       items: [],
       index: 0
     };
@@ -144,7 +140,7 @@ export default {
     },
     async compareBid(bid) {
       await this.getBids();
-      if (bid > this.highestBid) {
+      if (bid > this.$store.state.currentBids[0].amount) {
         let bidObject = {
           amount: bid,
           auctionId: this.auction.id,
@@ -153,7 +149,7 @@ export default {
           type: "bid"
         };
         await this.$store.dispatch("addBidToDb", bidObject);
-        await this.getBids();
+        this.reset();
         this.showAlert("success", "Bid placed.");
       } else {
         this.showAlert("error", "Bid not high enough.");
@@ -161,7 +157,6 @@ export default {
     },
     validate() {
       if (this.$refs.form.validate()) {
-        this.snackbar = true;
         if (this.$store.state.status === false) {
           this.showAlert("error", "You must be logged in to place a bid.");
         } else if (
@@ -177,9 +172,6 @@ export default {
     reset() {
       this.$refs.form.reset();
     },
-    resetValidation() {
-      this.$refs.form.resetValidation();
-    },
     showAlert(type, text) {
       this.type = type;
       this.bidAlertText = text;
@@ -192,18 +184,18 @@ export default {
         this.type = null;
       }, 3000);
 
-      this.elapse = 1;
+      let elapse = 1;
       let t = this.showAlert.t;
       if (t) {
         clearInterval(t);
       }
 
       this.showAlert.t = setInterval(() => {
-        if (this.elapse === 3) {
-          this.elapse = 0;
+        if (elapse === 3) {
+          elapse = 0;
           clearInterval(this.showAlert.t);
         } else {
-          this.elapse++;
+          elapse++;
         }
       }, 1000);
     },
@@ -234,16 +226,13 @@ export default {
       }
     },
     bidUpdate() {
-      if (!this.$store.state.currentBids) {
-        return this.auction.start_price;
-      } else if (this.$store.state.currentBids[0]) {
+      if (this.$store.state.currentBids.length > 0) {
         return this.$store.state.currentBids[0].amount;
       } else {
         return this.auction.start_price;
       }
     },
     bidAmount() {
-      // console.log(this.$store.state.currentBids);
       return this.$store.state.currentBids.length;
     }
   },
@@ -313,7 +302,6 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 #ended {
   color: red;
 }
