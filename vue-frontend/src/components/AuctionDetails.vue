@@ -28,7 +28,7 @@
           </v-container>
           <v-container class="bid">
             <h5>Bids</h5>
-            {{ bids.length }}
+            {{ bidAmount }}
           </v-container>
         </v-layout>
         <div id="countdownTimerBox" v-if="showCountdownTimer" :key="countdownKey">
@@ -117,8 +117,12 @@ export default {
     this.auction = this.$store.state.currentAuction;
 
     await this.$store.dispatch("getSeller", this.auction.seller_id)
-    this.seller = this.$store.state.currentSeller;    
-
+    this.seller = this.$store.state.currentSeller;
+  
+    await this.$store.dispatch(
+            "getBidsForOneAuctionn",
+            this.auction.id);
+    
     this.items =[{ src: await fetch("http://localhost:7999/images/" + this.auction.image).then(res => res.url)
     }]
     
@@ -131,14 +135,20 @@ export default {
   },
   methods: {
     async getBids() {
-      this.bids = await this.$store.dispatch("getBidsForOneAuction", this.auction.id).then(res => res);
-      // this.bids = this.$store.state.currentBids;
+      let bids = await this.$store.dispatch(
+              "getBidsForOneAuctionn",
+              this.auction.id
+      ).then(res => res);
+      this.bids = this.$store.state.currentBids;
+      console.log(this.bids);
+      console.log(this.$store.state.currentBids);
       // this.bids.sort((a, b) => b.amount - a.amount);
       // if (this.bids.length === 0) {
       //  this.highestBid = this.auction.start_price;
       // } else {
       //   this.highestBid = this.bids[0].amount;
       // }
+      // this.bids = bids;
     },
     async compareBid(bid) {
       await this.getBids();
@@ -208,11 +218,11 @@ export default {
     }
   },
   computed: {
-    convertDate: function() {
+    convertDate() {
       let newDate = new Date(this.auction.end_time);
       return newDate.toLocaleDateString();
     },
-    convertTime: function() {
+    convertTime() {
       let newDate = new Date(this.auction.end_time);
       return newDate.getHours() + ":" + newDate.getMinutes();
     },
@@ -237,12 +247,19 @@ export default {
       } else {
         this.highestBid = this.auction.start_price;
       }
+    },
+      bidAmount() {
+      // console.log(this.$store.state.currentBids);
+        return this.$store.state.currentBids.length;
     }
   },
   watch: {
-    bigUpdate (newCount, oldCount) {
+    bidUpdate (newCount, oldCount) {
       this.highestBid = newCount;
-    }
+    },
+    bidAmount(newCount, oldCount) {
+      return newCount;
+    },
   }
 };
 </script>

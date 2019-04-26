@@ -36,7 +36,7 @@
         },
         watch: {
             '$route'(to, from) {
-                this.loadList();
+                // this.loadList();
             }
         },
         methods: {
@@ -57,9 +57,7 @@
                 if (this.pageNumber > this.totalPages || this.pageNumber < 1) {
                     this.routerChange("/missing");
                 }
-                await this.$store.commit("setSearchAuctions", this.page.content)
-                await console.log(this.$store.state.searchAuctions)
-              
+                // await this.$store.commit("setSearchAuctions", this.page.content)
             },
             validatePageInput(input) {
                 this.pageNumber = Number(this.$route.params.page);
@@ -103,8 +101,9 @@
                     this.routerChange("/search/" + searchText + "/page/" + (++pageNumber));
                 }
             },
-            routerChange(link) {
-                this.$router.push({path: link})
+            async routerChange(link) {
+                await this.$store.dispatch("getSearchAuctions", this.page.content);
+                await this.$router.push({path: link})
             }
         }
         ,

@@ -24,7 +24,7 @@ export default new Vuex.Store({
     searchAuctions: [],
     currentAuction: "",
     currentSeller: "",
-    currentBids: null,
+    currentBids: [],
 
   },
   mutations: {
@@ -51,6 +51,10 @@ export default new Vuex.Store({
     },
     setCurrentBids(state, currBids){
       state.currentBids = currBids;
+    },
+    setSearchAuctionBids(state, {bids, index}){
+      state.searchAuctions[index].bidsAmount = bids.length;
+      Vue.set(this.state.searchAuctions, index, this.state.searchAuctions[index])
     }
   },
   actions: {
@@ -59,13 +63,10 @@ export default new Vuex.Store({
         let data = JSON.parse(e.data);
         if(data.type === "bid") {
           if (data.auctionId === this.state.currentAuction.id) {
-            this.dispatch("getBidsForOneAuction", data.auctionId);
+            this.dispatch("getBidsForOneAuctionn", data.auctionId);
           }
-
           let index = this.state.searchAuctions.findIndex(a => a.id === data.auctionId)
-          console.log(index);
             if (index !== -1) {
-              console.log("I GOT HERE");
               this.state.searchAuctions[index].highestBid = data.amount;
               this.dispatch("getBidsForOneAuction", data.auctionId)
               Vue.set(this.state.searchAuctions, index, this.state.searchAuctions[index])
@@ -143,12 +144,9 @@ export default new Vuex.Store({
         body: reqBody,
         headers: { "Content-Type": "application/json" }
       });
-      
-
       // Update the state.blogPosts since we just added a new one
       this.dispatch("getAuctionsFromDb");
     },
-
     async addBidToDb(state, reqBody) {
       await fetch(API_URL + "bids", {
         method: "POST",
@@ -157,13 +155,14 @@ export default new Vuex.Store({
       });
       ws.send(JSON.stringify(reqBody))
     },
-
-
     async getOneAuction(context, auction) {
       let currAuction = await fetch(API_URL + "auctions/" + auction).then(res =>
         res.json()
       );
       this.commit("setCurrentAuction", currAuction);
+    },
+    async getSearchAuctions(state, content) {
+      await this.commit("setSearchAuctions", content)
     },
     async getSeller(context, user) {
       let currSeller = await (await fetch(API_URL + "users/" + user)).json();
@@ -172,9 +171,18 @@ export default new Vuex.Store({
     async getBidsForOneAuction(context, auctionId) {
       let bids = await (await fetch(API_URL + "bids/" + auctionId)).json();
       bids.sort((a, b) => b.amount - a.amount);
-
+      let index = this.state.searchAuctions.findIndex(
+          a => a.id === auctionId
+      );
+      await this.commit("setSearchAuctionBids", {"bids":bids, "index":index})
       await this.commit("setCurrentBids", bids);
       return bids;
     },
+    async getBidsForOneAuctionn(context, auctionId) {
+      let bids = await (await fetch(API_URL + "bids/" + auctionId)).json();
+      bids.sort((a, b) => b.amount - a.amount);
+      await this.commit("setCurrentBids", bids);
+      return bids;
+    }
   },
 });
