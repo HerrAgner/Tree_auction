@@ -126,11 +126,9 @@ export default new Vuex.Store({
         body: reqBody,
         headers: { "Content-Type": "application/json" }
       });
-      // Update the state.blogPosts since we just added a new one
       this.dispatch("getAuctionsFromDb");
     },
     async addImagesToDB(state, reqBody) {
-      console.log("I addImagesToDB")
       await fetch(API_URL + "pictures", {
         method: "POST",
         body: reqBody,
