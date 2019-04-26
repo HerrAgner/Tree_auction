@@ -60,7 +60,9 @@ export default new Vuex.Store({
   actions: {
    init() {
       ws.onmessage = async (e) =>  {
-        let data = JSON.parse(e.data);        
+        let data = JSON.parse(e.data);
+        let previousBids = this.dispatch("returnBidsForOneAuction", data.auctionId);
+
         if(data.type === "bid") {
           if (data.auctionId === this.state.currentAuction.id) {
             this.dispatch("getBidsForOneAuction", data.auctionId);
@@ -75,8 +77,10 @@ export default new Vuex.Store({
             Vue.set(this.state.searchAuctions, index, this.state.searchAuctions[index])
           }
 
+          console.log(previousBids);
+          
           //om den uppdaterade auction är samma som något currUser har högst bud på - gör notifikation 
-          await this.dispatch("getUsersBids", this.state.userInfo.email)
+          /*await this.dispatch("getUsersBids", this.state.userInfo.email)
           
           this.state.userBids.forEach(element => {
             //om  användaren har lagt bud tidigare på auktionen det nya budet gäller
@@ -87,8 +91,10 @@ export default new Vuex.Store({
             }  
           });
 
-          this.dispatch('getHighestBidder', data.auctionId);
+          this.dispatch('getHighestBidder', data.auctionId);*/
 
+
+          
         }
         else if (data.type === "chat") {
 
@@ -208,6 +214,11 @@ export default new Vuex.Store({
       bids.sort((a, b) => b.amount - a.amount);
 
       await this.commit("setCurrentBids", bids);
+      return bids;
+    },
+    async returnBidsForOneAuction(context, auctionId) {
+      let bids = await (await fetch(API_URL + "bids/" + auctionId)).json();
+      bids.sort((a, b) => b.amount - a.amount);
       return bids;
     },
   },
