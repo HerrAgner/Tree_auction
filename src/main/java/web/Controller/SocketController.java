@@ -15,6 +15,8 @@ import web.SocketService;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -28,6 +30,7 @@ public class SocketController extends TextWebSocketHandler {
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
         System.out.println("Received msg: " + message.getPayload());
+        System.out.println();
 
         // Demonstration purpose only: send back "Hello" + same message as received
 
@@ -50,9 +53,32 @@ public class SocketController extends TextWebSocketHandler {
 
         if (keysAndValues.get("type").equals("chat")) {
             Chat chat = new Chat();
-            chat.setId(Double.valueOf(String.valueOf(keysAndValues.get("senderID"))).intValue());
+            String receiverID = (String) keysAndValues.get("receiverID");
+            String senderID = (String) keysAndValues.get("senderID");
+
+            chat.setReceiver_id(receiverID);
+            chat.setSender_id(senderID);
             chat.setMessage((String) keysAndValues.get("message"));
-            socketService.sendToAll(new Gson().toJson(chat));
+
+            JsonElement jsonElement = gson.toJsonTree(chat);
+            jsonElement.getAsJsonObject().addProperty("type", "chat");
+
+            HashMap<String, WebSocketSession> Users= socketService.getUserSession();
+
+            for (String i : Users.keySet()) {
+                if (i.equals(receiverID)){
+                    socketService.sendToOne(Users.get(i) ,new Gson().toJson(jsonElement));
+                }
+            }
+        }
+
+        if (keysAndValues.get("type").equals("login")){
+            String email = (String) keysAndValues.get("loginID");
+                socketService.addUserIdToSession(email, session);
+            HashMap<String, WebSocketSession> Users= socketService.getUserSession();
+            for (String i : Users.keySet()) {
+                System.out.println("key: " + i + " value: " + Users.get(i));
+            }
 
         }
 

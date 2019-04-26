@@ -10,8 +10,8 @@ public class Chat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long id;
-    private long seller_id;
-    private long receiver_id;
+    private String sender_id;
+    private String receiver_id;
     private String message = null;
 
     public Chat() {
@@ -22,11 +22,11 @@ public class Chat {
         return id;
     }
 
-    public long getSeller_id() {
-        return seller_id;
+    public String getSender_id() {
+        return sender_id;
     }
 
-    public long getReceiver_id() {
+    public String getReceiver_id() {
         return receiver_id;
     }
 
@@ -38,11 +38,11 @@ public class Chat {
         this.id = id;
     }
 
-    public void setSeller_id(long seller_id) {
-        this.seller_id = seller_id;
+    public void setSender_id(String seller_id) {
+        this.sender_id = seller_id;
     }
 
-    public void setReceiver_id(long receiver_id) {
+    public void setReceiver_id(String receiver_id) {
         this.receiver_id = receiver_id;
     }
 

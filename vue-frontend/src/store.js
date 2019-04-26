@@ -1,13 +1,12 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import router from '@/router.js'
-import {ws} from '@/main.js'
+import {ws, connect, disconnect} from '@/main.js'
 
 
 Vue.use(Vuex);
 const API_URL = "http://localhost:7999/api/";
 const API_URLLog = "http://localhost:7999/";
-
 
 function transformRequest(jsonData = {}){
   return Object.entries(jsonData)
@@ -22,7 +21,10 @@ export default new Vuex.Store({
     userInfo: {},
     currentAuction: "",
     currentSeller: "",
+    currentSellerID: null,
     currentBids: null,
+    message:"",
+    senderID: null
 
   },
   mutations: {
@@ -46,6 +48,12 @@ export default new Vuex.Store({
     },
     setCurrentBids(state, currBids){
       state.currentBids = currBids;
+    },
+    setMessage(state, message){
+      state.message = message;
+    },
+    setSenderID(state, senderID){
+      state.senderID = senderID;
     }
   },
   actions: {
@@ -56,6 +64,10 @@ export default new Vuex.Store({
           if (data.auctionId === this.state.currentAuction.id) {
             this.dispatch("getBidsForOneAuction", data.auctionId);
           }
+        }
+        else if (data.type === "chat"){
+            this.commit("setMessage", data.message)
+            this.commit("setSenderID", data.sender_id)
         }
       }
     },
@@ -82,7 +94,9 @@ export default new Vuex.Store({
         if(successfulLogin){
           this.commit("setStatus", successfulLogin);
           router.push({ path: '/' }) 
-          this.dispatch('getUserInfoFromDb', info.email)         
+          this.dispatch('getUserInfoFromDb', info.email)
+            console.log('hello from true');
+            ws.send(JSON.stringify({type: 'login', loginID: info.email}))
         }
       })
     },
@@ -92,11 +106,13 @@ export default new Vuex.Store({
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       })
       .then(response => {
-        let successfulLogin = !response.url.includes("error");
-        console.log("the logout result is:", successfulLogin);        
-        if(successfulLogin){
-          this.commit("setStatus", !successfulLogin);
+        let successfulLogout = !response.url.includes("error");
+        console.log("the logout result is:", successfulLogout);        
+        if(successfulLogout){
+          this.commit("setStatus", !successfulLogout);
           router.push({ path: '/' }) 
+          disconnect();
+          connect();
         }
       })
     },

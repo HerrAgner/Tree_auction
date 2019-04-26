@@ -33,10 +33,29 @@ public class CreateDBData implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Chat chat = new Chat();
+        chat.setMessage("hello");
+        chat.setReceiver_id("ali.akjhfe@yahoo.com");
+        chat.setSender_id("ramia.kmhana@yahoo.com");
         ChatRepo.save(chat);
 
+        User user01 = new User();
+        user01.setPassword(encoder.encode("22"));  //passwordet ska crypteras innan det laddas upp till DB
+        user01.setEmail("ali.albadri77@gmail.com");
+        user01.setFirstName("ali");
+        user01.setLastName("Albadri");
+        user01.setPhoneNumber("070 045 - 5645");
+        UserRepo.save(user01);
+
+        User user0 = new User();
+        user0.setPassword(encoder.encode("22"));  //passwordet ska crypteras innan det laddas upp till DB
+        user0.setEmail("rami.albadri77@gmail.com");
+        user0.setFirstName("Rami");
+        user0.setLastName("Albadri");
+        user0.setPhoneNumber("070 045 - 5645");
+        UserRepo.save(user0);
+
         User user1 = new User();
-        user1.setPassword(encoder.encode("password1234"));  //passwordet ska crypteras innan det laddas upp till DB
+        user1.setPassword(encoder.encode("22"));  //passwordet ska crypteras innan det laddas upp till DB
         user1.setEmail("john.doe@gmail.com");
         user1.setFirstName("John");
         user1.setLastName("Doe");

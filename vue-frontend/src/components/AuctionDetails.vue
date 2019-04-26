@@ -117,7 +117,8 @@ export default {
     this.auction = this.$store.state.currentAuction;
 
     await this.$store.dispatch("getSeller", this.auction.seller_id)
-    this.seller = this.$store.state.currentSeller;    
+    this.seller = this.$store.state.currentSeller;
+    
 
     this.items =[{ src: await fetch("http://localhost:7999/images/" + this.auction.image).then(res => res.url)
     }]
@@ -138,19 +139,9 @@ export default {
       //  this.highestBid = this.auction.start_price;
       // } else {
       //   this.highestBid = this.bids[0].amount;
-      // }
+      },
     goToChat(){
       router.push({ path: '/chat' })
-    },
-    async getBids() {
-      await this.$store.dispatch("getBidsForOneAuction", this.auction.id)
-      this.bids = this.$store.state.currentBids;
-      this.bids.sort((a, b) => b.amount - a.amount);
-      if (this.bids.length === 0) {
-        this.highestBid = this.auction.start_price;
-      } else {
-        this.highestBid = this.bids[0].amount;
-      }
     },
     async compareBid(bid) {
       await this.getBids();

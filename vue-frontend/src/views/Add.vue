@@ -109,7 +109,7 @@ export default {
           title: this.title,
           description: this.description,
           start_price: this.price,
-          seller_id: "eric.rl@me.com",
+          seller_id: this.$store.state.userInfo.email,
           end_time: dateEnd,
           addedTime: dateToday,
           image: this.image[0]
