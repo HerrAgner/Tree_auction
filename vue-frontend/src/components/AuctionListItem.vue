@@ -18,6 +18,10 @@
                 <div>{{bids}} bids</div>
                 <div>Seller: {{sellerName}}</div>
                 <div>Ends: {{convertDate}}</div>
+                <div v-if="showCountdownTimer" :key="auctionId">
+                  <p>Time left:</p>
+                  <flip-countdown id="countdownTimer" :deadline="countdown"></flip-countdown>
+                </div>
               </div>         
             </v-card-title>
           </v-flex>
@@ -28,7 +32,10 @@
 </template>
 
 <script>
+import FlipCountdown from "@/components/FlipCountdown.vue"
+
 export default {
+  components: { FlipCountdown },
   name: "AuctionListItem",
   data() {
     return {
@@ -36,12 +43,15 @@ export default {
       highestBid : null,
       bids: null,
       sellerName: null,
-      items: []
+      items: [], 
+      countdown: null
     };
   },
 created: async function() {
   this.auctionLink += this.auctionId;
   this.getBids();
+  this.countdown = new Date(this.endTime).toLocaleString()
+
   
   
   // flytta till store. Ta bort härifrån och från auctionDetails
@@ -63,6 +73,14 @@ created: async function() {
     convertDate: function () {
       let newDate = new Date(this.endTime);
       return newDate.toLocaleDateString()+" "+newDate.getHours() + ":" + newDate.getMinutes();
+    },
+    showCountdownTimer() {
+      let ONE_DAY = new Date().getTime() + (24 * 60 * 60 * 1000)
+      if (new Date(ONE_DAY) <= new Date(this.endTime).getTime()) {
+          return false;
+      }else {
+          return true;
+      }
     }
   },
   methods: {
@@ -82,10 +100,17 @@ created: async function() {
 </script>
 
 <style scoped>
+
+#countdownTimer {
+margin-top: -10px;
+margin-left: -150px;
+} 
 .AuctionListItem{
   margin: 5px;
 }
-
+p{
+  margin: 0px;
+}
 a{
   text-decoration: none;
 }
