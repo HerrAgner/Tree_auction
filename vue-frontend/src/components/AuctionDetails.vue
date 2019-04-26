@@ -16,23 +16,28 @@
       <v-content id="bid_section">
         <v-layout align-start justify-center row>
           <v-container class="bid">
-            {{bidUpdate}}
             <h5>Current bid</h5>
-            <p>{{ highestBid }}</p>
+            <p>{{ bidUpdate }}</p>
           </v-container>
           <v-container class="bid">
             <h5>End time</h5>
             <p>{{ convertDate }}</p>
             <p>{{ convertTime }}</p>
-            
           </v-container>
           <v-container class="bid">
             <h5>Bids</h5>
             {{ bidAmount }}
           </v-container>
         </v-layout>
-        <div id="countdownTimerBox" v-if="showCountdownTimer" :key="countdownKey">
-          <flip-countdown id="countdownTimer" :deadline="countdown"></flip-countdown>
+        <div
+          id="countdownTimerBox"
+          v-if="showCountdownTimer"
+          :key="countdownKey"
+        >
+          <flip-countdown
+            id="countdownTimer"
+            :deadline="countdown"
+          ></flip-countdown>
         </div>
         <v-card id="bidCard" v-if="!auctionEnded">
           <v-flex xs8>
@@ -45,22 +50,20 @@
                 v-model="bidField"
                 prefix="£"
                 mask="######"
-                
                 >{{ bidField }}
               </v-text-field>
             </v-form>
           </v-flex>
 
           <v-flex xs8>
-            <v-btn round color="success" dark
-                   @click="validate"
+            <v-btn round color="success" dark @click="validate"
               >Place bid</v-btn
             >
           </v-flex>
         </v-card>
-          <v-layout align-center justify-center row v-else>
-            <h2 id="ended">Auction ended</h2>
-          </v-layout>
+        <v-layout align-center justify-center row v-else>
+          <h2 id="ended">Auction ended</h2>
+        </v-layout>
         <v-alert id="bidAlert" :color="type" value="true" v-if="type">
           {{ bidAlertText }}
         </v-alert>
@@ -88,7 +91,7 @@
 </template>
 
 <script>
-import FlipCountdown from "@/components/FlipCountdown.vue"
+import FlipCountdown from "@/components/FlipCountdown.vue";
 
 export default {
   components: { FlipCountdown },
@@ -113,42 +116,31 @@ export default {
     };
   },
   async created() {
-    await this.$store.dispatch("getOneAuction", this.$route.params.id)
+    await this.$store.dispatch("getOneAuction", this.$route.params.id);
     this.auction = this.$store.state.currentAuction;
 
-    await this.$store.dispatch("getSeller", this.auction.seller_id)
+    await this.$store.dispatch("getSeller", this.auction.seller_id);
     this.seller = this.$store.state.currentSeller;
-  
-    await this.$store.dispatch(
-            "getBidsForOneAuctionn",
-            this.auction.id);
-    
-    this.items =[{ src: await fetch("http://localhost:7999/images/" + this.auction.image).then(res => res.url)
-    }]
-    
+
+    this.items = [
+      {
+        src: await fetch(
+          "http://localhost:7999/images/" + this.auction.image
+        ).then(res => res.url)
+      }
+    ];
+
     this.getBids();
 
-    // this.items = [{src:this.auction.image}]
-  
-    this.countdown = new Date(this.auction.end_time).toLocaleString()
+    this.countdown = new Date(this.auction.end_time).toLocaleString();
     this.forceRerender();
   },
   methods: {
     async getBids() {
-      let bids = await this.$store.dispatch(
-              "getBidsForOneAuctionn",
-              this.auction.id
-      ).then(res => res);
-      this.bids = this.$store.state.currentBids;
-      console.log(this.bids);
-      console.log(this.$store.state.currentBids);
-      // this.bids.sort((a, b) => b.amount - a.amount);
-      // if (this.bids.length === 0) {
-      //  this.highestBid = this.auction.start_price;
-      // } else {
-      //   this.highestBid = this.bids[0].amount;
-      // }
-      // this.bids = bids;
+      let bids = await this.$store
+        .dispatch("returnBidsForOneAuction", this.auction.id)
+        .then(res => res);
+      await this.$store.commit("setCurrentBids", bids);
     },
     async compareBid(bid) {
       await this.getBids();
@@ -172,7 +164,9 @@ export default {
         this.snackbar = true;
         if (this.$store.state.status === false) {
           this.showAlert("error", "You must be logged in to place a bid.");
-        } else if (this.$store.state.userInfo.email === this.auction.seller_id) {
+        } else if (
+          this.$store.state.userInfo.email === this.auction.seller_id
+        ) {
           this.showAlert("error", "Can't bid on your own auction.");
         } else {
           this.compareBid(this.bidField);
@@ -227,39 +221,39 @@ export default {
       return newDate.getHours() + ":" + newDate.getMinutes();
     },
     showCountdownTimer() {
-      let ONE_DAY = new Date().getTime() + (24 * 60 * 60 * 1000)
+      let ONE_DAY = new Date().getTime() + 24 * 60 * 60 * 1000;
       if (new Date(ONE_DAY) <= new Date(this.auction.end_time).getTime()) {
-          return false;
-      } else if (new Date().getTime() > new Date(this.auction.end_time).getTime()){
+        return false;
+      } else if (
+        new Date().getTime() > new Date(this.auction.end_time).getTime()
+      ) {
         this.auctionEnded = true;
         return false;
-      }
-      else {
-          return true;
+      } else {
+        return true;
       }
     },
     bidUpdate() {
       if (!this.$store.state.currentBids) {
-        this.highestBid = this.auction.start_price;
-      }
-      else if(this.$store.state.currentBids[0]) {
-        this.highestBid = this.$store.state.currentBids[0].amount;
+        return this.auction.start_price;
+      } else if (this.$store.state.currentBids[0]) {
+        return this.$store.state.currentBids[0].amount;
       } else {
-        this.highestBid = this.auction.start_price;
+        return this.auction.start_price;
       }
     },
-      bidAmount() {
+    bidAmount() {
       // console.log(this.$store.state.currentBids);
-        return this.$store.state.currentBids.length;
+      return this.$store.state.currentBids.length;
     }
   },
   watch: {
-    bidUpdate (newCount, oldCount) {
-      this.highestBid = newCount;
+    bidUpdate(newCount, oldCount) {
+      return newCount;
     },
     bidAmount(newCount, oldCount) {
       return newCount;
-    },
+    }
   }
 };
 </script>
@@ -312,15 +306,15 @@ export default {
 .bid p {
   margin: 0;
 }
-    
-    #countdownTimer {
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-  
-  #ended {
-    color: red;
-  }
+
+#countdownTimer {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#ended {
+  color: red;
+}
 </style>

@@ -66,14 +66,14 @@ export default new Vuex.Store({
     init() {
       ws.onmessage = async e => {
         let data = JSON.parse(e.data);
-        let previousBids = this.dispatch(
-          "returnBidsForOneAuction",
-          data.auctionId
-        );
-
         if (data.type === "bid") {
+          let previousBids = await this.dispatch(
+            "returnBidsForOneAuction",
+            data.auctionId
+          );
           if (data.auctionId === this.state.currentAuction.id) {
-            this.dispatch("getBidsForOneAuctionn", data.auctionId);
+            // let bids = await this.dispatch("returnBidsForOneAuction", data.auctionId);
+            await this.commit("setCurrentBids", previousBids);
           }
           let index = this.state.searchAuctions.findIndex(
             a => a.id === data.auctionId
@@ -217,12 +217,6 @@ export default new Vuex.Store({
       bids.sort((a, b) => b.amount - a.amount);
       let index = this.state.searchAuctions.findIndex(a => a.id === auctionId);
       await this.commit("setSearchAuctionBids", { bids: bids, index: index });
-      await this.commit("setCurrentBids", bids);
-      return bids;
-    },
-    async getBidsForOneAuctionn(context, auctionId) {
-      let bids = await (await fetch(API_URL + "bids/" + auctionId)).json();
-      bids.sort((a, b) => b.amount - a.amount);
       await this.commit("setCurrentBids", bids);
       return bids;
     },
