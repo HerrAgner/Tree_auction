@@ -5,7 +5,7 @@
       <router-view />
     </v-content>
     <div id="messages"></div>
-    <Notification :text="text" />
+    <Notification v-if="showNotification" :text="text" />
     <BottomFooter />
   </v-app>
 </template>
@@ -26,12 +26,16 @@ export default {
   data() {
     return {
       bottomNav: "recent",
-      showSnackbar: true,
-      text: "hej"
+      text: "Någon har budat över dig!"
     };
   },
   async created() {
     this.$store.dispatch("init");
+  },
+  computed: {
+    showNotification: function() {
+      return this.$store.state.showNotification;    
+    },
   }
 };
 </script>

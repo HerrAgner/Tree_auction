@@ -25,7 +25,8 @@ export default new Vuex.Store({
     currentAuction: "",
     currentSeller: "",
     currentBids: null,
-
+    userBids: null,
+    showNotification : false
   },
   mutations: {
     setAuctions(state, auctions) {
@@ -51,30 +52,63 @@ export default new Vuex.Store({
     },
     setCurrentBids(state, currBids){
       state.currentBids = currBids;
+    },
+    setUserBids(state, bids){      
+      state.userBids = bids;      
     }
   },
   actions: {
-    init() {
-      ws.onmessage = (e) => {
-        let data = JSON.parse(e.data);
+   init() {
+      ws.onmessage = async (e) =>  {
+        let data = JSON.parse(e.data);        
         if(data.type === "bid") {
           if (data.auctionId === this.state.currentAuction.id) {
             this.dispatch("getBidsForOneAuction", data.auctionId);
           }
 
           let index = this.state.searchAuctions.findIndex(a => a.id === data.auctionId)
-          console.log(index);
-            if (index !== -1) {
-              console.log("I GOT HERE");
-              this.state.searchAuctions[index].highestBid = data.amount;
-              this.dispatch("getBidsForOneAuction", data.auctionId)
-              Vue.set(this.state.searchAuctions, index, this.state.searchAuctions[index])
-            }
+          //console.log(index);
+          if (index !== -1) {
+            //console.log("I GOT HERE");
+            this.state.searchAuctions[index].highestBid = data.amount;
+            this.dispatch("getBidsForOneAuction", data.auctionId)
+            Vue.set(this.state.searchAuctions, index, this.state.searchAuctions[index])
+          }
+
+          //om den uppdaterade auction är samma som något currUser har högst bud på - gör notifikation 
+          await this.dispatch("getUsersBids", this.state.userInfo.email)
+          
+          this.state.userBids.forEach(element => {
+            //om  användaren har lagt bud tidigare på auktionen det nya budet gäller
+            if(data.auctionId == element.auction_id && this.state.userInfo.email !== data.bidderId ){
+              console.log(element);
+              this.state.showNotification = true;
+
+            }  
+          });
+
+          this.dispatch('getHighestBidder', data.auctionId);
+
         }
         else if (data.type === "chat") {
 
         }
       }
+    },
+    getHighestBidder(auctionId){ 
+      this.dispatch('getBidsForOneAuction', auctionId);
+      console.log("ny vinnare",this.state.currentBids[0].bidderId);
+      console.log("förra vinnare",this.state.currentBids[1].bidderId);
+
+      
+      
+    },
+    async getUsersBids(context, userId) {
+      let bids = await (await fetch(API_URL + "bids/user/"+userId)).json();
+      this.commit("setUserBids", bids);
+
+      return this.state.userBids;
+
     },
     async getUsersFromDb() {
       let users = await (await fetch(API_URL + "users")).json().catch(e => {});      

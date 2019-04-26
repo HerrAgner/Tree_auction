@@ -39,7 +39,7 @@ public class SocketController extends TextWebSocketHandler {
 
             bid.setAuctionId(Double.valueOf(String.valueOf(keysAndValues.get("auctionId"))).intValue());
             bid.setAmount(Float.valueOf((String) keysAndValues.get("amount")));
-            bid.setBidder_id((String) keysAndValues.get("bidderId"));
+            bid.setBidderId((String) keysAndValues.get("bidderId"));
 
             JsonElement jsonElement = gson.toJsonTree(bid);
             jsonElement.getAsJsonObject().addProperty("type", "bid");

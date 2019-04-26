@@ -146,7 +146,7 @@ export default {
         let bidObject = {
           amount: bid,
           auctionId: this.auction.id,
-          bidder_id: this.$store.state.userInfo.email,
+          bidderId: this.$store.state.userInfo.email,
           time: new Date().toJSON(),
           type: "bid"
         };
