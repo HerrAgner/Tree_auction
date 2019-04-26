@@ -5,6 +5,7 @@
       <router-view />
     </v-content>
     <div id="messages"></div>
+    <Notification :text="text" />
     <BottomFooter />
   </v-app>
 </template>
@@ -12,16 +13,21 @@
 <script>
 import BottomNav from "./components/BottomNav";
 import BottomFooter from "./components/BottomFooter";
+import Notification from "./components/Notification";
+
 
 export default {
   name: "App",
   components: {
     BottomNav,
-    BottomFooter
+    BottomFooter,
+    Notification
   },
   data() {
     return {
-      bottomNav: "recent"
+      bottomNav: "recent",
+      showSnackbar: true,
+      text: "hej"
     };
   },
   async created() {

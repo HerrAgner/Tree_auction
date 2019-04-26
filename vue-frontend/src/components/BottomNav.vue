@@ -25,6 +25,15 @@
                 <span>log out</span>
                 <v-icon>account_circle</v-icon>
             </v-btn>
+
+             <v-btn to="/notification" color="teal" flat value="notification" v-if="statusT">
+                <span>Notifications</span>
+                <v-icon v-if="statusT">notifications</v-icon>
+                <v-icon id ="alert" v-else>notifications_active</v-icon>
+
+                
+            </v-btn>
+
         </v-bottom-nav>
     </v-card>
 </template>
@@ -64,5 +73,8 @@ export default {
     #nav{
         height: 56px;
         z-index: 999;
+    }
+    #alert{
+        color:red;
     }
 </style>
