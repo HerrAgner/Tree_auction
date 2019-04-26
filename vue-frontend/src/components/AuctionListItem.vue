@@ -57,6 +57,7 @@ created: async function() {
   // flytta till store. Ta bort härifrån och från auctionDetails
   this.items = [{ src: await fetch("http://localhost:7999/images/" + this.image).then(res => res.url)
   }]
+
   await this.$store.dispatch("getSeller", this.sellerId)
   this.sellerName = this.$store.state.currentSeller.firstname + " "+this.$store.state.currentSeller.lastname;
 },
