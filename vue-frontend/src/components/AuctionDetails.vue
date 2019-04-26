@@ -141,7 +141,7 @@ export default {
       //   this.highestBid = this.bids[0].amount;
       },
     goToChat(){
-      router.push({ path: '/chat' })
+      router.push({ path: '/chat/' + this.$route.params['id']})
     },
     async compareBid(bid) {
       await this.getBids();

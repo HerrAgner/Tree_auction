@@ -24,7 +24,8 @@ export default new Vuex.Store({
     currentSellerID: null,
     currentBids: null,
     message:"",
-    senderID: null
+    senderID: null,
+    receivedMessage: false
 
   },
   mutations: {
@@ -54,6 +55,9 @@ export default new Vuex.Store({
     },
     setSenderID(state, senderID){
       state.senderID = senderID;
+    },
+    setReceivedMessage(state, boolean){
+      state.receivedMessage = boolean
     }
   },
   actions: {
@@ -68,6 +72,7 @@ export default new Vuex.Store({
         else if (data.type === "chat"){
             this.commit("setMessage", data.message)
             this.commit("setSenderID", data.sender_id)
+            this.commit("setReceivedMessage", true)
         }
       }
     },
@@ -115,6 +120,16 @@ export default new Vuex.Store({
           connect();
         }
       })
+    },
+    async saveMessageToDB(state, reqBody) {      
+      await fetch(API_URL + "chat", {
+        method: "POST",
+        body: JSON.stringify(reqBody),
+        headers: { "Content-Type": "application/json" }
+      }).catch(e => {});
+
+      // Update the state.blogPosts since we just added a new one
+      // this.dispatch("getUsersFromDb");
     },
     async addUserToDB(state, reqBody) {      
       await fetch(API_URL + "users", {
