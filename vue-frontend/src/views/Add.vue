@@ -1,6 +1,6 @@
 <template>
   <v-container grid-list-md text-xs-center>
-    <v-layout row wrap>
+    <v-layout wrap>
       <v-flex mb-5 xs12>
         <h1>NEW AUCTION</h1>
       </v-flex>
@@ -47,57 +47,76 @@
         ></v-text-field>
       </v-flex>
       <v-flex xs10></v-flex>
-      <v-flex class="mb-5" xs2>
-        <v-form method="POST" @submit.prevent="addAuction" id="addAuction">
-          <v-btn class="imageBtn" small raised @click="onPickFilePrimary
-    ">Add Image</v-btn>
-          <input
-            type="file"
-            name="filesPrimary"
-            style="display:none"
-            ref="fileInputPrimary"
-            accept="image/*"
-            @change="onFilePicked"
-            value="Upload file(s)"
-          >
-          <v-btn class="imageBtn2" small raised @click="onPickFileSecondary
-    ">Add Image</v-btn>
-          <input
-            type="file"
-            name="filesSecondary"
-            style="display:none"
-            ref="fileInputSecondary"
-            accept="image/*"
-            @change="onSecondFilePicked"
-            value="Upload file(s)"
-          >
 
-          <v-btn class="imageBtn3" small raised @click="onPickFileThird
-    ">Add Image</v-btn>
-          <input
-            type="file"
-            name="filesThird"
-            style="display:none"
-            ref="fileInputThird"
-            accept="image/*"
-            @change="onThirdFilePicked"
-            value="Upload file(s)"
-          >
-          <v-btn small type="submit" form="addAuction" :disabled="!formIsValid">Add Auction</v-btn>
-        </v-form>
-      </v-flex>
-      <v-flex sm2 class="imageOne">
-        <v-img :src="imageUrl" height="100" contain/>
-        <p>Primary image</p>
-      </v-flex>
-      <v-flex sm2 class="imageOne">
-        <v-img :src="imageUrlExtra1" height="100" contain/>
-        <p>Extra image</p>
-      </v-flex>
-      <v-flex sm2 class="imageOne">
-        <v-img :src="imageUrlExtra2" height="100" contain @click="clickOnImage"/>
-        <p>Extra image</p>
-      </v-flex>
+      <v-form method="POST" @submit.prevent="addAuction" id="addAuction" class="flexOne">
+        <v-layout sm12 align-center justify-start row>
+          <v-flex class="border" sm2>
+            <v-img
+              class="pointerCursor"
+              height="150"
+              :src="imageUrl"
+              contain
+              @click="onPickFilePrimary"
+            />
+            <p>Primary image</p>
+            <input
+              type="file"
+              name="filesPrimary"
+              style="display:none"
+              ref="fileInputPrimary"
+              accept="image/*"
+              @change="onFilePicked"
+              value="Upload file(s)"
+              required
+            >
+          </v-flex>
+          <v-flex sm2>
+            <v-img
+              class="pointerCursor"
+              height="150"
+              :src="imageUrlExtra1"
+              contain
+              @click="onPickFileSecondary"
+            />
+            <p>Extra image 1</p>
+            <input
+              type="file"
+              name="filesSecondary"
+              style="display:none"
+              ref="fileInputSecondary"
+              accept="image/*"
+              @change="onSecondFilePicked"
+              value="Upload file(s)"
+            >
+          </v-flex>
+          <v-flex sm2>
+            <v-img
+              class="pointerCursor"
+              height="150"
+              :src="imageUrlExtra2"
+              contain
+              @click="onPickFileThird"
+            />
+            <p>Extra image 2</p>
+            <input
+              type="file"
+              name="filesThird"
+              style="display:none"
+              ref="fileInputThird"
+              accept="image/*"
+              @change="onThirdFilePicked"
+              value="Upload file(s)"
+            >
+          </v-flex>
+        </v-layout>
+        <v-btn
+          class="buttonSub"
+          small
+          type="submit"
+          form="addAuction"
+          :disabled="!formIsValid"
+        >Add Auction</v-btn>
+      </v-form>
     </v-layout>
   </v-container>
 </template>
@@ -112,9 +131,9 @@ export default {
       title: "",
       description: "",
       price: "",
-      imageUrl: "",
-      imageUrlExtra1: "",
-      imageUrlExtra2: "",
+      imageUrl: "http://localhost:7999/images/noImage.jpg",
+      imageUrlExtra1: "http://localhost:7999/images/noImage.jpg",
+      imageUrlExtra2: "http://localhost:7999/images/noImage.jpg",
       image: null,
       images: [],
       date: "",
@@ -125,7 +144,6 @@ export default {
       formDataSecond: new FormData()
     };
   },
-
   methods: {
     async addAuction() {
       await this.uploadFiles(this.formData)
@@ -133,14 +151,11 @@ export default {
           this.image = image;
         })
         .catch(console.warn);
-
-      console.log("Från addAuction " + this.formDataSecond);
       await this.uploadFiles(this.formDataSecond)
         .then(images => {
           this.images = images;
         })
         .catch(console.warn);
-      console.log("Från addAuction " + this.formDataSecond);
 
       if (this.date == "") {
         return alert("Please pick an end date");
@@ -166,14 +181,13 @@ export default {
           addedTime: dateToday,
           image: this.image[0]
         });
-
         await this.$store.dispatch("addAuctionToDB", productData);
-
-        console.log(this.images.length);
+        await this.$store.dispatch("getLatest");
+        
         for (let i = 0; i < this.images.length; i++) {
           const imageData = JSON.stringify({
             picture: this.images[i],
-            auction_id: "10"
+            auction_id: this.$store.state.latestAddedAuction
           });
           await this.$store.dispatch("addImagesToDB", imageData);
         }
@@ -181,13 +195,13 @@ export default {
       }
     },
     onPickFilePrimary() {
-      this.$refs.fileInputPrimary.click(); //Reffererar till fileInput så man kan ha annat utseende på knapp
+      this.$refs.fileInputPrimary.click(); //Reffererar till fileInput så man kan ha annat utseende på input
     },
     onPickFileSecondary() {
-      this.$refs.fileInputSecondary.click(); //Reffererar till fileInput så man kan ha annat utseende på knapp
+      this.$refs.fileInputSecondary.click(); //Reffererar till fileInput så man kan ha annat utseende på input
     },
     onPickFileThird() {
-      this.$refs.fileInputThird.click(); //Reffererar till fileInput så man kan ha annat utseende på knapp
+      this.$refs.fileInputThird.click(); //Reffererar till fileInput så man kan ha annat utseende på input
     },
     onFilePicked(event) {
       let files = event.target.files;
@@ -240,9 +254,6 @@ export default {
         method: "POST",
         body: formData
       }).then(response => response.json());
-    },
-    clickOnImage() {
-      console.log("CLICKED IMAGE")
     }
   },
   computed: {
@@ -252,7 +263,8 @@ export default {
         this.description !== "" &&
         this.price !== "" &&
         this.title.length < 40 &&
-        this.description.length < 300
+        this.description.length < 300 &&
+        this.imageUrl !== "http://localhost:7999/images/noImage.jpg"
       );
     },
     minDate() {
@@ -272,22 +284,6 @@ export default {
     if (this.$store.state.status === false) {
       this.$router.push({ path: "/login" });
     }
-
-    this.imageUrl = {
-      src: await fetch("http://localhost:7999/images/noImage.jpg").then(
-        res => res.url
-      )
-    };
-    this.imageUrlExtra1 = {
-      src: await fetch("http://localhost:7999/images/noImage.jpg").then(
-        res => res.url
-      )
-    };
-    this.imageUrlExtra2 = {
-      src: await fetch("http://localhost:7999/images/noImage.jpg").then(
-        res => res.url
-      )
-    };
   }
 };
 </script>
@@ -296,20 +292,13 @@ export default {
 #productDescription {
   margin-top: -220px;
 }
-.imageOne {
-  margin-left: 20px;
+v-image {
+  cursor: pointer;
 }
-.imageBtn {
-  margin-left: 140%;
-  margin-top: -40%;
+.flexOne {
+  flex: 1;
 }
-.imageBtn2 {
-  margin-left: 254%;
-  margin-top: -70%;
-}
-.imageBtn3 {
-  margin-left: 369%;
-  margin-top: -100%;
-  z-index: 1;
+.pointerCursor {
+  cursor: pointer;
 }
 </style>

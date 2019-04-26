@@ -22,6 +22,8 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
     Page<Auction> findByEndTimeAfter(Pageable pageable, Timestamp now);
 
+    Auction findTopByOrderByIdDesc();
+
 
 
 }

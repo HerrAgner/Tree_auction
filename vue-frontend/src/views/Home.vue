@@ -55,7 +55,7 @@ export default {
       if(this.pageNumber > this.totalPages || this.pageNumber < 1){
         this.routerChange("/missing");    
       }
-      console.log(this.pageContent)
+      // console.log(this.pageContent)
     },
     validatePageInput(input){
       this.pageNumber = Number(this.$route.params.page);

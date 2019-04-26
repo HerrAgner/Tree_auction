@@ -20,6 +20,7 @@ export default new Vuex.Store({
     currentAuction: "",
     currentSeller: "",
     currentBids: null,
+    latestAddedAuction: ""
 
   },
   mutations: {
@@ -28,6 +29,9 @@ export default new Vuex.Store({
     },
     setUserInfo(state, user) {
       state.userInfo = user;
+    },
+    setLatestAddedAuction(state, auction) {
+      state.latestAddedAuction = auction.id;
     },
     setCurrentAuction(state, auction) {
       state.currentAuction = auction;
@@ -108,6 +112,10 @@ export default new Vuex.Store({
       // this.commit("setCurrentAuction", auctions[0]);
     },
     //LÄGG TILL AUCTIONS/BILDER ________________________________
+    async getLatest() {
+      let auction = await (await fetch(API_URL + "auctions/latest")).json().catch(e => { });
+      this.commit("setLatestAddedAuction", auction);
+    },
     async addAuctionToDB(state, reqBody) {
       await fetch(API_URL + "auctions", {
         method: "POST",
