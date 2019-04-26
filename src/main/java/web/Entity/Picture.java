@@ -9,7 +9,6 @@ public class Picture {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String picture;
-
     private int auctionId;
 
     public Picture() {
