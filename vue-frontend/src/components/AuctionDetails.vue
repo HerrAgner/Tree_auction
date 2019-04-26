@@ -1,88 +1,92 @@
 <template>
   <v-responsive>
-    <v-card-text id="header">
-      <h1>{{ auction.title }}</h1>
-    </v-card-text>
-    <v-layout justify-space-around row id="first_section">
-      <v-content id="image_carousel">
-        <v-carousel>
-          <v-carousel-item
-            v-for="(item, i) in items"
-            :key="i"
-            :src="item.src"
-          ></v-carousel-item>
-        </v-carousel>
-      </v-content>
-      <v-content id="bid_section">
-        <v-layout align-start justify-center row>
-          <v-container class="bid">
-            <h5>Current bid</h5>
-            <p>{{ highestBid }}</p>
-          </v-container>
-          <v-container class="bid">
-            <h5>End time</h5>
-            <p>{{ convertDate }}</p>
-            <p>{{ convertTime }}</p>
-            
-          </v-container>
-          <v-container class="bid">
-            <h5>Bids</h5>
-            {{ bids.length }}
-          </v-container>
-        </v-layout>
-        <div id="countdownTimerBox" v-if="showCountdownTimer" :key="countdownKey">
-          <flip-countdown id="countdownTimer" :deadline="countdown"></flip-countdown>
-        </div>
-        <v-card id="bidCard" v-if="!auctionEnded">
-          <v-flex xs8>
-            <v-form ref="form" v-model="valid" @submit.prevent lazy-validation>
-              <v-text-field
-                solo
-                placeholder="Enter bid"
-                :rules="bidRules"
-                required
-                v-model="bidField"
-                prefix="£"
-                mask="######"
-                
-                >{{ bidField }}
-              </v-text-field>
-            </v-form>
-          </v-flex>
-
-          <v-flex xs8>
-            <v-btn round color="success" dark
-                   @click="validate"
-              >Place bid</v-btn
-            >
-          </v-flex>
-        </v-card>
-          <v-layout align-center justify-center row v-else>
-            <h2 id="ended">Auction ended</h2>
+    <h1 class="text-xs-center" v-if="!this.auction">The auction you're looking for does not exist</h1>
+    <div  v-else>
+      <v-card-text id="header">
+        <h1>{{ auction.title }}</h1>
+      </v-card-text>
+      <v-layout justify-space-around row id="first_section">
+        <v-content id="image_carousel">
+          <v-carousel>
+            <v-carousel-item
+              v-for="(item, i) in items"
+              :key="i"
+              :src="item.src"
+            ></v-carousel-item>
+          </v-carousel>
+        </v-content>
+        <v-content id="bid_section">
+          <v-layout align-start justify-center row>
+            <v-container class="bid">
+              <h5>Current bid</h5>
+              <p>{{ highestBid }}</p>
+            </v-container>
+            <v-container class="bid">
+              <h5>End time</h5>
+              <p>{{ convertDate }}</p>
+              <p>{{ convertTime }}</p>
+              
+            </v-container>
+            <v-container class="bid">
+              <h5>Bids</h5>
+              {{ bids.length }}
+            </v-container>
           </v-layout>
-        <v-alert id="bidAlert" :color="type" value="true" v-if="type">
-          {{ bidAlertText }}
-        </v-alert>
-      </v-content>
-    </v-layout>
+          <div id="countdownTimerBox" v-if="showCountdownTimer" :key="countdownKey">
+             <p>Time left:</p>
+            <flip-countdown id="countdownTimer" :deadline="countdown"></flip-countdown>
+          </div>
+          <v-card id="bidCard" v-if="!auctionEnded">
+            <v-flex xs8>
+              <v-form ref="form" v-model="valid" @submit.prevent lazy-validation>
+                <v-text-field
+                  solo
+                  placeholder="Enter bid"
+                  :rules="bidRules"
+                  required
+                  v-model="bidField"
+                  prefix="£"
+                  mask="######"
+                  
+                  >{{ bidField }}
+                </v-text-field>
+              </v-form>
+            </v-flex>
 
-    <v-layout justify-space-around row id="second_section">
-      <v-content id="description">
-        <v-card>
-          <p>
-            {{ auction.description }}
-          </p>
+            <v-flex xs8>
+              <v-btn round color="success" dark
+                    @click="validate"
+                >Place bid</v-btn
+              >
+            </v-flex>
+          </v-card>
+            <v-layout align-center justify-center row v-else>
+              <h2 id="ended">Auction ended</h2>
+            </v-layout>
+          <v-alert id="bidAlert" :color="type" value="true" v-if="type">
+            {{ bidAlertText }}
+          </v-alert>
+        </v-content>
+      </v-layout>
+
+      <v-layout justify-space-around row id="second_section">
+        <v-content id="description">
+          <v-card>
+            <p>
+              {{ auction.description }}
+            </p>
+          </v-card>
+        </v-content>
+        <v-card id="contact_info">
+          <v-flex xs8>
+            <p>{{ seller.firstname }} {{ seller.lastname }}</p>
+          </v-flex>
+          <v-flex xs8>
+            <v-btn round color="success" dark>Chat with seller</v-btn>
+          </v-flex>
         </v-card>
-      </v-content>
-      <v-card id="contact_info">
-        <v-flex xs8>
-          <p>{{ seller.firstname }} {{ seller.lastname }}</p>
-        </v-flex>
-        <v-flex xs8>
-          <v-btn round color="success" dark>Chat with seller</v-btn>
-        </v-flex>
-      </v-card>
-    </v-layout>
+      </v-layout>
+    </div>
   </v-responsive>
 </template>
 
@@ -125,14 +129,11 @@ export default {
     }]
 
     this.images.forEach(image => this.items.push({src: "http://localhost:7999/images/" + image.picture}))
+      this.getBids();
     
-    this.getBids();
-
-    // this.items = [{src:this.auction.image}]
-  
-    this.countdown = new Date(this.auction.end_time).toLocaleString()
-    this.forceRerender();
-  },
+      this.countdown = new Date(this.auction.end_time).toLocaleString()
+      this.forceRerender();
+    },
   methods: {
     async getBids() {      
       await this.$store.dispatch("getBidsForOneAuction", this.auction.id)
@@ -151,7 +152,8 @@ export default {
           amount: bid,
           auctionId: this.auction.id,
           bidder_id: this.$store.state.userInfo.email,
-          time: new Date().toJSON()
+          time: new Date().toJSON(),
+          type: "bid"
         };
         await this.$store.dispatch("addBidToDb", bidObject);
         await this.getBids();
@@ -282,15 +284,18 @@ export default {
 .bid p {
   margin: 0;
 }
-    
-    #countdownTimer {
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-  
+#countdownTimerBox {
+  margin-top: 50px;
+  text-align: center;
+}  
+#countdownTimer {
+  margin-top: -20px;
+
+} 
+
   #ended {
     color: red;
   }
+
+
 </style>

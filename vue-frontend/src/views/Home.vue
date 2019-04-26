@@ -7,8 +7,11 @@
       </v-layout>
     </v-flex>
     <div class="text-xs-center">
-      <v-pagination v-model="pageNumber" :length="this.totalPages" @input="onPageChange"></v-pagination>
+      <v-pagination v-if="!this.emptyResult && !this.wrongInput" v-model="pageNumber" :length="this.totalPages" @input="onPageChange"></v-pagination>
     </div>
+    <h1 class="text-xs-center" v-if="this.emptyResult">No Result for your search</h1>
+    <h1 class="text-xs-center" v-if="this.wrongInput">The page you're looking for does not exist</h1>
+
     <div class="container grid-list-xl">
      <div class="layout wrap" v-for="auction in this.pageContent" :key="auction.id">
         <AuctionListItem :auctionId = "auction.id" :title="auction.title" :image="auction.image"
@@ -16,7 +19,7 @@
        </div>
     </div>
    <div class="text-xs-center">
-      <v-pagination v-model="pageNumber" :length="this.totalPages" @input="onPageChange"></v-pagination>
+      <v-pagination v-if="!this.emptyResult && !this.wrongInput" v-model="pageNumber" :length="this.totalPages" @input="onPageChange"></v-pagination>
     </div>
   </div>
 </template>
@@ -39,6 +42,9 @@ export default {
   },
   methods: {
     async loadList(){
+      this.emptyResult = false;  
+      this.wrongInput = false;  
+    
       if(this.$route.params.search && this.$route.params.page){
         if (this.validatePageInput(this.$route.params.page)){
           await this.getSearchPage(this.pageNumber-1, this.$route.params.search);
@@ -52,15 +58,17 @@ export default {
         await this.getPageFromDB(this.pageNumber-1)
       }
 
-      if(this.pageNumber > this.totalPages || this.pageNumber < 1){
-        this.routerChange("/missing");    
+      if(this.totalPages === 0){
+          this.emptyResult = true;
+      }else if(this.pageNumber > this.totalPages){        
+        this.wrongInput = true;  
       }
       // console.log(this.pageContent)
     },
     validatePageInput(input){
       this.pageNumber = Number(this.$route.params.page);
-      if (!this.pageNumber){
-        this.routerChange("/missing");
+      if (!this.pageNumber || this.pageNumber < 1){
+        this.wrongInput = true;  
         return false;
       }else{
         return true;
@@ -110,9 +118,11 @@ export default {
       page: null,
       totalPages: null,
       search: '',
-      contentIsSearchResult: false
+      contentIsSearchResult: false,
+      emptyResult: false,
+      wrongInput: false
     };
-  }
+  },
 };
 </script>
 
