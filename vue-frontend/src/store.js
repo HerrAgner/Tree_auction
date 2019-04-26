@@ -20,7 +20,8 @@ export default new Vuex.Store({
     currentAuction: "",
     currentSeller: "",
     currentBids: null,
-    latestAddedAuction: ""
+    latestAddedAuction: "",
+    images: []
 
   },
   mutations: {
@@ -35,6 +36,9 @@ export default new Vuex.Store({
     },
     setCurrentAuction(state, auction) {
       state.currentAuction = auction;
+    },
+    setCurrentImages(state, images) {
+      state.images = images
     },
     setCurrentSeller(state, seller) {
       state.currentSeller = seller;
@@ -150,6 +154,14 @@ export default new Vuex.Store({
       );
       this.commit("setCurrentAuction", currAuction);
     },
+
+    async getImages(context, auctionId) {
+      let currImages = await fetch (API_URL + "pictures/" + auctionId).then(res =>
+        res.json()
+        );
+        this.commit("setCurrentImages", currImages)
+    },
+
     async getSeller(context, user) {
       let currSeller = await (await fetch(API_URL + "users/" + user)).json();
       this.commit("setCurrentSeller", currSeller);

@@ -188,7 +188,7 @@ export default {
         for (let i = 0; i < this.images.length; i++) {
           const imageData = JSON.stringify({
             picture: this.images[i],
-            auction_id: this.$store.state.latestAddedAuction
+            auctionId: this.$store.state.latestAddedAuction
           });
           await this.$store.dispatch("addImagesToDB", imageData);
         }

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import web.Entity.Picture;
 import web.Repository.PictureRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -20,9 +21,9 @@ public class PictureController {
         return repo.findAll();
     }
 
-    @GetMapping("/{id}")
-    Optional<Picture> getPicture(@PathVariable long id){
-        return repo.findById(id);
+    @GetMapping("/{auctionId}")
+    List<Picture> getPicture(@PathVariable int auctionId){
+        return repo.findAllByAuctionId(auctionId);
     }
 
     @PostMapping

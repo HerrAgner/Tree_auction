@@ -107,20 +107,27 @@ export default {
       type: null,
       bidAlertText: "asd",
       elapse: null,
-      items: []
+      items: [],
+      images: []
     };
   },
   async created() {
     await this.$store.dispatch("getOneAuction", this.$route.params.id)
     this.auction = this.$store.state.currentAuction;
 
-    console.log(this.auction.id)
-
+    await this.$store.dispatch("getImages", this.$route.params.id)
+    this.images = this.$store.state.images;
+    
     await this.$store.dispatch("getSeller", this.auction.seller_id)
     this.seller = this.$store.state.currentSeller;    
 
     this.items =[{ src: await fetch("http://localhost:7999/images/" + this.auction.image).then(res => res.url)
     }]
+
+    this.images.forEach(image => this.items.push({src: "http://localhost:7999/images/" + image.picture}))
+    
+    
+
     
     this.getBids();
 

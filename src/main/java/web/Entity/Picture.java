@@ -8,9 +8,9 @@ public class Picture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private final String picture = null;
+    private String picture;
 
-    private int auction_id;
+    private int auctionId;
 
     public Picture() {
 
@@ -20,8 +20,8 @@ public class Picture {
         return picture;
     }
 
-    public int getAuction_id() {
-        return auction_id;
+    public int getAuctionId() {
+        return auctionId;
     }
 
 }
