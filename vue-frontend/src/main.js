@@ -6,9 +6,7 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import './plugins/vuetify'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
-import VueWebsocket from "vue-websocket";
 
-Vue.use(VueWebsocket, "ws://localhost:8080");
 Vue.use(Vuetify);
 Vue.config.productionTip = false
 
@@ -22,14 +20,21 @@ function connect() {
     console.log(JSON.parse(e.data).senderID);
     console.log(JSON.parse(e.data).message);
 
-    
+
     console.log(JSON.parse(e.data).auctionId);
     console.log(JSON.parse(e.data).amount);
     console.log(JSON.parse(e.data).time);
 
   }
+  // ws.onmessage = (e) => {
+  //  console.log(JSON.parse(e.data).auctionId);
+  //   console.log(JSON.parse(e.data).amount);
+  //   console.log(JSON.parse(e.data).time);
+  //
+  // }
   ws.onopen = (e) => {
     isConnected = true;
+    console.log("Connected!")
   };
 
   //ws.onclose = (e) => {

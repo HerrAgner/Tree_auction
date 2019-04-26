@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import router from '@/router.js'
+import {ws} from '@/main.js'
+
 
 Vue.use(Vuex);
 const API_URL = "http://localhost:7999/api/";
@@ -12,7 +14,7 @@ function transformRequest(jsonData = {}){
     .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
     .join('&');
 }
-import {ws} from '@/main.js'
+
 export default new Vuex.Store({
   state: {
     auctions: [],
@@ -47,6 +49,16 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    init() {
+      ws.onmessage = (e) => {
+        let data = JSON.parse(e.data);
+        if(data.type === "bid") {
+          if (data.auctionId === this.state.currentAuction.id) {
+            this.dispatch("getBidsForOneAuction", data.auctionId);
+          }
+        }
+      }
+    },
     async getUsersFromDb() {
       let users = await (await fetch(API_URL + "users")).json().catch(e => {});      
       return users;
@@ -142,7 +154,10 @@ export default new Vuex.Store({
     },
     async getBidsForOneAuction(context, auctionId) {
       let bids = await (await fetch(API_URL + "bids/" + auctionId)).json();
+      bids.sort((a, b) => b.amount - a.amount);
+
       this.commit("setCurrentBids", bids);
+      return bids;
     },
   }
 });

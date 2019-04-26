@@ -16,6 +16,7 @@
       <v-content id="bid_section">
         <v-layout align-start justify-center row>
           <v-container class="bid">
+            {{bidUpdate}}
             <h5>Current bid</h5>
             <p>{{ highestBid }}</p>
           </v-container>
@@ -129,10 +130,19 @@ export default {
     this.forceRerender();
   },
   methods: {
+    async getBids() {
+      this.bids = await this.$store.dispatch("getBidsForOneAuction", this.auction.id).then(res => res);
+      // this.bids = this.$store.state.currentBids;
+      // this.bids.sort((a, b) => b.amount - a.amount);
+      // if (this.bids.length === 0) {
+      //  this.highestBid = this.auction.start_price;
+      // } else {
+      //   this.highestBid = this.bids[0].amount;
+      // }
     goToChat(){
-      router.push({ path: '/chat' }) 
+      router.push({ path: '/chat' })
     },
-    async getBids() {      
+    async getBids() {
       await this.$store.dispatch("getBidsForOneAuction", this.auction.id)
       this.bids = this.$store.state.currentBids;
       this.bids.sort((a, b) => b.amount - a.amount);
@@ -229,6 +239,18 @@ export default {
       else {
           return true;
       }
+    },
+    bidUpdate() {
+      if(this.$store.state.currentBids[0]) {
+        this.highestBid = this.$store.state.currentBids[0].amount;
+      } else {
+        this.highestBid = this.auction.start_price;
+      }
+    }
+  },
+  watch: {
+    bigUpdate (newCount, oldCount) {
+      this.highestBid = newCount;
     }
   }
 };

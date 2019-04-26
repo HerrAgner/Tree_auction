@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-public class Bid {
+public class Bid implements MessageInterface{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
