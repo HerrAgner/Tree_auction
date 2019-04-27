@@ -30,7 +30,6 @@ public class SocketService {
     }
 
     public void sendToAll(String message) {
-        System.out.println("här är meddelande: "+message.toString());
         TextMessage msg = new TextMessage(message);
         for(WebSocketSession webSocketSession : sessions) {
             try {

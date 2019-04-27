@@ -21,17 +21,22 @@
         <v-btn
           dark
           flat
+          @click="goToChatRoom"
+        >
+          Go to chatroom
+        </v-btn>
+
+        <v-btn
+          dark
+          flat
           @click="snackbar = false"
         >
-          Close
+          close
         </v-btn>
       </v-snackbar>
     </v-card>
   </v-app>
 </div>
-
-
-
     <BottomFooter />
   </v-app>
 </template>
@@ -40,6 +45,7 @@
 import BottomNav from "./components/BottomNav";
 import BottomFooter from "./components/BottomFooter";
 import { mapState } from 'vuex';
+import router from '@/router.js'
 
 export default {
   name: "App",
@@ -57,6 +63,12 @@ export default {
       bottomNav: "recent"
     };
   },
+  methods: {
+    goToChatRoom(){
+      router.push({ path: '/chat/' + this.$store.state.chatroomID})
+      this.snackbar = false
+    }
+  },
   async created() {
     this.$store.dispatch("init");
   },
@@ -64,8 +76,12 @@ export default {
     receivedMessage(newValue, oldValue){
         if (newValue){
           if (this.$store.state.userInfo.email !== this.$store.state.senderID){
-            this.snackbar = newValue;
             this.text = this.$store.state.senderID + ': ' + this.$store.state.message;
+            this.$store.state.receivedMessage = false
+            if (this.$route.params['id'] !== this.$store.state.chatroomID){
+               console.log( this.$route.params['id']);
+               this.snackbar = newValue;
+            }
           }
         }
     }

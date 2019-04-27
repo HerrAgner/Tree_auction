@@ -59,6 +59,8 @@ public class SocketController extends TextWebSocketHandler {
             chat.setReceiver_id(receiverID);
             chat.setSender_id(senderID);
             chat.setMessage((String) keysAndValues.get("message"));
+            chat.setChatroom_id((String) keysAndValues.get("chatroomID"));
+
 
             JsonElement jsonElement = gson.toJsonTree(chat);
             jsonElement.getAsJsonObject().addProperty("type", "chat");

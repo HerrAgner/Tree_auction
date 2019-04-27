@@ -5,14 +5,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
 public class Chat {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
     private long id;
     private String sender_id;
     private String receiver_id;
     private String message = null;
+    private String chatroom_id;
 
     public Chat() {
 
@@ -48,5 +46,13 @@ public class Chat {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getChatroom_id() {
+        return chatroom_id;
+    }
+
+    public void setChatroom_id(String chatroom_id) {
+        this.chatroom_id = chatroom_id;
     }
 }

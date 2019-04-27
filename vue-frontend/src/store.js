@@ -25,7 +25,10 @@ export default new Vuex.Store({
     currentBids: null,
     message:"",
     senderID: null,
-    receivedMessage: false
+    receivedMessage: false,
+    chatroomID: null,
+    goTochatRoom: false,
+    receiverID: null
 
   },
   mutations: {
@@ -58,6 +61,12 @@ export default new Vuex.Store({
     },
     setReceivedMessage(state, boolean){
       state.receivedMessage = boolean
+    },
+    setChatroomID(state, chatroomID){
+      state.chatroomID = chatroomID
+    },
+    setReceiverID(state, receiverID){
+      state.receiverID = receiverID
     }
   },
   actions: {
@@ -73,6 +82,8 @@ export default new Vuex.Store({
             this.commit("setMessage", data.message)
             this.commit("setSenderID", data.sender_id)
             this.commit("setReceivedMessage", true)
+            this.commit("setChatroomID", data.chatroom_id)
+            this.commit("setReceiverID", data.receiver_id)
         }
       }
     },

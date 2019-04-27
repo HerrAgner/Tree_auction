@@ -141,7 +141,15 @@ export default {
       //   this.highestBid = this.bids[0].amount;
       },
     goToChat(){
-      router.push({ path: '/chat/' + this.$route.params['id']})
+      if (this.$store.state.status){
+        if (this.$store.state.userInfo.email === this.$store.state.currentSeller.email){
+          this.showAlert("error", "You can not chat with yourself!");
+        }else {
+          router.push({ path: '/chat/' + this.$route.params['id']})
+        }
+      }else {
+        this.showAlert("error", "You must be logged in to chat with the owner");
+      }
     },
     async compareBid(bid) {
       await this.getBids();
