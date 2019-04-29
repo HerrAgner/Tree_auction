@@ -21,11 +21,11 @@ export default new Vuex.Store({
     searchAuctions: [],
     currentAuction: "",
     currentSeller: "",
+    notification : { show: false }
     latestAddedAuction: "",
     images: [],
     currentBids: [],
     userBids: null,
-    showNotification: false
   },
   mutations: {
     setAuctions(state, auctions) {
@@ -95,36 +95,20 @@ export default new Vuex.Store({
               this.state.searchAuctions[index]
             );
           }
+          
+          //om currUser tidigare hade högst bud på auktionen i fråga - gör notifikation 
+          if(previousBids[1].bidderId === this.state.userInfo.email){
+            console.log("DU ÄGDE AUKTIONEN MEN NU ÄR DU ÖVERBJUDEN!!!");
+            this.state.notification = { 
+              show: true, 
+              notis: data
+            }
+          }
 
-          console.log(previousBids);
 
-          //om den uppdaterade auction är samma som något currUser har högst bud på - gör notifikation
-          /*await this.dispatch("getUsersBids", this.state.userInfo.email)
-
-                    this.state.userBids.forEach(element => {
-                      //om  användaren har lagt bud tidigare på auktionen det nya budet gäller
-                      if(data.auctionId == element.auction_id && this.state.userInfo.email !== data.bidderId ){
-                        console.log(element);
-                        this.state.showNotification = true;
-
-                      }
-                    });
-
-                    this.dispatch('getHighestBidder', data.auctionId);*/
-        } else if (data.type === "chat") {
+          
         }
       };
-    },
-    getHighestBidder(auctionId) {
-      this.dispatch("getBidsForOneAuction", auctionId);
-      console.log("ny vinnare", this.state.currentBids[0].bidderId);
-      console.log("förra vinnare", this.state.currentBids[1].bidderId);
-    },
-    async getUsersBids(context, userId) {
-      let bids = await (await fetch(API_URL + "bids/user/" + userId)).json();
-      this.commit("setUserBids", bids);
-
-      return this.state.userBids;
     },
     async getUsersFromDb() {
       let users = await (await fetch(API_URL + "users")).json().catch(e => {});

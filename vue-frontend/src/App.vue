@@ -23,20 +23,29 @@ export default {
     BottomFooter,
     Notification
   },
+  computed: {
+    /*getNotification() {
+      
+      return this.$store.state.notification;    
+    },*/
+    async showNotification() {    
+      // DU ÄR HÄR: notis appendar vid rätt läge så nu vill vi fetcha lite info om budet som lagts 
+      //så vi kan skräddaresy meddlendet och göra det till en länk till rätt auktion  
+      await console.log(this.$store.state.notification.data);
+
+      return this.$store.state.notification.show;    
+    },
+  },
   data() {
     return {
       bottomNav: "recent",
-      text: "Någon har budat över dig!"
+      text: "Någon har överbudat dig"
     };
   },
   async created() {
     this.$store.dispatch("init");
   },
-  computed: {
-    showNotification: function() {
-      return this.$store.state.showNotification;    
-    },
-  }
+  
 };
 </script>
 
