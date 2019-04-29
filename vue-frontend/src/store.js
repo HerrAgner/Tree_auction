@@ -21,7 +21,7 @@ export default new Vuex.Store({
     searchAuctions: [],
     currentAuction: "",
     currentSeller: "",
-    notification : { show: false }
+    notification : { show: false },
     latestAddedAuction: "",
     images: [],
     currentBids: [],
@@ -95,6 +95,7 @@ export default new Vuex.Store({
               this.state.searchAuctions[index]
             );
           }
+          console.log(previousBids);
           
           //om currUser tidigare hade högst bud på auktionen i fråga - gör notifikation 
           if(previousBids[1].bidderId === this.state.userInfo.email){
