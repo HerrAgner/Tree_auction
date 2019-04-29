@@ -5,7 +5,7 @@
       <router-view />
     </v-content>
     <div id="messages"></div>
-    <Notification v-if="showNotification" :text="text" />
+    <Notification v-if="showNotification" :auctionLink="this.$store.state.notification.notis.url" :text="text" :key="text" />
     <BottomFooter />
   </v-app>
 </template>
@@ -24,10 +24,12 @@ export default {
     Notification
   },
   computed: {
-    showNotification() {    
-       console.log(this.$store.state.notification.notis);
-       console.log("showNotification: ",this.$store.state.notification.show );
-      
+    showNotification() {          
+
+      if (this.$store.state.notification.notis){
+        this.text ="Du har blivit överbudat i auktionen \n '"+ this.$store.state.notification.notis.title+"' \n"
+        +"det vinnande budet ligger nu på "+this.$store.state.notification.notis.amount
+       }
       return this.$store.state.notification.show;    
     },
    
@@ -35,7 +37,7 @@ export default {
   data() {
     return {
       bottomNav: "recent",
-      text: "Någon har överbudat dig", 
+      text: "", 
     };
   },
   async created() {

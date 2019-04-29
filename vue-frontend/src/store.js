@@ -26,6 +26,7 @@ export default new Vuex.Store({
     images: [],
     currentBids: [],
     userBids: null,
+    notisInfo: null
   },
   mutations: {
     setAuctions(state, auctions) {
@@ -94,20 +95,23 @@ export default new Vuex.Store({
               index,
               this.state.searchAuctions[index]
             );
-          }
-          console.log(previousBids);
-          
+          }          
+
           //om currUser tidigare hade högst bud på auktionen i fråga - gör notifikation 
-          if(previousBids[1].bidderId === this.state.userInfo.email){
-            console.log("DU ÄGDE AUKTIONEN MEN NU ÄR DU ÖVERBJUDEN!!!");
+          if(previousBids[1] && previousBids[1].bidderId === this.state.userInfo.email){
+            let overBiddedAuction =await this.dispatch("returnOneAuction", data.auctionId);
+            
+            this.notisInfo = {
+              title: overBiddedAuction.title,
+              amount: data.amount,
+              url: "/auction/"+data.auctionId
+            }
+                        
             this.state.notification = { 
               show: true, 
-              notis: data
+              notis: this.notisInfo
             }
           }
-
-
-          
         }
       };
     },
@@ -238,6 +242,12 @@ export default new Vuex.Store({
       let bids = await (await fetch(API_URL + "bids/" + auctionId)).json();
       bids.sort((a, b) => b.amount - a.amount);
       return bids;
-    }
+    },
+    async returnOneAuction(context, auction) {
+      let currAuction = await fetch(API_URL + "auctions/" + auction).then(res =>
+        res.json()
+      );
+      return currAuction;
+    },
   }
 });
