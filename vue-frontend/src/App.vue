@@ -66,12 +66,12 @@ export default {
   methods: {
     chatroomData(){
       let chatroomData = this.$store.state.message.filter((p) => {
-        return p.id == this.$store.state.chatroomID
+        return p.id == this.$store.state.chatroomID   
       })
     return chatroomData
     },
     goToChatRoom(){
-      router.push({ path: '/chat/' + this.chatroomData()[0].id})
+      router.push({ path: '/chat/' + this.chatroomData().slice(-1)[0].id + '/' + this.chatroomData().slice(-1)[0].senderID})
       this.snackbar = false
       }
     },
@@ -81,11 +81,19 @@ export default {
   watch: {
     receivedMessage(newValue, oldValue){
         if (newValue){
-          if (this.$store.state.userInfo.email !== this.chatroomData()[0].senderID){
-            this.text = this.chatroomData()[0].senderID + ': ' + this.chatroomData()[0].message;
+          if (this.$store.state.userInfo.email !== this.chatroomData().slice(-1)[0].senderID){              
+            this.text = this.chatroomData().slice(-1)[0].senderID + ': ' + this.chatroomData().slice(-1)[0].message;
             this.$store.state.receivedMessage = false
-            if (this.$route.params['id'] !== this.chatroomData()[0].id){
-               this.snackbar = newValue;
+            console.log('hello');
+
+            if (this.$route.params['user'] !== this.chatroomData().slice(-1)[0].senderID){
+              this.snackbar = newValue;
+            }
+
+
+            
+            if (this.$route.params['id'] !== this.chatroomData().slice(-1)[0].id){              
+              this.snackbar = newValue;
             }
           }
         }

@@ -145,7 +145,7 @@ export default {
         if (this.$store.state.userInfo.email === this.$store.state.currentSeller.email){
           this.showAlert("error", "You can not chat with yourself!");
         }else {
-          router.push({ path: '/chat/' + this.$route.params['id']})
+          router.push({ path: '/chat/' + this.$route.params['id'] + '/' + this.$store.state.userInfo.email})
         }
       }else {
         this.showAlert("error", "You must be logged in to chat with the owner");

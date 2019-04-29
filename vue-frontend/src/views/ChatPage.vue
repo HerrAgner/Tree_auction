@@ -56,7 +56,7 @@ methods: {
             this.messageToClient = 'You have to typ something first';
         }
         else if (this.$store.state.userInfo.email === this.$store.state.receiverID){
-            ws.send(JSON.stringify({type: 'chat',chatroomID: this.$route.params['id'], senderID: this.$store.state.userInfo.email , receiverID: this.chatroomData()[0].senderID, message: this.msg}))
+            ws.send(JSON.stringify({type: 'chat',chatroomID: this.$route.params['id'], senderID: this.$store.state.userInfo.email , receiverID: this.chatroomData().slice(-1)[0].senderID, message: this.msg}))
         }
         else{
             ws.send(JSON.stringify({type: 'chat', chatroomID: this.$route.params['id'], senderID: this.$store.state.userInfo.email , receiverID: this.$store.state.currentSeller.email, message: this.msg}))
@@ -71,7 +71,7 @@ methods: {
   },
 watch: {
     '$route' (to, from){
-        this.logs = this.chatroomData().map(obj => obj.senderID + ': ' + obj.message);
+        this.logs = this.chatroomData().slice(-1).map(obj => obj.senderID + ': ' + obj.message);
     },
     logs() {
       setTimeout(() => {
@@ -79,9 +79,11 @@ watch: {
       }, 0);
     },
     message(newValue, oldValue) {
-        if (this.$store.state.userInfo.email !== this.chatroomData()[0].senderID){
-            if (this.$route.params['id'] === this.chatroomData().slice(-1)[0].id){
-                this.logs.push(this.$store.state.senderID + ': ' + this.chatroomData().slice(-1)[0].message);
+        if (this.$store.state.userInfo.email !== this.chatroomData().slice(-1)[0].senderID){
+            if (this.$route.params['id'] === this.chatroomData().slice(-1)[0].id ){
+                if (this.$route.params['user'] === this.chatroomData().slice(-1)[0].senderID || this.$route.params['user'] === this.chatroomData().slice(-1)[0].receiverID){
+                    this.logs.push(this.$store.state.senderID + ': ' + this.chatroomData().slice(-1)[0].message);
+                }
             }
         }
         this.msg = "";
@@ -89,7 +91,7 @@ watch: {
   },
 computed: mapState(['message']),
 
-created() {
+created() {    
     if (this.$store.state.status === false) {
         this.$router.push({ path: "/login" });
     }else{
