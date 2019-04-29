@@ -23,7 +23,7 @@ export default new Vuex.Store({
     currentSeller: "",
     currentSellerID: null,
     currentBids: null,
-    message:"",
+    message:[],
     senderID: null,
     receivedMessage: false,
     chatroomID: null,
@@ -53,9 +53,6 @@ export default new Vuex.Store({
     setCurrentBids(state, currBids){
       state.currentBids = currBids;
     },
-    setMessage(state, message){
-      state.message = message;
-    },
     setSenderID(state, senderID){
       state.senderID = senderID;
     },
@@ -67,6 +64,13 @@ export default new Vuex.Store({
     },
     setReceiverID(state, receiverID){
       state.receiverID = receiverID
+    },
+    setChatroomObject(state, data){
+      let message = {id: data.chatroom_id, message: data.message, senderID: data.sender_id, receiverID: data.receiver_id }
+      // state.message.push[message]
+      Vue.set(state.message, state.message.length, message);
+      // console.log(state.message);
+      
     }
   },
   actions: {
@@ -79,11 +83,12 @@ export default new Vuex.Store({
           }
         }
         else if (data.type === "chat"){
-            this.commit("setMessage", data.message)
             this.commit("setSenderID", data.sender_id)
             this.commit("setReceivedMessage", true)
             this.commit("setChatroomID", data.chatroom_id)
             this.commit("setReceiverID", data.receiver_id)
+
+            this.commit("setChatroomObject", data)
         }
       }
     },

@@ -64,22 +64,27 @@ export default {
     };
   },
   methods: {
+    chatroomData(){
+      let chatroomData = this.$store.state.message.filter((p) => {
+        return p.id == this.$store.state.chatroomID
+      })
+    return chatroomData
+    },
     goToChatRoom(){
-      router.push({ path: '/chat/' + this.$store.state.chatroomID})
+      router.push({ path: '/chat/' + this.chatroomData()[0].id})
       this.snackbar = false
-    }
-  },
-  async created() {
+      }
+    },
+    async created() {
     this.$store.dispatch("init");
   },
   watch: {
     receivedMessage(newValue, oldValue){
         if (newValue){
-          if (this.$store.state.userInfo.email !== this.$store.state.senderID){
-            this.text = this.$store.state.senderID + ': ' + this.$store.state.message;
+          if (this.$store.state.userInfo.email !== this.chatroomData()[0].senderID){
+            this.text = this.chatroomData()[0].senderID + ': ' + this.chatroomData()[0].message;
             this.$store.state.receivedMessage = false
-            if (this.$route.params['id'] !== this.$store.state.chatroomID){
-               console.log( this.$route.params['id']);
+            if (this.$route.params['id'] !== this.chatroomData()[0].id){
                this.snackbar = newValue;
             }
           }
