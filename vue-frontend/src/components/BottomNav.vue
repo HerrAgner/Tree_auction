@@ -17,14 +17,23 @@
             </v-btn>
             
             <v-btn to="/login" color="teal" flat value="LoginRegister" v-if="!statusT">
-                <span>login</span>
+                <span>Login / Register</span>
                 <v-icon>account_circle</v-icon>
             </v-btn>
 
             <v-btn color="teal" flat value="log out" v-if="statusT" @click="changeStatus">
-                <span>log out</span>
+                <span>Log out</span>
                 <v-icon>account_circle</v-icon>
             </v-btn>
+
+             <v-btn to="/notification" color="teal" flat value="notification" v-if="statusT">
+                <span>Notifications</span>
+                <v-icon v-if="statusT">notifications</v-icon>
+                <v-icon id ="alert" v-else>notifications_active</v-icon>
+
+                
+            </v-btn>
+
         </v-bottom-nav>
     </v-card>
 </template>
@@ -64,5 +73,8 @@ export default {
     #nav{
         height: 56px;
         z-index: 999;
+    }
+    #alert{
+        color:red;
     }
 </style>

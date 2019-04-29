@@ -75,7 +75,7 @@ public class CreateDBData implements CommandLineRunner {
         AuctionRepo.save(auction2);
 
         Auction auction3 = new Auction();
-        LocalDateTime ldt3 = LocalDateTime.of(2019,4, 26, 10, 30);
+        LocalDateTime ldt3 = LocalDateTime.of(2019,4, 30, 10, 30);
         auction3.setTitle("Very fast bike, much wow!");
         auction3.setDescription("Worlds fastest bike is up for grabbs!");
         auction3.setAddedTime(Timestamp.from(Instant.now()));
@@ -86,7 +86,7 @@ public class CreateDBData implements CommandLineRunner {
         AuctionRepo.save(auction3);
 
         Auction auction4 = new Auction();
-        LocalDateTime ldt4 = LocalDateTime.of(2019,4, 25, 12, 30);
+        LocalDateTime ldt4 = LocalDateTime.of(2019,4, 30, 12, 30);
         auction4.setTitle("Very fast skateboard, much wow!");
         auction4.setDescription("Worlds fastest skateboard is up for grabbs!");
         auction4.setAddedTime(Timestamp.from(Instant.now()));
@@ -130,7 +130,7 @@ public class CreateDBData implements CommandLineRunner {
         AuctionRepo.save(auction7);
 
         Auction auction8 = new Auction();
-        LocalDateTime ldt8 = LocalDateTime.of(2019,4, 28, 10, 30);
+        LocalDateTime ldt8 = LocalDateTime.of(2019,4, 29, 10, 30);
         auction8.setTitle("Very fast bike, much wow!");
         auction8.setDescription("Worlds fastest sofa is up for grabbs!");
         auction8.setAddedTime(Timestamp.from(Instant.now()));
@@ -174,7 +174,7 @@ public class CreateDBData implements CommandLineRunner {
         AuctionRepo.save(auction11);
 
         Auction auction12 = new Auction();
-        LocalDateTime ldt12 = LocalDateTime.of(2019,4, 22, 5, 30);
+        LocalDateTime ldt12 = LocalDateTime.of(2019,4, 23, 5, 30);
         auction12.setTitle("utgången aktion jao, much wow!");
         auction12.setDescription("utgången aktion jao");
         auction12.setAddedTime(Timestamp.from(Instant.now()));
@@ -185,7 +185,7 @@ public class CreateDBData implements CommandLineRunner {
         AuctionRepo.save(auction12);
 
         Auction auction13 = new Auction();
-        LocalDateTime ldt13 = LocalDateTime.of(2019,4, 21, 5, 30);
+        LocalDateTime ldt13 = LocalDateTime.of(2019,4, 28, 5, 30);
         auction13.setTitle("wow! utgången aktion much wow!");
         auction13.setDescription("Worlds fastest bike is up for grabbs!");
         auction13.setAddedTime(Timestamp.from(Instant.now()));
@@ -196,7 +196,7 @@ public class CreateDBData implements CommandLineRunner {
         AuctionRepo.save(auction13);
 
         Auction auction14 = new Auction();
-        LocalDateTime ldt14 = LocalDateTime.of(2019,4, 23, 9, 30);
+        LocalDateTime ldt14 = LocalDateTime.of(2019,4, 28, 9, 30);
         auction14.setTitle(" much wow! utgången aktion jao");
         auction14.setDescription("Worlds fastest bike is up for grabbs!");
         auction14.setAddedTime(Timestamp.from(Instant.now()));

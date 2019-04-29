@@ -4,6 +4,8 @@
     <v-content class="content">
       <router-view />
     </v-content>
+    <div id="messages"></div>
+    <Notification v-if="showNotification" :text="text" />
     <BottomFooter />
   </v-app>
 </template>
@@ -11,19 +13,29 @@
 <script>
 import BottomNav from "./components/BottomNav";
 import BottomFooter from "./components/BottomFooter";
+import Notification from "./components/Notification";
+
 
 export default {
   name: "App",
   components: {
     BottomNav,
-    BottomFooter
+    BottomFooter,
+    Notification
   },
   data() {
     return {
-      bottomNav: "recent"
+      bottomNav: "recent",
+      text: "Någon har budat över dig!"
     };
   },
   async created() {
+    this.$store.dispatch("init");
+  },
+  computed: {
+    showNotification: function() {
+      return this.$store.state.showNotification;    
+    },
   }
 };
 </script>
