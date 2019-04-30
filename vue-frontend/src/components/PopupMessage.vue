@@ -47,7 +47,7 @@ export default {
   methods: {
     chatroomData(){
       let chatroomData = this.$store.state.message.filter((p) => {
-        return p.id == this.$store.state.chatroomID   
+        return p.id == this.$store.state.chatroomID && p.senderID == this.$store.state.senderID 
       })
     return chatroomData
     },
@@ -65,7 +65,6 @@ export default {
           if (this.$store.state.userInfo.email !== this.chatroomData().slice(-1)[0].senderID){              
             this.text = this.chatroomData().slice(-1)[0].senderID + ': ' + this.chatroomData().slice(-1)[0].message;
             this.$store.state.receivedMessage = false;
-
             if (this.$route.params['user'] !== this.chatroomData().slice(-1)[0].senderID){
               if (this.$route.params['user'] !== this.$store.state.userInfo.email){
                 this.snackbar = newValue;

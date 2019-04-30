@@ -54,7 +54,7 @@ methods: {
     },
     chatroomData(){
         let chatroomData = this.$store.state.message.filter((p) => {
-        	return p.id == this.$store.state.chatroomID
+            return p.id == this.$store.state.chatroomID && p.senderID == this.$store.state.senderID
         })
         return chatroomData
     },
@@ -84,7 +84,7 @@ methods: {
 },
 watch: {
     '$route' (to, from){
-        this.logs = this.chatroomData().slice(-1).map(obj => obj.senderID + ': ' + obj.message);
+        this.logs = this.chatroomData().map(obj => obj.senderID + ': ' + obj.message);
     },
     logs() {
       setTimeout(() => {
@@ -112,7 +112,7 @@ created() {
     }else{
         if (this.$store.state.userInfo.email !== this.chatroomData().slice(-1)[0].senderID && 
             this.routeId() === this.chatroomData().slice(-1)[0].id){
-            this.logs = this.chatroomData().map(obj => obj.senderID + ': ' + obj.message);
+            this.logs = this.chatroomData().slice(-1).map(obj => obj.senderID + ': ' + obj.message);
         }
     }
   },   
