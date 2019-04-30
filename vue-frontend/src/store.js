@@ -66,7 +66,8 @@ export default new Vuex.Store({
       state.receiverID = receiverID
     },
     setChatroomObject(state, data){
-      let message = {id: data.chatroom_id, message: data.message, senderID: data.sender_id, receiverID: data.receiver_id }
+      let message = {id: data.chatroom_id, message: data.message, 
+                    senderID: data.sender_id, receiverID: data.receiver_id }
       // state.message.push[message]
       Vue.set(state.message, state.message.length, message);
       // console.log(state.message);

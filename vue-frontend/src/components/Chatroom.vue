@@ -43,8 +43,15 @@ data(){
     logs: [],
     msg: null,
     chat: null
-}},
+    }
+},
 methods: {
+    routeId(){
+        return this.$route.params['id']
+    },
+    routeUser(){
+        return this.$route.params['user']
+    },
     chatroomData(){
         let chatroomData = this.$store.state.message.filter((p) => {
         	return p.id == this.$store.state.chatroomID
@@ -56,19 +63,25 @@ methods: {
             this.messageToClient = 'You have to typ something first';
         }
         else if (this.$store.state.userInfo.email === this.$store.state.receiverID){
-            ws.send(JSON.stringify({type: 'chat',chatroomID: this.$route.params['id'], senderID: this.$store.state.userInfo.email , receiverID: this.chatroomData().slice(-1)[0].senderID, message: this.msg}))
+            ws.send(JSON.stringify({type: 'chat',chatroomID: this.routeId(), 
+                                    senderID: this.$store.state.userInfo.email , 
+                                    receiverID: this.chatroomData().slice(-1)[0].senderID, 
+                                    message: this.msg}))
         }
         else{
-            ws.send(JSON.stringify({type: 'chat', chatroomID: this.$route.params['id'], senderID: this.$store.state.userInfo.email , receiverID: this.$store.state.currentSeller.email, message: this.msg}))
+            ws.send(JSON.stringify({type: 'chat', chatroomID: this.routeId(), 
+                                    senderID: this.$store.state.userInfo.email , 
+                                    receiverID: this.$store.state.currentSeller.email, 
+                                    message: this.msg}))
         }
     },
     submit() {
       this.logs.push('Me: ' + this.msg);
       if (this.$store.state.currentSeller.email !== this.$store.state.userInfo.email){
-        this.msg = "";
+            this.msg = "";
       }
     }
-  },
+},
 watch: {
     '$route' (to, from){
         this.logs = this.chatroomData().slice(-1).map(obj => obj.senderID + ': ' + obj.message);
@@ -80,34 +93,33 @@ watch: {
     },
     message(newValue, oldValue) {
         if (this.$store.state.userInfo.email !== this.chatroomData().slice(-1)[0].senderID){
-            if (this.$route.params['id'] === this.chatroomData().slice(-1)[0].id ){
-                if (this.$route.params['user'] === this.chatroomData().slice(-1)[0].senderID || this.$route.params['user'] === this.chatroomData().slice(-1)[0].receiverID){
-                    this.logs.push(this.$store.state.senderID + ': ' + this.chatroomData().slice(-1)[0].message);
+            if (this.routeId() === this.chatroomData().slice(-1)[0].id ){
+                if (this.routeUser() === this.chatroomData().slice(-1)[0].senderID || 
+                    this.routeUser() === this.chatroomData().slice(-1)[0].receiverID){
+                    this.logs.push(this.$store.state.senderID + ': ' + 
+                    this.chatroomData().slice(-1)[0].message);
                 }
             }
         }
         this.msg = "";
     }
-  },
-computed: mapState(['message']),
+},
+    computed: mapState(['message']),
 
 created() {    
     if (this.$store.state.status === false) {
         this.$router.push({ path: "/login" });
     }else{
-        if (this.$store.state.userInfo.email !== this.chatroomData()[0].senderID){
+        if (this.$store.state.userInfo.email !== this.chatroomData().slice(-1)[0].senderID && 
+            this.routeId() === this.chatroomData().slice(-1)[0].id){
             this.logs = this.chatroomData().map(obj => obj.senderID + ': ' + obj.message);
         }
     }
-  },
-    
+  },   
 }
 </script>
     
 <style scoped>
-.primary{
-    margin-top: 0px;
-}
 #logs {
     height: 40vh;
     overflow: auto;

@@ -31,15 +31,15 @@ export default new Router({
     },
     {
       path: "/chat/:id",
-      name: "ChatPage",
+      name: "Chatroom",
       component: () =>
-        import(/* webpackChunkName: "about" */ "./views/ChatPage.vue")
+        import(/* webpackChunkName: "about" */ "./views/Chatroom.vue")
     },
     {
       path: "/chat/:id/:user",
-      name: "ChatPage",
+      name: "Chatroom",
       component: () =>
-        import(/* webpackChunkName: "about" */ "./views/ChatPage.vue")
+        import(/* webpackChunkName: "about" */ "./views/Chatroom.vue")
     },
     {
       path: "/auction/:id",

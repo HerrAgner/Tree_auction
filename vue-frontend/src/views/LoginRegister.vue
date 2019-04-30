@@ -22,7 +22,7 @@ export default {
 .form{
   overflow: hidden;
   display: flex;   
-  height: 60vh;
+  height: 70vh;
   margin-left: 6vw;
 }
 </style>

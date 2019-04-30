@@ -76,11 +76,4 @@ export default {
   height: 60vh;
 }
 
-@media screen and (max-width:667px ){
-    #app{
-        width: 85vw;
-        height: 40vh;
-    }
-}
-
 </style>

@@ -128,14 +128,6 @@ export default {
   margin-top: 3vh;
   margin-left: 2vw;
   margin-bottom: 0;
-  height: 60vh;
-}
-
-@media screen and (max-width:667px ){
-    #app{
-        width: 85vw;
-        height: 60vh;
-
-    }
+  height: 70vh;
 }
 </style>
