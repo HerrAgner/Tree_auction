@@ -15,7 +15,6 @@
 import BottomNav from "./components/BottomNav";
 import BottomFooter from "./components/BottomFooter";
 import Notification from "./components/Notification";
-
 import PopupMessage from "./components/PopupMessage";
 
 export default {
@@ -23,8 +22,7 @@ export default {
   components: {
     BottomNav,
     BottomFooter,
-    Notification
-    BottomFooter,
+    Notification,
     PopupMessage
   },
   data() {

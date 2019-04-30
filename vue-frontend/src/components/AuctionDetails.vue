@@ -75,24 +75,6 @@
             </v-alert>
           </v-content>
         </v-layout>
-
-        <v-layout justify-space-around row id="second_section">
-          <v-content id="description">
-            <v-card>
-              <p>
-                {{ auction.description }}
-              </p>
-            </v-card>
-          </v-content>
-          <v-card id="contact_info">
-            <v-flex xs8>
-              <p>{{ seller.firstname }} {{ seller.lastname }}</p>
-            </v-flex>
-            <v-flex xs8>
-              <v-btn round color="success" dark>Chat with seller</v-btn>
-            </v-flex>
-          </v-card>
-        </v-layout>
       </div>
     </div>
     <v-layout justify-space-around row id="second_section">

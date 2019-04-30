@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { ws } from "@/main.js";
 import router from '@/router.js'
 import {ws, connect, disconnect} from '@/main.js'
 
@@ -24,13 +23,13 @@ export default new Vuex.Store({
     currentAuction: "",
     currentSeller: "",
     latestAddedAuction: "",
-      currentSellerID: null,
-      message:[],
-      senderID: null,
-      receivedMessage: false,
-      chatroomID: null,
-      goTochatRoom: false,
-      receiverID: null,
+    currentSellerID: null,
+    message:[],
+    senderID: null,
+    receivedMessage: false,
+    chatroomID: null,
+    goTochatRoom: false,
+    receiverID: null,
     images: [],
     currentBids: [],
     userBids: null,
@@ -208,7 +207,9 @@ export default new Vuex.Store({
           router.push({ path: '/' })
           disconnect();
           connect();
-      });
+          }
+      }
+      )
     },
     async addUserToDB(state, reqBody) {
       await fetch(API_URL + "users", {
