@@ -84,7 +84,7 @@ methods: {
 },
 watch: {
     '$route' (to, from){
-        this.logs = this.chatroomData().map(obj => obj.senderID + ': ' + obj.message);
+        this.logs = this.chatroomData().slice(-1).map(obj => obj.senderID + ': ' + obj.message);
     },
     logs() {
       setTimeout(() => {

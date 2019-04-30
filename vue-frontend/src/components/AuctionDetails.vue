@@ -75,30 +75,31 @@
             </v-alert>
           </v-content>
         </v-layout>
+
+        <v-layout justify-space-around row id="second_section">
+          <v-content id="description">
+            <v-card>
+              <p>
+                {{ auction.description }}
+              </p>
+            </v-card>
+          </v-content>
+          <v-card id="contact_info">
+            <v-flex xs8>
+              <p>{{ seller.firstname }} {{ seller.lastname }}</p>
+            </v-flex>
+            <v-flex xs8>
+              <v-btn round color="success" @click="goToChat" dark>Chat with seller</v-btn>
+            </v-flex>
+          </v-card>
+        </v-layout>
       </div>
     </div>
-    <v-layout justify-space-around row id="second_section">
-      <v-content id="description">
-        <v-card>
-          <p>
-            {{ auction.description }}
-          </p>
-        </v-card>
-      </v-content>
-      <v-card id="contact_info">
-        <v-flex xs8>
-          <p>{{ seller.firstname }} {{ seller.lastname }}</p>
-        </v-flex>
-        <v-flex xs8>
-          <v-btn round color="success" @click="goToChat" dark>Chat with seller</v-btn>
-        </v-flex>
-      </v-card>
-    </v-layout>
   </v-responsive>
 </template>
 
 <script>
-import FlipCountdown from "@/components/FlipCountdown.vue"
+import FlipCountdown from "@/components/FlipCountdown.vue";
 import router from '@/router.js'
 
 export default {
@@ -163,14 +164,7 @@ export default {
           auction_id: this.auction.id
         };
       }
-      this.bids = await this.$store.dispatch("getBidsForOneAuction", this.auction.id).then(res => res);
-      // this.bids = this.$store.state.currentBids;
-      // this.bids.sort((a, b) => b.amount - a.amount);
-      // if (this.bids.length === 0) {
-      //  this.highestBid = this.auction.start_price;
-      // } else {
-      //   this.highestBid = this.bids[0].amount;
-      },
+    },
     goToChat(){
       if (this.$store.state.status){
         if (this.$store.state.userInfo.email === this.$store.state.currentSeller.email){
