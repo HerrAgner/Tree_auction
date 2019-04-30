@@ -5,6 +5,7 @@
       <router-view />
     </v-content>
     <div id="messages"></div>
+    <Notification v-if="showNotification" :text="text" />
     <PopupMessage />
     <BottomFooter />
   </v-app>
@@ -13,6 +14,8 @@
 <script>
 import BottomNav from "./components/BottomNav";
 import BottomFooter from "./components/BottomFooter";
+import Notification from "./components/Notification";
+
 import PopupMessage from "./components/PopupMessage";
 
 export default {
@@ -20,19 +23,25 @@ export default {
   components: {
     BottomNav,
     BottomFooter,
+    Notification
+    BottomFooter,
     PopupMessage
   },
   data() {
     return {
-      bottomNav: "recent"
+      bottomNav: "recent",
+      text: "Någon har budat över dig!"
     };
   },
-  methods: {
-    async created() {
-      this.$store.dispatch("init");
+  async created() {
+    this.$store.dispatch("init");
+  },
+  computed: {
+    showNotification: function() {
+      return this.$store.state.showNotification;
     },
   }
-}
+};
 </script>
 
 <style>

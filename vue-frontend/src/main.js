@@ -16,28 +16,18 @@ connect();
 
 function connect() {
   ws = new WebSocket('ws://localhost:7999/api/socket');
-  
-  //ws.onmessage = (e) => {
-  //  console.log(JSON.parse(e.data).senderID);
-  //  console.log(JSON.parse(e.data).message);
-
-  //  console.log(JSON.parse(e.data).auctionId);
-  //   console.log(JSON.parse(e.data).amount);
-  //   console.log(JSON.parse(e.data).time);
-  //
-  // }
-
-  }
-
 
   ws.onopen = (e) => {
     isConnected = true;
-    console.log("Connecting...");
+    console.log("Connected!")
   };
 
-  //ws.onclose = (e) => {
-    //console.log("Closing websocket...");
-  //};
+  ws.onclose = (e) => {
+    console.log("Closing websocket...");
+  };
+
+  console.log("Connecting...");
+}
 
 function disconnect() {
   if (ws != null) {
@@ -53,7 +43,7 @@ function disconnect() {
 
 // function showSomething(message) {
 //   document.querySelector("#messages").innerText += message.firstname + " " + message.lastname + "\n";
-// }  
+// }
 export {ws, connect, disconnect}
 new Vue({
   router,

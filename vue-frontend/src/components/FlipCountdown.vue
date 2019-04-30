@@ -1,6 +1,5 @@
 <template>
   <div class="both">
-    <p>Time left:</p>
     <div class="container flip-clock hela" id="countdownTimer">
       <template v-for="data in timeData" v-show="show">
         <span

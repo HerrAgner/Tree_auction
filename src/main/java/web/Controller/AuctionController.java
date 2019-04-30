@@ -28,6 +28,11 @@ public class AuctionController {
         return repo.findAll();
     }
 
+    @GetMapping("/latest")
+    Auction getLatest(){
+        return repo.findTopByOrderByIdDesc();
+    }
+
     @GetMapping("/{id}")
     Optional<Auction> getAuction(@PathVariable long id){
         return repo.findById(id);
