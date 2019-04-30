@@ -1,6 +1,4 @@
 <template>
-  <div id="app">
-    <v-app id="inspire">
       <v-card>
         <v-snackbar
           v-model="snackbar"
@@ -26,8 +24,6 @@
           </v-btn>
         </v-snackbar>
       </v-card>
-    </v-app>
-  </div>
 </template>
 
 <script>
@@ -83,5 +79,7 @@ export default {
 </script>
 
 <style>
-
+#app{
+  height: 9px;
+}
 </style>
