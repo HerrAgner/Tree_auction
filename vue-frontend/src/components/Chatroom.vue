@@ -18,10 +18,10 @@
                     <v-form @submit.prevent="submit">
                     <v-text-field v-model="msg" label="Message" single-line solo-inverted></v-text-field>
                     <v-btn fab dark small color="primary" type="submit" @click="send">
-                        <v-icon dark>send</v-icon>
+                    <v-icon dark>send</v-icon>
                     </v-btn>
                     {{messageToClient}}
-                        </v-form>
+                    </v-form>
                     </v-card-actions>
                 </v-card>
                 </v-flex>
@@ -59,27 +59,37 @@ methods: {
         return chatroomData
     },
     send(){
-        if(this.msg === null){
+        if(this.validate(this.msg) || this.msg === '' || this.msg === null ){
             this.messageToClient = 'You have to typ something first';
         }
         else if (this.$store.state.userInfo.email === this.$store.state.receiverID){
+            this.messageToClient = '';
             ws.send(JSON.stringify({type: 'chat',chatroomID: this.routeId(), 
                                     senderID: this.$store.state.userInfo.email , 
                                     receiverID: this.chatroomData().slice(-1)[0].senderID, 
                                     message: this.msg}))
         }
         else{
+            this.messageToClient = '';
             ws.send(JSON.stringify({type: 'chat', chatroomID: this.routeId(), 
                                     senderID: this.$store.state.userInfo.email , 
                                     receiverID: this.$store.state.currentSeller.email, 
                                     message: this.msg}))
         }
     },
+    validate(msg){
+        let re = /^\s+$/;
+        return re.test(msg);
+    },
     submit() {
-      this.logs.push('Me: ' + this.msg);
-      if (this.$store.state.currentSeller.email !== this.$store.state.userInfo.email){
+        if(this.validate(this.msg) || this.msg === '' || this.msg === null ){
+            this.messageToClient = 'You have to typ something first';
+        } else {
+            this.logs.push('Me: ' + this.msg);
+            if (this.$store.state.currentSeller.email !== this.$store.state.userInfo.email){
             this.msg = "";
-      }
+        }
+        }
     }
 },
 watch: {

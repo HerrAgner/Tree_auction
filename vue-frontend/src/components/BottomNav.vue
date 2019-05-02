@@ -53,18 +53,18 @@
 import { mapState } from "vuex";
 
 export default {
-  name: "BottomNav",
-  data() {
-    return {
-      statusT: this.$store.state.status
-    };
-  },
-  methods: {
-    changeStatus() {
-      if (this.$store.dispatch("logout")) {
-      }
-    }
-  },
+    name: "BottomNav",
+    data(){
+        return {
+            statusT: this.$store.state.status
+        }
+    },
+    methods:{
+        changeStatus(){
+            if (this.$store.dispatch('logout', this.$store.state.userInfo.email)){
+            }
+        }
+    },
 
   watch: {
     status(newValue, oldValue) {

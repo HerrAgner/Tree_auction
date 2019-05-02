@@ -75,14 +75,21 @@ public class SocketController extends TextWebSocketHandler {
 
         if (keysAndValues.get("type").equals("login")){
             String email = (String) keysAndValues.get("loginID");
-                socketService.addUserIdToSession(email, session);
+            socketService.addUserIdToSession(email, session);
             HashMap<String, WebSocketSession> Users= socketService.getUserSession();
             for (String i : Users.keySet()) {
                 System.out.println("key: " + i + " value: " + Users.get(i));
             }
-
         }
 
+        if (keysAndValues.get("type").equals("logout")){
+            String email = (String) keysAndValues.get("logoutID");
+            socketService.removeUserSession(email);
+            HashMap<String, WebSocketSession> Users= socketService.getUserSession();
+            for (String i : Users.keySet()) {
+                System.out.println("log out: "+"\nkey: " + i + " value: " + Users.get(i));
+            }
+        }
     }
 
     @Override

@@ -188,12 +188,11 @@ export default new Vuex.Store({
           this.commit("setStatus", successfulLogin);
           router.push({ path: '/' })
           this.dispatch('getUserInfoFromDb', info.email)
-            console.log('hello from true');
-            ws.send(JSON.stringify({type: 'login', loginID: info.email}))
+          ws.send(JSON.stringify({type: 'login', loginID: info.email}))
         }
       });
     },
-    async logout(context) {
+    async logout(context, email) {
       await fetch(API_URLLog + "logout", {
         method: "GET",
 
@@ -205,8 +204,7 @@ export default new Vuex.Store({
         if(successfulLogout){
           this.commit("setStatus", !successfulLogout);
           router.push({ path: '/' })
-          disconnect();
-          connect();
+          ws.send(JSON.stringify({type: 'logout', logoutID: email}))
           }
       }
       )

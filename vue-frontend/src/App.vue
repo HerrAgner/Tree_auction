@@ -45,7 +45,7 @@ export default {
 <style>
 #app {
   display: flex;
-  min-height: 100vh;
+  height: 100%;
   flex-direction: column;
 }
 
