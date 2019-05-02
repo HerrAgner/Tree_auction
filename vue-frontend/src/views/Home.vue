@@ -63,7 +63,6 @@ export default {
       }else if(this.pageNumber > this.totalPages){
         this.wrongInput = true;
       }
-      // console.log(this.pageContent)
     },
     validatePageInput(input){
       this.pageNumber = Number(this.$route.params.page);

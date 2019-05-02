@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import router from '@/router.js'
-import {ws, connect, disconnect} from '@/main.js'
+import { ws, connect, disconnect } from '@/main.js'
 
 
 Vue.use(Vuex);
@@ -24,7 +24,7 @@ export default new Vuex.Store({
     currentSeller: "",
     latestAddedAuction: "",
     currentSellerID: null,
-    message:[],
+    message: [],
     senderID: null,
     receivedMessage: false,
     chatroomID: null,
@@ -77,24 +77,24 @@ export default new Vuex.Store({
         this.state.searchAuctions[index]
       );
     },
-    setSenderID(state, senderID){
+    setSenderID(state, senderID) {
       state.senderID = senderID;
     },
-    setReceivedMessage(state, boolean){
+    setReceivedMessage(state, boolean) {
       state.receivedMessage = boolean
     },
-    setChatroomID(state, chatroomID){
+    setChatroomID(state, chatroomID) {
       state.chatroomID = chatroomID
     },
-    setReceiverID(state, receiverID){
+    setReceiverID(state, receiverID) {
       state.receiverID = receiverID
     },
-    setChatroomObject(state, data){
-      let message = {id: data.chatroom_id, message: data.message,
-                    senderID: data.sender_id, receiverID: data.receiver_id }
-      // state.message.push[message]
+    setChatroomObject(state, data) {
+      let message = {
+        id: data.chatroom_id, message: data.message,
+        senderID: data.sender_id, receiverID: data.receiver_id
+      }
       Vue.set(state.message, state.message.length, message);
-      // console.log(state.message);
 
     }
   },
@@ -124,7 +124,6 @@ export default new Vuex.Store({
             );
           }
 
-          // console.log(previousBids);
 
           //om den uppdaterade auction är samma som något currUser har högst bud på - gör notifikation
           /*await this.dispatch("getUsersBids", this.state.userInfo.email)
@@ -132,7 +131,6 @@ export default new Vuex.Store({
                     this.state.userBids.forEach(element => {
                       //om  användaren har lagt bud tidigare på auktionen det nya budet gäller
                       if(data.auctionId == element.auction_id && this.state.userInfo.email !== data.bidderId ){
-                        console.log(element);
                         this.state.showNotification = true;
 
                       }
@@ -140,19 +138,17 @@ export default new Vuex.Store({
 
                     this.dispatch('getHighestBidder', data.auctionId);*/
         } else if (data.type === "chat") {
-            this.commit("setSenderID", data.sender_id)
-            this.commit("setReceivedMessage", true)
-            this.commit("setChatroomID", data.chatroom_id)
-            this.commit("setReceiverID", data.receiver_id)
+          this.commit("setSenderID", data.sender_id)
+          this.commit("setReceivedMessage", true)
+          this.commit("setChatroomID", data.chatroom_id)
+          this.commit("setReceiverID", data.receiver_id)
 
-            this.commit("setChatroomObject", data)
+          this.commit("setChatroomObject", data)
         }
       };
     },
     getHighestBidder(auctionId) {
       this.dispatch("getBidsForOneAuction", auctionId);
-      console.log("ny vinnare", this.state.currentBids[0].bidderId);
-      console.log("förra vinnare", this.state.currentBids[1].bidderId);
     },
     async getUsersBids(context, userId) {
       let bids = await (await fetch(API_URL + "bids/user/" + userId)).json();
@@ -161,13 +157,13 @@ export default new Vuex.Store({
       return this.state.userBids;
     },
     async getUsersFromDb() {
-      let users = await (await fetch(API_URL + "users")).json().catch(e => {});
+      let users = await (await fetch(API_URL + "users")).json().catch(e => { });
       return users;
     },
     async getUserInfoFromDb(context, email) {
       let user = await (await fetch(API_URL + "users/" + email))
         .json()
-        .catch(e => {});
+        .catch(e => { });
       if (user) {
         this.commit("setUserInfo", user);
       }
@@ -187,7 +183,7 @@ export default new Vuex.Store({
           this.commit("setStatus", successfulLogin);
           router.push({ path: '/' })
           this.dispatch('getUserInfoFromDb', info.email)
-          ws.send(JSON.stringify({type: 'login', loginID: info.email}))
+          ws.send(JSON.stringify({ type: 'login', loginID: info.email }))
         }
       });
     },
@@ -197,15 +193,15 @@ export default new Vuex.Store({
 
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       })
-      .then(response => {
-        let successfulLogout = !response.url.includes("error");
-        if(successfulLogout){
-          this.commit("setStatus", !successfulLogout);
-          router.push({ path: '/' })
-          ws.send(JSON.stringify({type: 'logout', logoutID: email}))
+        .then(response => {
+          let successfulLogout = !response.url.includes("error");
+          if (successfulLogout) {
+            this.commit("setStatus", !successfulLogout);
+            router.push({ path: '/' })
+            ws.send(JSON.stringify({ type: 'logout', logoutID: email }))
           }
-      }
-      )
+        }
+        )
     },
     async addUserToDB(state, reqBody) {
       await fetch(API_URL + "users", {
@@ -263,15 +259,15 @@ export default new Vuex.Store({
       );
       this.commit("setCurrentAuction", currAuction);
     },
-      async getSearchAuctions(state, content) {
-          await this.commit("setSearchAuctions", content);
-      },
+    async getSearchAuctions(state, content) {
+      await this.commit("setSearchAuctions", content);
+    },
 
     async getImages(context, auctionId) {
-      let currImages = await fetch (API_URL + "pictures/" + auctionId).then(res =>
+      let currImages = await fetch(API_URL + "pictures/" + auctionId).then(res =>
         res.json()
-        );
-        this.commit("setCurrentImages", currImages)
+      );
+      this.commit("setCurrentImages", currImages)
     },
 
     async getSeller(context, user) {

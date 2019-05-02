@@ -20,14 +20,11 @@ function connect() {
 
   ws.onopen = (e) => {
     isConnected = true;
-    console.log("Connected!")
   };
 
   ws.onclose = (e) => {
-    console.log("Closing websocket...");
   };
 
-  console.log("Connecting...");
 }
 
 function disconnect() {
@@ -35,7 +32,6 @@ function disconnect() {
     ws.close();
   }
   isConnected = false;
-  console.log("Disconnected");
 }
 
 // function sendSomething() {
