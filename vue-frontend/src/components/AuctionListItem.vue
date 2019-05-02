@@ -67,6 +67,7 @@ created: async function() {
   computed: {
     convertDate: function() {
       let newDate = new Date(this.endTime);
+     
       newDate = this.$moment(newDate).format('YYYY-MM-DD hh:mm')
       return newDate;
     },
