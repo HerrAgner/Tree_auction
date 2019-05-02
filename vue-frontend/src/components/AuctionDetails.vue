@@ -10,7 +10,9 @@
         </v-card-text>
         <v-layout justify-space-around row id="first_section">
           <v-content id="image_carousel">
-            <v-carousel>
+            <v-carousel
+                    hide-delimiters
+            >
               <v-carousel-item
                 v-for="(item, i) in items"
                 :key="i"
@@ -23,7 +25,7 @@
             <v-layout align-start justify-center row>
               <v-container class="bid">
                 <h5>Current bid</h5>
-                <p>{{ bidUpdate }}</p>
+                <p>£ {{ bidUpdate }}</p>
               </v-container>
               <v-container class="bid">
                 <h5>End time</h5>

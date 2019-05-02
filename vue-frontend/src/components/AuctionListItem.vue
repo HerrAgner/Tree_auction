@@ -10,7 +10,7 @@
             <v-card-title primary-title>
               <div>
                 <div class="headline">{{ title }}</div>
-                <div>{{ bidUpdate }} £</div>
+                <div>£ {{ bidUpdate }}</div>
                   <div>{{ bidAmount }} bids</div>
                 <div>Seller: {{ sellerName }}</div>
                 <div>Ends: {{ convertDate }}</div>
@@ -106,13 +106,11 @@ created: async function() {
       if (bids.length !== 0) {
           this.$store.state.searchAuctions[this.index].highestBid = bids[0].amount;
       } else {
-          this.$store.state.searchAuctions[this.index].highestBid = this.$store.state.searchAuctions[this.index].start_price;
+          this.$store.state.searchAuctions[this.index].highestBid = this.startPrice;
       }
 
       this.$set(this.$store.state.searchAuctions[this.index], this.index, this.$store.state.searchAuctions[this.index]
       );
-      // this.highestBid = this.$store.state.searchAuctions[this.index].highestBid;
-      //   this.highestBid = this.$store.state.searchAuctions[this.index].highestBid;
       this.bids = bids;
 
     },
@@ -126,7 +124,7 @@ created: async function() {
 
 #countdownTimer {
 margin-top: -10px;
-margin-left: -150px;
+margin-left: -20px;
 }
 .AuctionListItem{
   margin: 5px;
