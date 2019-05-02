@@ -124,7 +124,7 @@ export default new Vuex.Store({
             );
           }
 
-          console.log(previousBids);
+          // console.log(previousBids);
 
           //om den uppdaterade auction är samma som något currUser har högst bud på - gör notifikation
           /*await this.dispatch("getUsersBids", this.state.userInfo.email)

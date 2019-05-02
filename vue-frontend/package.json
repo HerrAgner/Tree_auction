@@ -10,7 +10,9 @@
   "dependencies": {
     "core-js": "^2.6.5",
     "material-design-icons-iconfont": "^4.0.5",
+    "moment": "^2.24.0",
     "vue": "^2.6.6",
+    "vue-moment": "^4.0.0",
     "vue-router": "^3.0.1",
     "vuetify": "^1.5.11",
     "vuex": "^3.0.1"

@@ -46,7 +46,9 @@ export default {
 created: async function() {
   this.auctionLink += this.auctionId;
   this.getBids();
-  this.countdown = new Date(this.endTime).toLocaleString()
+  let currDate = new Date(this.endTime)
+  currDate = this.$moment(currDate).format('YYYY-MM-DD hh:mm:ss')
+  this.countdown = currDate
   
   this.items = [{ src: await fetch("http://localhost:7999/images/" + this.image).then(res => res.url)
   }]

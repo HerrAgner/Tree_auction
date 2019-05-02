@@ -8,6 +8,7 @@ import './plugins/vuetify'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.use(Vuetify);
+Vue.use(require('vue-moment'));
 Vue.config.productionTip = false
 
 let ws;

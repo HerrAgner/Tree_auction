@@ -148,8 +148,9 @@ export default {
         })
       );
       this.getBids();
-
-      this.countdown = new Date(this.auction.end_time).toLocaleString();
+      let currDate = new Date(this.auction.end_time)
+      currDate = this.$moment(currDate).format('YYYY-MM-DD hh:mm:ss')
+      this.countdown = currDate
       this.forceRerender();
     }
   },
