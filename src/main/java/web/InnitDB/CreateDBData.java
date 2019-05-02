@@ -207,25 +207,25 @@ public class CreateDBData implements CommandLineRunner {
         AuctionRepo.save(auction12);
 
         Auction auction13 = new Auction();
-        LocalDateTime ldt13 = LocalDateTime.of(2019,4, 28, 5, 30);
-        auction13.setTitle("wow! utgången aktion much wow!");
-        auction13.setDescription("Worlds fastest bike is up for grabbs!");
+        LocalDateTime ldt13 = LocalDateTime.of(2019,5, 15, 14, 30);
+        auction13.setTitle("Unusual bike");
+        auction13.setDescription("Very unique bike for sale. Get it and be the coolest person in the world!");
         auction13.setAddedTime(Timestamp.from(Instant.now()));
         auction13.setEnd_time(Timestamp.valueOf(ldt13));
         auction13.setSeller_id("ted@gmail.com");
-        auction13.setStart_price((float) 33.0);
-        auction13.setImage("Example.jpg");
+        auction13.setStart_price((float) 100.0);
+        auction13.setImage("BAG4-sequence1_2048x2048.jpg");
         AuctionRepo.save(auction13);
 
         Auction auction14 = new Auction();
-        LocalDateTime ldt14 = LocalDateTime.of(2019,4, 28, 9, 30);
-        auction14.setTitle(" much wow! utgången aktion jao");
-        auction14.setDescription("Worlds fastest bike is up for grabbs!");
+        LocalDateTime ldt14 = LocalDateTime.of(2019,5, 5, 10, 42);
+        auction14.setTitle("Nice \"sneakers\"");
+        auction14.setDescription("Very nice shoes. Barely used.");
         auction14.setAddedTime(Timestamp.from(Instant.now()));
         auction14.setEnd_time(Timestamp.valueOf(ldt14));
         auction14.setSeller_id("john.doe@gmail.com");
         auction14.setStart_price((float) 11.0);
-        auction14.setImage("Example.jpg");
+        auction14.setImage("patrik-952-852-brun-profil_2b0f5157.png");
         AuctionRepo.save(auction14);
 
     }

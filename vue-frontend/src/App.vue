@@ -5,7 +5,7 @@
       <router-view />
     </v-content>
     <div id="messages"></div>
-    <Notification v-if="showNotification" :text="text" />
+    <Notification v-if="showNotification" :auctionLink="this.$store.state.notification.notis.url" :text="text" :key="text" />
     <PopupMessage />
     <BottomFooter />
   </v-app>
@@ -25,20 +25,27 @@ export default {
     Notification,
     PopupMessage
   },
+  computed: {
+    showNotification() {          
+
+      if (this.$store.state.notification.notis){
+        this.text ="You've been overbidden in the auction '"+ this.$store.state.notification.notis.title+"'. "
+        +"The winning bid is now on "+this.$store.state.notification.notis.amount+" £"
+       }
+      return this.$store.state.notification.show;    
+    },
+   
+  },
   data() {
     return {
       bottomNav: "recent",
-      text: "Någon har budat över dig!"
+      text: "", 
     };
   },
   async created() {
     this.$store.dispatch("init");
   },
-  computed: {
-    showNotification: function() {
-      return this.$store.state.showNotification;
-    },
-  }
+  
 };
 </script>
 

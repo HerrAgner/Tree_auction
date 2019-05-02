@@ -22,6 +22,7 @@ export default new Vuex.Store({
     searchAuctions: [],
     currentAuction: "",
     currentSeller: "",
+    notification : { show: false },
     latestAddedAuction: "",
     currentSellerID: null,
     message: [],
@@ -33,7 +34,7 @@ export default new Vuex.Store({
     images: [],
     currentBids: [],
     userBids: null,
-    showNotification: false
+    notisInfo: null
   },
   mutations: {
     setAuctions(state, auctions) {
@@ -122,21 +123,23 @@ export default new Vuex.Store({
               index,
               this.state.searchAuctions[index]
             );
+          }          
+
+          //om currUser tidigare hade högst bud på auktionen i fråga - gör notifikation 
+          if(previousBids[1] && previousBids[1].bidderId === this.state.userInfo.email){
+            let overBiddedAuction =await this.dispatch("returnOneAuction", data.auctionId);
+            
+            this.notisInfo = {
+              title: overBiddedAuction.title,
+              amount: data.amount,
+              url: "/auction/"+data.auctionId
+            }
+                        
+            this.state.notification = { 
+              show: true, 
+              notis: this.notisInfo
+            }
           }
-
-
-          //om den uppdaterade auction är samma som något currUser har högst bud på - gör notifikation
-          /*await this.dispatch("getUsersBids", this.state.userInfo.email)
-
-                    this.state.userBids.forEach(element => {
-                      //om  användaren har lagt bud tidigare på auktionen det nya budet gäller
-                      if(data.auctionId == element.auction_id && this.state.userInfo.email !== data.bidderId ){
-                        this.state.showNotification = true;
-
-                      }
-                    });
-
-                    this.dispatch('getHighestBidder', data.auctionId);*/
         } else if (data.type === "chat") {
           this.commit("setSenderID", data.sender_id)
           this.commit("setReceivedMessage", true)
@@ -146,15 +149,6 @@ export default new Vuex.Store({
           this.commit("setChatroomObject", data)
         }
       };
-    },
-    getHighestBidder(auctionId) {
-      this.dispatch("getBidsForOneAuction", auctionId);
-    },
-    async getUsersBids(context, userId) {
-      let bids = await (await fetch(API_URL + "bids/user/" + userId)).json();
-      this.commit("setUserBids", bids);
-
-      return this.state.userBids;
     },
     async getUsersFromDb() {
       let users = await (await fetch(API_URL + "users")).json().catch(e => { });
@@ -286,6 +280,12 @@ export default new Vuex.Store({
       let bids = await (await fetch(API_URL + "bids/" + auctionId)).json();
       bids.sort((a, b) => b.amount - a.amount);
       return bids;
-    }
+    },
+    async returnOneAuction(context, auction) {
+      let currAuction = await fetch(API_URL + "auctions/" + auction).then(res =>
+        res.json()
+      );
+      return currAuction;
+    },
   }
 });
