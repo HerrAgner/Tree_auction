@@ -56,6 +56,10 @@ public class SocketService {
         return userSession;
     }
 
+    public void removeUserSession(String email) {
+        this.userSession.remove(email);
+    }
+
     public void removeSession(WebSocketSession session) {
         sessions.remove(session);
     }

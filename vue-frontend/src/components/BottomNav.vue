@@ -49,7 +49,7 @@ export default {
     },
     methods:{
         changeStatus(){
-            if (this.$store.dispatch('logout')){
+            if (this.$store.dispatch('logout', this.$store.state.userInfo.email)){
             }
         }
     },
