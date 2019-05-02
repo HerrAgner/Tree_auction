@@ -33,14 +33,6 @@ function disconnect() {
   }
   isConnected = false;
 }
-
-// function sendSomething() {
-//   ws.send(JSON.stringify({firstname: "Hello World!" }));
-// }
-
-// function showSomething(message) {
-//   document.querySelector("#messages").innerText += message.firstname + " " + message.lastname + "\n";
-// }
 export {ws, connect, disconnect}
 new Vue({
   router,
