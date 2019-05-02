@@ -23,4 +23,15 @@ public class Picture {
         return auctionId;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public void setAuctionId(int auctionId) {
+        this.auctionId = auctionId;
+    }
 }
