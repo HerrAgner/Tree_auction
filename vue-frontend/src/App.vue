@@ -29,8 +29,8 @@ export default {
     showNotification() {          
 
       if (this.$store.state.notification.notis){
-        this.text ="Du har blivit överbudat i auktionen \n '"+ this.$store.state.notification.notis.title+"' \n"
-        +"det vinnande budet ligger nu på "+this.$store.state.notification.notis.amount
+        this.text ="You've been overbidden in the auction '"+ this.$store.state.notification.notis.title+"'. "
+        +"The winning bid is now on "+this.$store.state.notification.notis.amount+" £"
        }
       return this.$store.state.notification.show;    
     },
