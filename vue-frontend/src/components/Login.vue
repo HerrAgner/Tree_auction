@@ -57,7 +57,7 @@ export default {
         await this.$store.dispatch('login', 
                       {email: this.email, password: this.password}); 
         if (!this.$store.state.status){
-          this.messageToClient = 'This account does not exist';
+          this.messageToClient = 'E-mail and/or password is incorrect';
         }
                                                                              
       }
@@ -74,13 +74,6 @@ export default {
   margin-left: 2vw;
   margin-bottom: 0;
   height: 60vh;
-}
-
-@media screen and (max-width:667px ){
-    #app{
-        width: 85vw;
-        height: 40vh;
-    }
 }
 
 </style>

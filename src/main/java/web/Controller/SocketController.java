@@ -8,11 +8,14 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import web.Entity.Bid;
+import web.Entity.Chat;
 import web.Entity.User;
 import web.SocketService;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -26,6 +29,7 @@ public class SocketController extends TextWebSocketHandler {
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
         System.out.println("Received msg: " + message.getPayload());
+        System.out.println();
 
         // Demonstration purpose only: send back "Hello" + same message as received
 
@@ -46,6 +50,46 @@ public class SocketController extends TextWebSocketHandler {
             socketService.sendToAll(gson.toJson(jsonElement));
         }
 
+        if (keysAndValues.get("type").equals("chat")) {
+            Chat chat = new Chat();
+            String receiverID = (String) keysAndValues.get("receiverID");
+            String senderID = (String) keysAndValues.get("senderID");
+
+            chat.setReceiver_id(receiverID);
+            chat.setSender_id(senderID);
+            chat.setMessage((String) keysAndValues.get("message"));
+            chat.setChatroom_id((String) keysAndValues.get("chatroomID"));
+
+
+            JsonElement jsonElement = gson.toJsonTree(chat);
+            jsonElement.getAsJsonObject().addProperty("type", "chat");
+
+            HashMap<String, WebSocketSession> Users= socketService.getUserSession();
+
+            for (String i : Users.keySet()) {
+                if (i.equals(receiverID)){
+                    socketService.sendToOne(Users.get(i) ,new Gson().toJson(jsonElement));
+                }
+            }
+        }
+
+        if (keysAndValues.get("type").equals("login")){
+            String email = (String) keysAndValues.get("loginID");
+            socketService.addUserIdToSession(email, session);
+            HashMap<String, WebSocketSession> Users= socketService.getUserSession();
+            for (String i : Users.keySet()) {
+                System.out.println("key: " + i + " value: " + Users.get(i));
+            }
+        }
+
+        if (keysAndValues.get("type").equals("logout")){
+            String email = (String) keysAndValues.get("logoutID");
+            socketService.removeUserSession(email);
+            HashMap<String, WebSocketSession> Users= socketService.getUserSession();
+            for (String i : Users.keySet()) {
+                System.out.println("log out: "+"\nkey: " + i + " value: " + Users.get(i));
+            }
+        }
     }
 
     @Override

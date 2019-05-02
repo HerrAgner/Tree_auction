@@ -159,9 +159,9 @@ export default {
         this.frame = requestAnimationFrame(this.updateTime.bind(this));
       }
       
-      if (idx === 1 && !newValue) {
-          document.getElementById("countdownTimer").style.color = "red";
-      }
+      // if (idx === 1 && !newValue) {
+      //     document.getElementById("countdownTimer").style.color = "red";
+      // }
 
       const d = this.timeData[idx];
       const val = newValue < 0 ? 0 : newValue;

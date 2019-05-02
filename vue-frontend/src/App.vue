@@ -6,6 +6,7 @@
     </v-content>
     <div id="messages"></div>
     <Notification v-if="showNotification" :auctionLink="this.$store.state.notification.notis.url" :text="text" :key="text" />
+    <PopupMessage />
     <BottomFooter />
   </v-app>
 </template>
@@ -14,14 +15,15 @@
 import BottomNav from "./components/BottomNav";
 import BottomFooter from "./components/BottomFooter";
 import Notification from "./components/Notification";
-
+import PopupMessage from "./components/PopupMessage";
 
 export default {
   name: "App",
   components: {
     BottomNav,
     BottomFooter,
-    Notification
+    Notification,
+    PopupMessage
   },
   computed: {
     showNotification() {          
@@ -50,7 +52,7 @@ export default {
 <style>
 #app {
   display: flex;
-  min-height: 100vh;
+  height: 100%;
   flex-direction: column;
 }
 

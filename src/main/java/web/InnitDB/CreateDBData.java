@@ -27,8 +27,25 @@ public class CreateDBData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+        User user01 = new User();
+        user01.setPassword(encoder.encode("22"));  //passwordet ska crypteras innan det laddas upp till DB
+        user01.setEmail("ali.albadri77@gmail.com");
+        user01.setFirstName("ali");
+        user01.setLastName("Albadri");
+        user01.setPhoneNumber("070 045 - 5645");
+        UserRepo.save(user01);
+
+        User user0 = new User();
+        user0.setPassword(encoder.encode("22"));  //passwordet ska crypteras innan det laddas upp till DB
+        user0.setEmail("rami.albadri77@gmail.com");
+        user0.setFirstName("Rami");
+        user0.setLastName("Albadri");
+        user0.setPhoneNumber("070 045 - 5645");
+        UserRepo.save(user0);
+
         User user1 = new User();
-        user1.setPassword(encoder.encode("password1234"));  //passwordet ska crypteras innan det laddas upp till DB
+        user1.setPassword(encoder.encode("22"));  //passwordet ska crypteras innan det laddas upp till DB
         user1.setEmail("john.doe@gmail.com");
         user1.setFirstName("John");
         user1.setLastName("Doe");
@@ -53,7 +70,7 @@ public class CreateDBData implements CommandLineRunner {
 
 
         Auction auction1 = new Auction();
-        LocalDateTime ldt1 = LocalDateTime.of(2019,4, 29, 10, 30);
+        LocalDateTime ldt1 = LocalDateTime.of(2019,5, 3, 10, 30);
         auction1.setTitle("Very fast boat, much wow!");
         auction1.setDescription("Worlds fastest boat is up for grabbs!");
         auction1.setAddedTime(Timestamp.from(Instant.now()));
@@ -75,7 +92,7 @@ public class CreateDBData implements CommandLineRunner {
         AuctionRepo.save(auction2);
 
         Auction auction3 = new Auction();
-        LocalDateTime ldt3 = LocalDateTime.of(2019,4, 30, 10, 30);
+        LocalDateTime ldt3 = LocalDateTime.of(2019,5, 15, 10, 30);
         auction3.setTitle("Very fast bike, much wow!");
         auction3.setDescription("Worlds fastest bike is up for grabbs!");
         auction3.setAddedTime(Timestamp.from(Instant.now()));
@@ -86,7 +103,7 @@ public class CreateDBData implements CommandLineRunner {
         AuctionRepo.save(auction3);
 
         Auction auction4 = new Auction();
-        LocalDateTime ldt4 = LocalDateTime.of(2019,4, 30, 12, 30);
+        LocalDateTime ldt4 = LocalDateTime.of(2019,5, 5, 12, 30);
         auction4.setTitle("Very fast skateboard, much wow!");
         auction4.setDescription("Worlds fastest skateboard is up for grabbs!");
         auction4.setAddedTime(Timestamp.from(Instant.now()));
@@ -97,7 +114,7 @@ public class CreateDBData implements CommandLineRunner {
         AuctionRepo.save(auction4);
 
         Auction auction5 = new Auction();
-        LocalDateTime ldt5 = LocalDateTime.of(2019,4, 29, 12, 30);
+        LocalDateTime ldt5 = LocalDateTime.of(2019,5, 25, 12, 30);
         auction5.setTitle("Very fast bike, much wow!");
         auction5.setDescription("Worlds fastest bike is up for grabbs!");
         auction5.setAddedTime(Timestamp.from(Instant.now()));
@@ -108,7 +125,7 @@ public class CreateDBData implements CommandLineRunner {
         AuctionRepo.save(auction5);
 
         Auction auction6 = new Auction();
-        LocalDateTime ldt6 = LocalDateTime.of(2019,4, 29, 2, 30);
+        LocalDateTime ldt6 = LocalDateTime.of(2019,5, 12, 2, 30);
         auction6.setTitle("Very fast table, much wow!");
         auction6.setDescription("Worlds fastest table is up for grabbs!");
         auction6.setAddedTime(Timestamp.from(Instant.now()));
@@ -119,7 +136,7 @@ public class CreateDBData implements CommandLineRunner {
         AuctionRepo.save(auction6);
 
         Auction auction7 = new Auction();
-        LocalDateTime ldt7 = LocalDateTime.of(2019,4, 29, 5, 30);
+        LocalDateTime ldt7 = LocalDateTime.of(2019,5, 13, 5, 30);
         auction7.setTitle("Very fast sofa, much wow!");
         auction7.setDescription("Worlds fastest bike is up for grabbs!");
         auction7.setAddedTime(Timestamp.from(Instant.now()));
@@ -130,7 +147,7 @@ public class CreateDBData implements CommandLineRunner {
         AuctionRepo.save(auction7);
 
         Auction auction8 = new Auction();
-        LocalDateTime ldt8 = LocalDateTime.of(2019,4, 29, 10, 30);
+        LocalDateTime ldt8 = LocalDateTime.of(2019,5, 2, 10, 30);
         auction8.setTitle("Very fast bike, much wow!");
         auction8.setDescription("Worlds fastest sofa is up for grabbs!");
         auction8.setAddedTime(Timestamp.from(Instant.now()));
@@ -141,7 +158,7 @@ public class CreateDBData implements CommandLineRunner {
         AuctionRepo.save(auction8);
 
         Auction auction9 = new Auction();
-        LocalDateTime ldt9 = LocalDateTime.of(2019,4, 28, 12, 30);
+        LocalDateTime ldt9 = LocalDateTime.of(2019,5, 2, 12, 30);
         auction9.setTitle("Very fast bike, much wow!");
         auction9.setDescription("Worlds fastest bike is up for grabbs!");
         auction9.setAddedTime(Timestamp.from(Instant.now()));
@@ -152,7 +169,7 @@ public class CreateDBData implements CommandLineRunner {
         AuctionRepo.save(auction9);
 
         Auction auction10 = new Auction();
-        LocalDateTime ldt10 = LocalDateTime.of(2019,4, 28, 8, 30);
+        LocalDateTime ldt10 = LocalDateTime.of(2019,5, 7, 8, 30);
         auction10.setTitle("Very fast bike, much wow!");
         auction10.setDescription("Worlds fastest bike is up for grabbs!");
         auction10.setAddedTime(Timestamp.from(Instant.now()));
@@ -163,7 +180,7 @@ public class CreateDBData implements CommandLineRunner {
         AuctionRepo.save(auction10);
 
         Auction auction11 = new Auction();
-        LocalDateTime ldt11 = LocalDateTime.of(2019,4, 28, 5, 30);
+        LocalDateTime ldt11 = LocalDateTime.of(2019,5, 8, 5, 30);
         auction11.setTitle("Very fast bike, much wow!");
         auction11.setDescription("Worlds fastest bike is up for grabbs!");
         auction11.setAddedTime(Timestamp.from(Instant.now()));

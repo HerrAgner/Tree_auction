@@ -8,6 +8,7 @@ import './plugins/vuetify'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.use(Vuetify);
+Vue.use(require('vue-moment'));
 Vue.config.productionTip = false
 
 let ws;
@@ -44,7 +45,7 @@ function disconnect() {
 // function showSomething(message) {
 //   document.querySelector("#messages").innerText += message.firstname + " " + message.lastname + "\n";
 // }
-export {ws}
+export {ws, connect, disconnect}
 new Vue({
   router,
   store,

@@ -46,7 +46,9 @@ export default {
 created: async function() {
   this.auctionLink += this.auctionId;
   this.getBids();
-  this.countdown = new Date(this.endTime).toLocaleString()
+  let currDate = new Date(this.endTime)
+  currDate = this.$moment(currDate).format('YYYY-MM-DD hh:mm:ss')
+  this.countdown = currDate
   
   this.items = [{ src: await fetch("http://localhost:7999/images/" + this.image).then(res => res.url)
   }]
@@ -65,7 +67,8 @@ created: async function() {
   computed: {
     convertDate: function() {
       let newDate = new Date(this.endTime);
-      return newDate.toLocaleDateString()+" "+newDate.getHours() + ":" + newDate.getMinutes();
+      newDate = this.$moment(newDate).format('YYYY-MM-DD hh:mm')
+      return newDate;
     },
     showCountdownTimer() {
         let ONE_DAY = new Date().getTime() + (24 * 60 * 60 * 1000)

@@ -6,12 +6,16 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 public class SocketService {
     private List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
+
+    private HashMap<String, WebSocketSession> userSession = new HashMap<>();
+
 
     public void sendToOne(WebSocketSession webSocketSession, String message) throws IOException {
         webSocketSession.sendMessage(new TextMessage(message));
@@ -40,7 +44,24 @@ public class SocketService {
         sessions.add(session);
     }
 
+    public List<WebSocketSession> getSessions() {
+        return sessions;
+    }
+
+    public void addUserIdToSession(String email, WebSocketSession session) {
+        this.userSession.put(email, session);
+    }
+
+    public HashMap<String, WebSocketSession> getUserSession() {
+        return userSession;
+    }
+
+    public void removeUserSession(String email) {
+        this.userSession.remove(email);
+    }
+
     public void removeSession(WebSocketSession session) {
         sessions.remove(session);
     }
+
 }

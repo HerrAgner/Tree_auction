@@ -1,7 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import router from "@/router.js";
-import { ws } from "@/main.js";
+import router from '@/router.js'
+import {ws, connect, disconnect} from '@/main.js'
+
 
 Vue.use(Vuex);
 const API_URL = "http://localhost:7999/api/";
@@ -23,6 +24,13 @@ export default new Vuex.Store({
     currentSeller: "",
     notification : { show: false },
     latestAddedAuction: "",
+    currentSellerID: null,
+    message:[],
+    senderID: null,
+    receivedMessage: false,
+    chatroomID: null,
+    goTochatRoom: false,
+    receiverID: null,
     images: [],
     currentBids: [],
     userBids: null,
@@ -69,6 +77,26 @@ export default new Vuex.Store({
         index,
         this.state.searchAuctions[index]
       );
+    },
+    setSenderID(state, senderID){
+      state.senderID = senderID;
+    },
+    setReceivedMessage(state, boolean){
+      state.receivedMessage = boolean
+    },
+    setChatroomID(state, chatroomID){
+      state.chatroomID = chatroomID
+    },
+    setReceiverID(state, receiverID){
+      state.receiverID = receiverID
+    },
+    setChatroomObject(state, data){
+      let message = {id: data.chatroom_id, message: data.message,
+                    senderID: data.sender_id, receiverID: data.receiver_id }
+      // state.message.push[message]
+      Vue.set(state.message, state.message.length, message);
+      // console.log(state.message);
+
     }
   },
   actions: {
@@ -112,6 +140,13 @@ export default new Vuex.Store({
               notis: this.notisInfo
             }
           }
+        } else if (data.type === "chat") {
+            this.commit("setSenderID", data.sender_id)
+            this.commit("setReceivedMessage", true)
+            this.commit("setChatroomID", data.chatroom_id)
+            this.commit("setReceiverID", data.receiver_id)
+
+            this.commit("setChatroomObject", data)
         }
       };
     },
@@ -141,23 +176,28 @@ export default new Vuex.Store({
         console.log("the login result is:", successfulLogin);
         if (successfulLogin) {
           this.commit("setStatus", successfulLogin);
-          router.push({ path: "/" });
-          this.dispatch("getUserInfoFromDb", info.email);
+          router.push({ path: '/' })
+          this.dispatch('getUserInfoFromDb', info.email)
+          ws.send(JSON.stringify({type: 'login', loginID: info.email}))
         }
       });
     },
-    async logout(context) {
+    async logout(context, email) {
       await fetch(API_URLLog + "logout", {
         method: "GET",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" }
-      }).then(response => {
-        let successfulLogin = !response.url.includes("error");
-        console.log("the logout result is:", successfulLogin);
-        if (successfulLogin) {
-          this.commit("setStatus", !successfulLogin);
-          router.push({ path: "/" });
-        }
-      });
+
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      })
+      .then(response => {
+        let successfulLogout = !response.url.includes("error");
+        console.log("the logout result is:", successfulLogout);
+        if(successfulLogout){
+          this.commit("setStatus", !successfulLogout);
+          router.push({ path: '/' })
+          ws.send(JSON.stringify({type: 'logout', logoutID: email}))
+          }
+      }
+      )
     },
     async addUserToDB(state, reqBody) {
       await fetch(API_URL + "users", {
