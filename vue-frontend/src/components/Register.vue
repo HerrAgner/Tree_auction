@@ -107,12 +107,16 @@ export default {
                                                             lastname: this.lastName,
                                                             password: this.password,
                                                             phone: this.phoneNumber})
-                        this.messageToClient = 'Successfully!'
+                        this.messageToClient = 'Account registered successfully!'
+                        this.reset()
                     }else{
                         this.messageToClient = 'This email is already used!';
                     }
                 }
             }
+        },
+        reset() {
+            this.$refs.registerForm.reset();
         },
         validEmail(email) {
             let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
