@@ -15,6 +15,7 @@
                 v-for="(item, i) in items"
                 :key="i"
                 :src="item.src"
+                contain
               ></v-carousel-item>
             </v-carousel>
           </v-content>
