@@ -57,7 +57,7 @@ export default {
         await this.$store.dispatch('login', 
                       {email: this.email, password: this.password}); 
         if (!this.$store.state.status){
-          this.messageToClient = 'This account does not exist';
+          this.messageToClient = 'E-mail and/or password is incorrect';
         }
                                                                              
       }
