@@ -33,18 +33,6 @@
         <span>{{usernames}} / Log out </span>
         <v-icon>account_circle</v-icon>
       </v-btn>
-
-      <v-btn
-        to="/notification"
-        color="teal"
-        flat
-        value="notification"
-        v-if="statusT"
-      >
-        <span>Notifications</span>
-        <v-icon v-if="statusT">notifications</v-icon>
-        <v-icon id="alert" v-else>notifications_active</v-icon>
-      </v-btn>
     </v-bottom-nav>
   </v-card>
 </template>
