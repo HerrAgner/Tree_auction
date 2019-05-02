@@ -67,7 +67,8 @@ created: async function() {
   computed: {
     convertDate: function() {
       let newDate = new Date(this.endTime);
-      return newDate.toLocaleDateString()+" "+newDate.getHours() + ":" + newDate.getMinutes();
+      newDate = this.$moment(newDate).format('YYYY-MM-DD hh:mm')
+      return newDate;
     },
     showCountdownTimer() {
         let ONE_DAY = new Date().getTime() + (24 * 60 * 60 * 1000)

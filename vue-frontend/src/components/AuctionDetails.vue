@@ -245,7 +245,8 @@ export default {
   computed: {
     convertDate() {
       let newDate = new Date(this.auction.end_time);
-      return newDate.toLocaleDateString();
+      newDate = this.$moment(newDate).format('YYYY-MM-DD')
+      return newDate;
     },
     convertTime() {
       let newDate = new Date(this.auction.end_time);
