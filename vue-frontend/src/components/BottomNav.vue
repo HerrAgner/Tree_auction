@@ -68,7 +68,6 @@ export default {
 
   watch: {
     status(newValue, oldValue) {
-      console.log(`Updating from ${oldValue} to ${newValue}`);
       if (newValue === true) {
         this.statusT = true;
       } else {
