@@ -33,9 +33,8 @@
         <span>Log out {{usernames}}</span>
         <v-icon>account_circle</v-icon>
       </v-btn>
-
-  </v-card>
     </v-bottom-nav>
+  </v-card>
 </template>
 
 <script>
