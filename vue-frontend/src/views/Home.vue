@@ -7,7 +7,7 @@
       </v-layout>
     </v-flex>
     <div class="text-xs-center">
-      <v-pagination v-if="!this.emptyResult && !this.wrongInput" v-model="pageNumber" :length="this.totalPages" @input="onPageChange"></v-pagination>
+      <v-pagination v-if="!this.emptyResult && !this.wrongInput && this.totalPages > 1" v-model="pageNumber" :length="this.totalPages" @input="onPageChange"></v-pagination>
     </div>
     <h1 class="text-xs-center" v-if="this.emptyResult">No Result for your search</h1>
     <h1 class="text-xs-center" v-if="this.wrongInput">The page you're looking for does not exist</h1>
@@ -19,7 +19,7 @@
        </div>
     </div>
    <div class="text-xs-center">
-      <v-pagination v-if="!this.emptyResult && !this.wrongInput" v-model="pageNumber" :length="this.totalPages" @input="onPageChange"></v-pagination>
+      <v-pagination v-if="!this.emptyResult && !this.wrongInput && this.totalPages > 1" v-model="pageNumber" :length="this.totalPages" @input="onPageChange"></v-pagination>
     </div>
   </div>
 </template>
