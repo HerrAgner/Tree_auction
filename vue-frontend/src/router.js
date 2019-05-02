@@ -27,19 +27,13 @@ export default new Router({
       path: "/login",
       name: "LoginRegister",
       component: () =>
-        import(/* webpackChunkName: "about" */ "./views/LoginRegister.vue")
-    },
-    {
-      path: "/chat/:id",
-      name: "Chatroom",
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./views/Chatroom.vue")
+        import("./views/LoginRegister.vue")
     },
     {
       path: "/chat/:id/:user",
       name: "Chatroom",
       component: () =>
-        import(/* webpackChunkName: "about" */ "./views/Chatroom.vue")
+        import("./views/Chatroom.vue")
     },
     {
       path: "/auction/:id",

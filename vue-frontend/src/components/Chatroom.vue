@@ -62,15 +62,15 @@ methods: {
         if(this.validate(this.msg) || this.msg === '' || this.msg === null ){
             this.messageToClient = 'You have to typ something first';
         }
-        else if (this.$store.state.userInfo.email === this.$store.state.receiverID){
-            this.messageToClient = '';
-            ws.send(JSON.stringify({type: 'chat',chatroomID: this.routeId(), 
-                                    senderID: this.$store.state.userInfo.email , 
-                                    receiverID: this.chatroomData().slice(-1)[0].senderID, 
-                                    message: this.msg}))
+        else if (this.chatroomData().slice(-1)[0] !== undefined){
+            if (this.$store.state.userInfo.email === this.chatroomData().slice(-1)[0].receiverID){
+                ws.send(JSON.stringify({type: 'chat',chatroomID: this.routeId(), 
+                                        senderID: this.$store.state.userInfo.email , 
+                                        receiverID: this.chatroomData().slice(-1)[0].senderID, 
+                                        message: this.msg}))
+            }
         }
         else{
-            this.messageToClient = '';
             ws.send(JSON.stringify({type: 'chat', chatroomID: this.routeId(), 
                                     senderID: this.$store.state.userInfo.email , 
                                     receiverID: this.$store.state.currentSeller.email, 
@@ -87,8 +87,8 @@ methods: {
         } else {
             this.logs.push('Me: ' + this.msg);
             if (this.$store.state.currentSeller.email !== this.$store.state.userInfo.email){
-            this.msg = "";
-        }
+                this.msg = "";
+            }
         }
     }
 },
@@ -120,9 +120,11 @@ created() {
     if (this.$store.state.status === false) {
         this.$router.push({ path: "/login" });
     }else{
-        if (this.$store.state.userInfo.email !== this.chatroomData().slice(-1)[0].senderID && 
-            this.routeId() === this.chatroomData().slice(-1)[0].id){
-            this.logs = this.chatroomData().slice(-1).map(obj => obj.senderID + ': ' + obj.message);
+        if (this.chatroomData().slice(-1)[0]!== undefined){
+            if (this.$store.state.userInfo.email !== this.chatroomData().slice(-1)[0].senderID && 
+                this.routeId() === this.chatroomData().slice(-1)[0].id){
+                this.logs = this.chatroomData().slice(-1).map(obj => obj.senderID + ': ' + obj.message);
+            }
         }
     }
   },   

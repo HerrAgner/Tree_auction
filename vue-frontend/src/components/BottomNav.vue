@@ -30,7 +30,7 @@
         v-if="statusT"
         @click="changeStatus"
       >
-        <span>Log out {{usernames}}</span>
+        <span>{{usernames}} / Log out </span>
         <v-icon>account_circle</v-icon>
       </v-btn>
 
@@ -68,7 +68,6 @@ export default {
 
   watch: {
     status(newValue, oldValue) {
-      console.log(`Updating from ${oldValue} to ${newValue}`);
       if (newValue === true) {
         this.statusT = true;
       } else {

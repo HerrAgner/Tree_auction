@@ -44,10 +44,6 @@ public class SocketService {
         sessions.add(session);
     }
 
-    public List<WebSocketSession> getSessions() {
-        return sessions;
-    }
-
     public void addUserIdToSession(String email, WebSocketSession session) {
         this.userSession.put(email, session);
     }

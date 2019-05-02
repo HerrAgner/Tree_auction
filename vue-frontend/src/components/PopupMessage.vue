@@ -48,7 +48,8 @@ export default {
     return chatroomData
     },
     goToChatRoom(){
-      router.push({ path: '/chat/' + this.chatroomData().slice(-1)[0].id + '/' + this.chatroomData().slice(-1)[0].senderID})
+      router.push({ path: '/chat/' + this.chatroomData().slice(-1)[0].id + '/' + 
+      this.chatroomData().slice(-1)[0].senderID})
       this.snackbar = false
       }
     },
@@ -59,7 +60,8 @@ export default {
     receivedMessage(newValue, oldValue){
         if (newValue){
           if (this.$store.state.userInfo.email !== this.chatroomData().slice(-1)[0].senderID){              
-            this.text = this.chatroomData().slice(-1)[0].senderID + ': ' + this.chatroomData().slice(-1)[0].message;
+            this.text = this.chatroomData().slice(-1)[0].senderID + ': ' + 
+            this.chatroomData().slice(-1)[0].message;
             this.$store.state.receivedMessage = false;
             if (this.$route.params['user'] !== this.chatroomData().slice(-1)[0].senderID){
               if (this.$route.params['user'] !== this.$store.state.userInfo.email){

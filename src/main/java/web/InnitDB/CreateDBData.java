@@ -29,7 +29,7 @@ public class CreateDBData implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         User user01 = new User();
-        user01.setPassword(encoder.encode("22"));  //passwordet ska crypteras innan det laddas upp till DB
+        user01.setPassword(encoder.encode("22"));
         user01.setEmail("ali.albadri77@gmail.com");
         user01.setFirstName("ali");
         user01.setLastName("Albadri");
@@ -37,7 +37,7 @@ public class CreateDBData implements CommandLineRunner {
         UserRepo.save(user01);
 
         User user0 = new User();
-        user0.setPassword(encoder.encode("22"));  //passwordet ska crypteras innan det laddas upp till DB
+        user0.setPassword(encoder.encode("22"));
         user0.setEmail("rami.albadri77@gmail.com");
         user0.setFirstName("Rami");
         user0.setLastName("Albadri");
@@ -45,7 +45,7 @@ public class CreateDBData implements CommandLineRunner {
         UserRepo.save(user0);
 
         User user1 = new User();
-        user1.setPassword(encoder.encode("22"));  //passwordet ska crypteras innan det laddas upp till DB
+        user1.setPassword(encoder.encode("22"));
         user1.setEmail("john.doe@gmail.com");
         user1.setFirstName("John");
         user1.setLastName("Doe");
@@ -53,7 +53,7 @@ public class CreateDBData implements CommandLineRunner {
         UserRepo.save(user1);
 
         User user2 = new User();
-        user2.setPassword(encoder.encode("1"));  //passwordet ska crypteras innan det laddas upp till DB
+        user2.setPassword(encoder.encode("1"));
         user2.setEmail("eric.rl@me.com");
         user2.setFirstName("Eric");
         user2.setLastName("Rasmusson");
@@ -61,7 +61,7 @@ public class CreateDBData implements CommandLineRunner {
         UserRepo.save(user2);
 
         User user3 = new User();
-        user3.setPassword(encoder.encode("123"));  //passwordet ska crypteras innan det laddas upp till DB
+        user3.setPassword(encoder.encode("123"));
         user3.setEmail("ted@gmail.com");
         user3.setFirstName("Ted");
         user3.setLastName("Agner");

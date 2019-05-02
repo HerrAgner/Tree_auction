@@ -183,7 +183,6 @@ export default new Vuex.Store({
         headers: { "Content-Type": "application/x-www-form-urlencoded" }
       }).then(response => {
         let successfulLogin = !response.url.includes("error");
-        console.log("the login result is:", successfulLogin);
         if (successfulLogin) {
           this.commit("setStatus", successfulLogin);
           router.push({ path: '/' })
@@ -200,7 +199,6 @@ export default new Vuex.Store({
       })
       .then(response => {
         let successfulLogout = !response.url.includes("error");
-        console.log("the logout result is:", successfulLogout);
         if(successfulLogout){
           this.commit("setStatus", !successfulLogout);
           router.push({ path: '/' })

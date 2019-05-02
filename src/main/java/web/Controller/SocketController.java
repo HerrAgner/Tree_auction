@@ -29,7 +29,6 @@ public class SocketController extends TextWebSocketHandler {
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
         System.out.println("Received msg: " + message.getPayload());
-        System.out.println();
 
         // Demonstration purpose only: send back "Hello" + same message as received
 
@@ -84,11 +83,13 @@ public class SocketController extends TextWebSocketHandler {
 
         if (keysAndValues.get("type").equals("logout")){
             String email = (String) keysAndValues.get("logoutID");
-            socketService.removeUserSession(email);
             HashMap<String, WebSocketSession> Users= socketService.getUserSession();
             for (String i : Users.keySet()) {
-                System.out.println("log out: "+"\nkey: " + i + " value: " + Users.get(i));
+                if (i.equals(email)) {
+                    System.out.println("log out: " + "\nkey: " + i + " value: " + Users.get(i));
+                }
             }
+            socketService.removeUserSession(email);
         }
     }
 
