@@ -2,7 +2,7 @@
   <v-app id="app">
     <BottomNav />
     <v-content class="content">
-      <router-view />
+      <router-view :key="$route.fullPath" />
     </v-content>
     <div id="messages"></div>
     <Notification v-if="showNotification" :auctionLink="this.$store.state.notification.notis.url" :text="text" :key="text" />
