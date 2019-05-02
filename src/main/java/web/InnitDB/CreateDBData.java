@@ -192,13 +192,13 @@ public class CreateDBData implements CommandLineRunner {
 
         Auction auction11 = new Auction();
         LocalDateTime ldt11 = LocalDateTime.of(2019,5, 8, 5, 30);
-        auction11.setTitle("Very fast bike, much wow!");
-        auction11.setDescription("Worlds fastest bike is up for grabbs!");
+        auction11.setTitle("Friendly cow");
+        auction11.setDescription("Very friendly cow.");
         auction11.setAddedTime(Timestamp.from(Instant.now()));
         auction11.setEnd_time(Timestamp.valueOf(ldt11));
         auction11.setSeller_id("eric.rl@me.com");
         auction11.setStart_price((float) 550.0);
-        auction11.setImage("Example.jpg");
+        auction11.setImage("cow.jpg");
         AuctionRepo.save(auction11);
 
         Auction auction12 = new Auction();
