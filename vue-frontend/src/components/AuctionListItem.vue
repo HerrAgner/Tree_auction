@@ -47,7 +47,7 @@ created: async function() {
   this.auctionLink += this.auctionId;
   this.getBids();
   let currDate = new Date(this.endTime)
-  currDate = this.$moment(currDate).format('YYYY-MM-DD hh:mm:ss')
+  currDate = this.$moment(currDate).format('YYYY-MM-DD HH:mm:ss')
   this.countdown = currDate
   
   this.items = [{ src: await fetch("http://localhost:7999/images/" + this.image).then(res => res.url)
@@ -67,7 +67,8 @@ created: async function() {
   computed: {
     convertDate: function() {
       let newDate = new Date(this.endTime);
-      newDate = this.$moment(newDate).format('YYYY-MM-DD hh:mm')
+     
+      newDate = this.$moment(newDate).format('YYYY-MM-DD HH:mm')
       return newDate;
     },
     showCountdownTimer() {

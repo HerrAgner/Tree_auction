@@ -30,7 +30,7 @@
         v-if="statusT"
         @click="changeStatus"
       >
-        <span>{{usernames}} / Log out </span>
+        <span>Log out {{usernames}}</span>
         <v-icon>account_circle</v-icon>
       </v-btn>
     </v-bottom-nav>

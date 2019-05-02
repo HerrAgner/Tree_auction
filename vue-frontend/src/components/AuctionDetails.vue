@@ -250,7 +250,8 @@ export default {
     },
     convertTime() {
       let newDate = new Date(this.auction.end_time);
-      return newDate.getHours() + ":" + newDate.getMinutes();
+      newDate = this.$moment(newDate).format('HH:mm')
+      return newDate;
     },
     showCountdownTimer() {
       let ONE_DAY = new Date().getTime() + 24 * 60 * 60 * 1000;
