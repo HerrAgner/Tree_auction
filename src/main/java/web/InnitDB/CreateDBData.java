@@ -9,6 +9,7 @@ import web.Entity.Auction;
 import web.Entity.Picture;
 import web.Entity.User;
 import web.Repository.AuctionRepository;
+import web.Repository.PictureRepository;
 import web.Repository.UserRepository;
 
 import java.sql.Timestamp;
@@ -25,6 +26,9 @@ public class CreateDBData implements CommandLineRunner {
 
     @Autowired
     AuctionRepository AuctionRepo;
+
+    @Autowired
+    PictureRepository PictureRepo;
 
     @Override
     public void run(String... args) throws Exception {
@@ -94,7 +98,9 @@ public class CreateDBData implements CommandLineRunner {
 
         Picture picture1 = new Picture();
         picture1.setAuctionId(2);
-        picture1.setPicture("carInside");
+        picture1.setPicture("insidecar.jpg");
+        PictureRepo.save(picture1);
+
 
         Auction auction3 = new Auction();
         LocalDateTime ldt3 = LocalDateTime.of(2019,5, 15, 10, 30);
@@ -169,19 +175,19 @@ public class CreateDBData implements CommandLineRunner {
         auction9.setAddedTime(Timestamp.from(Instant.now()));
         auction9.setEnd_time(Timestamp.valueOf(ldt9));
         auction9.setSeller_id("eric.rl@me.com");
-        auction9.setStart_price((float) 350.0);
+        auction9.setStart_price((float) 5);
         auction9.setImage("five.jpg");
         AuctionRepo.save(auction9);
 
         Auction auction10 = new Auction();
         LocalDateTime ldt10 = LocalDateTime.of(2019,5, 7, 8, 30);
-        auction10.setTitle("Very fast bike, much wow!");
-        auction10.setDescription("Worlds fastest bike is up for grabbs!");
+        auction10.setTitle("Horse!");
+        auction10.setDescription("HORSE!");
         auction10.setAddedTime(Timestamp.from(Instant.now()));
         auction10.setEnd_time(Timestamp.valueOf(ldt10));
         auction10.setSeller_id("eric.rl@me.com");
         auction10.setStart_price((float) 450.0);
-        auction10.setImage("Example.jpg");
+        auction10.setImage("horse.jpg");
         AuctionRepo.save(auction10);
 
         Auction auction11 = new Auction();
