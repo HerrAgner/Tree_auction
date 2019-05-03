@@ -141,11 +141,13 @@ export default {
       textRules: [v => v.length <= 300 || "Max 300 characters"],
       fileReader: new FileReader(),
       formData: new FormData(),
-      formDataSecond: new FormData()
+      formDataSecond: new FormData(),
+      files: []
     };
   },
   methods: {
     async addAuction() {
+      this.formData.append("files", this.files[0], this.files[0].name);
       await this.uploadFiles(this.formData)
         .then(image => {
           this.image = image;
@@ -205,17 +207,17 @@ export default {
       this.$refs.fileInputThird.click(); //Reffererar till fileInput så man kan ha annat utseende på input
     },
     onFilePicked(event) {
-      let files = event.target.files;
-      if (!files.length) return; //Validering
-      let fileName = files[0].name;
+      this.files = event.target.files;
+      if (!this.files.length) return; //Validering
+      let fileName = this.files[0].name;
       if (fileName.lastIndexOf(".") <= 0) {
         return alert("Please add a valid file!"); //Validering av fil
       }
       this.fileReader.addEventListener("load", () => {
         this.imageUrl = this.fileReader.result; //För att visa bilden
       });
-      this.fileReader.readAsDataURL(files[0]);
-      this.formData.append("files", files[0], files[0].name);
+      this.fileReader.readAsDataURL(this.files[0]);
+
     },
     onSecondFilePicked(event) {
       let filesSecondary = event.target.files;
